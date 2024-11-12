@@ -132,10 +132,13 @@ class LexerWrapper:
 
     def token(self):
         if self.index < len(self.tokens):
-            tok = self.tokens[self.index]
+            tok = self. tokens[self.index]
             self.index += 1
             return type('Token', (object,), tok)
         return None
+    
+
+    
 
 # Exemplo de uso: analisando o conteúdo de 'entrada.txt'
 if __name__ == "__main__":

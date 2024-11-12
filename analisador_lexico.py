@@ -140,6 +140,8 @@ def analyze_file(filename):
             break
         print(tok)
 
+ 
+
 # Analisando o arquivo de entrada
 analyze_file('./exemplo2.sp')
 
