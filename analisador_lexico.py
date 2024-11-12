@@ -158,4 +158,4 @@ def analyze_file(filename, output_filename):
         print(f"Análise léxica concluída e armazenada em {output_filename}")
 
 # Analisando o arquivo de entrada e salvando a saída
-analyze_file('./exemplo2.sp', './saida_lexica.txt')
+analyze_file('./exemplo1.sp', './saida_lexica.txt')

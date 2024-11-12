@@ -1,0 +1,146 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    ARRAY
+    ASSING
+    ATRIBUITION
+    BOOLEAN
+    BREAKLINE
+    BREAKLINE_2
+    CBRACKET
+    CHAR
+    CONST
+    DIVIDE
+    DO
+    DOT
+    DOTS
+    ELSE
+    EQUALS
+    FALSE
+    FOR
+    GREATER_EQUAL
+    GREATER_THAN
+    IF
+    INTEGER
+    LBRACE
+    LESS_EQUAL
+    LESS_THAN
+    MINUS
+    NOT_EQUALS
+    NUMBER
+    OBRACKET
+    OF
+    OR
+    PLUS
+    PROCEDURE
+    RBRACE
+    READ
+    RECORD
+    THEN
+    TIMES
+    TO
+    TRUE
+    TYPE
+    WHILE
+    WRITE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM ID SEMICOLON decl corpo
+Rule 2     decl -> dvar
+Rule 3     decl -> func
+Rule 4     decl -> dvar func
+Rule 5     decl -> empty
+Rule 6     dvar -> VAR vars
+Rule 7     vars -> var SEMICOLON vars
+Rule 8     vars -> var SEMICOLON
+Rule 9     var -> lista_id COLON tipo
+Rule 10    lista_id -> ID COMMA lista_id
+Rule 11    lista_id -> ID
+Rule 12    tipo -> REAL
+Rule 13    func -> FUNCTION ID LPAREN parametros RPAREN COLON tipo bloco
+Rule 14    parametros -> var
+Rule 15    parametros -> empty
+Rule 16    corpo -> BEGIN comandos END
+Rule 17    comandos -> empty
+Rule 18    bloco -> BEGIN comandos END
+Rule 19    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 
+ARRAY                : 
+ASSING               : 
+ATRIBUITION          : 
+BEGIN                : 16 18
+BOOLEAN              : 
+BREAKLINE            : 
+BREAKLINE_2          : 
+CBRACKET             : 
+CHAR                 : 
+COMMA                : 10
+CONST                : 
+DIVIDE               : 
+DO                   : 
+DOT                  : 
+DOTS                 : 
+ELSE                 : 
+END                  : 16 18
+EQUALS               : 
+FALSE                : 
+FOR                  : 
+FUNCTION             : 13
+GREATER_EQUAL        : 
+GREATER_THAN         : 
+ID                   : 1 10 11 13
+IF                   : 
+INTEGER              : 
+LBRACE               : 
+LESS_EQUAL           : 
+LESS_THAN            : 
+LPAREN               : 13
+MINUS                : 
+NOT_EQUALS           : 
+NUMBER               : 
+OBRACKET             : 
+OF                   : 
+OR                   : 
+PLUS                 : 
+PROCEDURE            : 
+RBRACE               : 
+READ                 : 
+REAL                 : 12
+RECORD               : 
+RPAREN               : 13
+SEMICOLON            : 1 7 8
+THEN                 : 
+TIMES                : 
+TO                   : 
+TRUE                 : 
+TYPE                 : 
+VAR                  : 6
+WHILE                : 
+WRITE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+COLON                : 9 13
+PROGRAM              : 1
+bloco                : 13
+comandos             : 16 18
+corpo                : 1
+decl                 : 1
+dvar                 : 2 4
+empty                : 5 15 17
+func                 : 3 4
+lista_id             : 9 10
+parametros           : 13
+program              : 0
+tipo                 : 9 13
+var                  : 7 8 14
+vars                 : 6 7
+

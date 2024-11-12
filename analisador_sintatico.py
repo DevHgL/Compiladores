@@ -1,3 +1,4 @@
+from analisador_lexico import tokens
 import ply.yacc as yacc
 
 # Importando a função de tokenização (substitua pelo nome do seu arquivo e função)
