@@ -1,7 +1,7 @@
 # ====================================================================
 #                                                                    =
-# Trabalho de Compiladores - Analisador Sintático                    =
-# @author: Hugo Leonardo Melo                                        =
+#          Trabalho de Compiladores - Analisador Sintático           =
+#                   @author: Hugo Leonardo Melo                      =
 #                                                                    =
 # ====================================================================
 
