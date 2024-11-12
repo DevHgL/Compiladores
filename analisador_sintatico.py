@@ -1,41 +1,29 @@
 # ====================================================================
 #                                                                    =
-# Trabalho de Compiladores - Annalisador Sintático                   =
+# Trabalho de Compiladores - Analisador Sintático                    =
 # @author: Hugo Leonardo Melo                                        =
 #                                                                    =
 # ====================================================================
 
-from analisador_lexico import tokens
+from analisador_lexico import tokens, lexer  # Importando os tokens e o lexer definidos no analisador léxico
 import ply.yacc as yacc
-    
-    # Esta função deve retornar uma lista de tokens, onde cada token é um objeto com:
-    # 'type' (tipo do token), 'value' (valor do token), e 'lineno' (número da linha)
 
+# Esta função deve usar o lexer real para gerar os tokens
 def tokenize(input_data):
-
-    return
-    [
-        {
-         'type': 'PROGRAM', 
-         'value': 'program',
-         'lineno': 1
-        },
-        {
-         'type': 'ID',
-         'value': 'teste', 
-         'lineno': 1
-        },
-        {
-        'type': 'SEMICOLON', 
-        'value': ';', 
-        'lineno': 1
-        },
-        
-        #TODO adicionar mais tokens, pra deixar mais completo.
-    ]
+    lexer.input(input_data)
+    tokens_list = []
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break
+        tokens_list.append({
+            'type': tok.type,
+            'value': tok.value,
+            'lineno': tok.lineno
+        })
+    return tokens_list
 
 # Definindo a gramática com base na estrutura fornecida
-
 def p_program(p):
     'program : PROGRAM ID SEMICOLON decl corpo'
     pass
@@ -136,9 +124,6 @@ class LexerWrapper:
             self.index += 1
             return type('Token', (object,), tok)
         return None
-    
-
-    
 
 # Exemplo de uso: analisando o conteúdo de 'entrada.txt'
 if __name__ == "__main__":
