@@ -1,19 +1,37 @@
+# ====================================================================
+#                                                                    =
+# Trabalho de Compiladores - Annalisador Sintático                   =
+# @author: Hugo Leonardo Melo                                        =
+#                                                                    =
+# ====================================================================
+
 from analisador_lexico import tokens
 import ply.yacc as yacc
-
-# Importando a função de tokenização (substitua pelo nome do seu arquivo e função)
-# from seu_analisador_lexico import tokenize
-
-# Exemplo de implementação mínima para tokenize caso ainda não esteja pronta
-def tokenize(input_data):
+    
     # Esta função deve retornar uma lista de tokens, onde cada token é um objeto com:
     # 'type' (tipo do token), 'value' (valor do token), e 'lineno' (número da linha)
-    # Exemplo mínimo para teste
-    return [
-        {'type': 'PROGRAM', 'value': 'program', 'lineno': 1},
-        {'type': 'ID', 'value': 'teste', 'lineno': 1},
-        {'type': 'SEMICOLON', 'value': ';', 'lineno': 1},
-        # Adicione os demais tokens aqui...
+
+def tokenize(input_data):
+
+    return
+    [
+        {
+         'type': 'PROGRAM', 
+         'value': 'program',
+         'lineno': 1
+        },
+        {
+         'type': 'ID',
+         'value': 'teste', 
+         'lineno': 1
+        },
+        {
+        'type': 'SEMICOLON', 
+        'value': ';', 
+        'lineno': 1
+        },
+        
+        #TODO adicionar mais tokens, pra deixar mais completo.
     ]
 
 # Definindo a gramática com base na estrutura fornecida
