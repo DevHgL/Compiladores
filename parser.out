@@ -2,145 +2,206 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    AND
-    ARRAY
     ASSING
     ATRIBUITION
-    BOOLEAN
     BREAKLINE
     BREAKLINE_2
     CBRACKET
-    CHAR
-    CONST
-    DIVIDE
-    DO
     DOT
     DOTS
-    ELSE
-    EQUALS
     FALSE
-    FOR
     GREATER_EQUAL
     GREATER_THAN
-    IF
-    INTEGER
     LBRACE
     LESS_EQUAL
     LESS_THAN
-    MINUS
     NOT_EQUALS
     NUMBER
     OBRACKET
-    OF
-    OR
-    PLUS
-    PROCEDURE
     RBRACE
-    READ
-    RECORD
-    THEN
-    TIMES
-    TO
     TRUE
-    TYPE
-    WHILE
-    WRITE
 
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> PROGRAM ID SEMICOLON decl corpo
-Rule 2     decl -> dvar
-Rule 3     decl -> func
-Rule 4     decl -> dvar func
-Rule 5     decl -> empty
-Rule 6     dvar -> VAR vars
-Rule 7     vars -> var SEMICOLON vars
-Rule 8     vars -> var SEMICOLON
-Rule 9     var -> lista_id COLON tipo
-Rule 10    lista_id -> ID COMMA lista_id
-Rule 11    lista_id -> ID
-Rule 12    tipo -> REAL
-Rule 13    func -> FUNCTION ID LPAREN parametros RPAREN COLON tipo bloco
-Rule 14    parametros -> var
-Rule 15    parametros -> empty
-Rule 16    corpo -> BEGIN comandos END
-Rule 17    comandos -> empty
-Rule 18    bloco -> BEGIN comandos END
-Rule 19    empty -> <empty>
+Rule 1     program -> PROGRAM ID SEMICOLON declaracoes bloco
+Rule 2     declaracoes -> def_const def_tipos def_var def_rotina
+Rule 3     declaracoes -> empty
+Rule 4     def_const -> CONST lista_const
+Rule 5     def_const -> empty
+Rule 6     lista_const -> ID EQUALS const_valor SEMICOLON lista_const
+Rule 7     lista_const -> ID EQUALS const_valor SEMICOLON
+Rule 8     const_valor -> NUMERO
+Rule 9     const_valor -> STRING
+Rule 10    def_tipos -> TYPE lista_tipos
+Rule 11    def_tipos -> empty
+Rule 12    lista_tipos -> ID EQUALS tipo SEMICOLON lista_tipos
+Rule 13    lista_tipos -> ID EQUALS tipo SEMICOLON
+Rule 14    def_var -> VAR lista_var
+Rule 15    def_var -> empty
+Rule 16    lista_var -> var SEMICOLON lista_var
+Rule 17    lista_var -> var SEMICOLON
+Rule 18    var -> lista_id COLON tipo
+Rule 19    lista_id -> ID COMMA lista_id
+Rule 20    lista_id -> ID
+Rule 21    tipo -> INTEGER
+Rule 22    tipo -> REAL
+Rule 23    tipo -> CHAR
+Rule 24    tipo -> BOOLEAN
+Rule 25    tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo
+Rule 26    tipo -> RECORD lista_campos END
+Rule 27    lista_campos -> campo SEMICOLON lista_campos
+Rule 28    lista_campos -> campo SEMICOLON
+Rule 29    campo -> lista_id COLON tipo
+Rule 30    def_rotina -> rotina def_rotina
+Rule 31    def_rotina -> empty
+Rule 32    rotina -> function
+Rule 33    rotina -> procedure
+Rule 34    function -> FUNCTION ID LPAREN parametros RPAREN COLON tipo bloco_rotina
+Rule 35    procedure -> PROCEDURE ID LPAREN parametros RPAREN bloco_rotina
+Rule 36    parametros -> param
+Rule 37    parametros -> empty
+Rule 38    param -> lista_id COLON tipo
+Rule 39    param -> lista_id COLON tipo SEMICOLON param
+Rule 40    bloco_rotina -> declaracoes bloco
+Rule 41    bloco -> BEGIN lista_com END
+Rule 42    lista_com -> comando SEMICOLON lista_com
+Rule 43    lista_com -> comando SEMICOLON
+Rule 44    lista_com -> empty
+Rule 45    comando -> atribuicao
+Rule 46    comando -> leitura
+Rule 47    comando -> escrita
+Rule 48    comando -> repeticao
+Rule 49    comando -> condicional
+Rule 50    comando -> chamada_rotina
+Rule 51    atribuicao -> ID ASSIGN exp
+Rule 52    leitura -> READ LPAREN ID RPAREN
+Rule 53    escrita -> WRITE LPAREN const_valor RPAREN
+Rule 54    repeticao -> WHILE exp_logica DO bloco
+Rule 55    repeticao -> FOR atribuicao TO exp DO bloco
+Rule 56    condicional -> IF exp_logica THEN bloco ELSE bloco
+Rule 57    condicional -> IF exp_logica THEN bloco
+Rule 58    chamada_rotina -> ID LPAREN lista_param RPAREN
+Rule 59    lista_param -> parametro COMMA lista_param
+Rule 60    lista_param -> parametro
+Rule 61    lista_param -> empty
+Rule 62    parametro -> exp
+Rule 63    parametro -> ID
+Rule 64    exp_logica -> exp_mat op_logico exp_logica
+Rule 65    exp_logica -> exp_mat
+Rule 66    op_logico -> AND
+Rule 67    op_logico -> OR
+Rule 68    exp_mat -> exp_mat op_mat exp_mat
+Rule 69    exp_mat -> parametro
+Rule 70    op_mat -> PLUS
+Rule 71    op_mat -> MINUS
+Rule 72    op_mat -> TIMES
+Rule 73    op_mat -> DIVIDE
+Rule 74    exp -> exp_mat
+Rule 75    empty -> <empty>
 
 Terminals, with rules where they appear
 
-AND                  : 
-ARRAY                : 
+AND                  : 66
+ARRAY                : 25
 ASSING               : 
 ATRIBUITION          : 
-BEGIN                : 16 18
-BOOLEAN              : 
+BEGIN                : 41
+BOOLEAN              : 24
 BREAKLINE            : 
 BREAKLINE_2          : 
 CBRACKET             : 
-CHAR                 : 
-COMMA                : 10
-CONST                : 
-DIVIDE               : 
-DO                   : 
+CHAR                 : 23
+COMMA                : 19 59
+CONST                : 4
+DIVIDE               : 73
+DO                   : 54 55
 DOT                  : 
 DOTS                 : 
-ELSE                 : 
-END                  : 16 18
-EQUALS               : 
+ELSE                 : 56
+END                  : 26 41
+EQUALS               : 6 7 12 13
 FALSE                : 
-FOR                  : 
-FUNCTION             : 13
+FOR                  : 55
+FUNCTION             : 34
 GREATER_EQUAL        : 
 GREATER_THAN         : 
-ID                   : 1 10 11 13
-IF                   : 
-INTEGER              : 
+ID                   : 1 6 7 12 13 19 20 34 35 51 52 58 63
+IF                   : 56 57
+INTEGER              : 21
 LBRACE               : 
 LESS_EQUAL           : 
 LESS_THAN            : 
-LPAREN               : 13
-MINUS                : 
+LPAREN               : 34 35 52 53 58
+MINUS                : 71
 NOT_EQUALS           : 
 NUMBER               : 
 OBRACKET             : 
-OF                   : 
-OR                   : 
-PLUS                 : 
-PROCEDURE            : 
+OF                   : 25
+OR                   : 67
+PLUS                 : 70
+PROCEDURE            : 35
 RBRACE               : 
-READ                 : 
-REAL                 : 12
-RECORD               : 
-RPAREN               : 13
-SEMICOLON            : 1 7 8
-THEN                 : 
-TIMES                : 
-TO                   : 
+READ                 : 52
+REAL                 : 22
+RECORD               : 26
+RPAREN               : 34 35 52 53 58
+SEMICOLON            : 1 6 7 12 13 16 17 27 28 39 42 43
+THEN                 : 56 57
+TIMES                : 72
+TO                   : 55
 TRUE                 : 
-TYPE                 : 
-VAR                  : 6
-WHILE                : 
-WRITE                : 
+TYPE                 : 10
+VAR                  : 14
+WHILE                : 54
+WRITE                : 53
 error                : 
 
 Nonterminals, with rules where they appear
 
-COLON                : 9 13
+ASSIGN               : 51
+COLON                : 18 29 34 38 39
+LBRACKET             : 25
+NUMERO               : 8 25
 PROGRAM              : 1
-bloco                : 13
-comandos             : 16 18
-corpo                : 1
-decl                 : 1
-dvar                 : 2 4
-empty                : 5 15 17
-func                 : 3 4
-lista_id             : 9 10
-parametros           : 13
+RBRACKET             : 25
+STRING               : 9
+atribuicao           : 45 55
+bloco                : 1 40 54 55 56 56 57
+bloco_rotina         : 34 35
+campo                : 27 28
+chamada_rotina       : 50
+comando              : 42 43
+condicional          : 49
+const_valor          : 6 7 53
+declaracoes          : 1 40
+def_const            : 2
+def_rotina           : 2 30
+def_tipos            : 2
+def_var              : 2
+empty                : 3 5 11 15 31 37 44 61
+escrita              : 47
+exp                  : 51 55 62
+exp_logica           : 54 56 57 64
+exp_mat              : 64 65 68 68 74
+function             : 32
+leitura              : 46
+lista_campos         : 26 27
+lista_com            : 41 42
+lista_const          : 4 6
+lista_id             : 18 19 29 38 39
+lista_param          : 58 59
+lista_tipos          : 10 12
+lista_var            : 14 16
+op_logico            : 64
+op_mat               : 68
+param                : 36 39
+parametro            : 59 60 69
+parametros           : 34 35
+procedure            : 33
 program              : 0
-tipo                 : 9 13
-var                  : 7 8 14
-vars                 : 6 7
+repeticao            : 48
+rotina               : 30
+tipo                 : 12 13 18 25 29 34 38 39
+var                  : 16 17
 

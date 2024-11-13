@@ -1,17 +1,47 @@
-program teste;
-var
+PROGRAM Exemplo;
 
-a, b : real;
+CONST
+    MAX = 100;
+    MENSAGEM = 'Hello, World';
 
-function inc( e : real) : real;
-begin
+TYPE
+    indice = INTEGER;
+    matriz = ARRAY [1..MAX] OF INTEGER;
+    registro = RECORD
+        nome: CHAR;
+        idade: INTEGER;
+    END;
 
-inc := e;
-inc := inc + 1
+VAR
+    x, y: INTEGER;
+    nome: CHAR;
+    valores: matriz;
 
-end
-begin
+PROCEDURE Saudacao(mensagem: CHAR);
+BEGIN
+    WRITE(mensagem);
+END;
 
-b := inc(a);
+FUNCTION Soma(a, b: INTEGER): INTEGER;
+BEGIN
+    Soma := a + b;
+END;
 
-end;
+BEGIN
+    x := 10;
+    y := Soma(x, MAX);
+    
+    IF y > 50 THEN
+    BEGIN
+        Saudacao(MENSAGEM);
+    END
+    ELSE
+    BEGIN
+        WRITE('Soma é menor ou igual a 50');
+    END;
+
+    FOR x := 1 TO MAX DO
+    BEGIN
+        valores[x] := x * 2;
+    END;
+END.
