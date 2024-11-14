@@ -161,85 +161,67 @@ def p_repeticao(p):
     pass
 
 def p_condicional(p):
-    '''condicional : IF exp_logica THEN bloco ELSE bloco
-                   | IF exp_logica THEN bloco'''
+    '''condicional : IF exp_logica THEN bloco
+                   | IF exp_logica THEN bloco ELSE bloco'''
     pass
 
-def p_chamada_rotina(p):
-    'chamada_rotina : ID LPAREN lista_param RPAREN'
-    pass
-
-# Lista de parâmetros
-def p_lista_param(p):
-    '''lista_param : parametro COMMA lista_param
-                   | parametro
-                   | empty'''
-    pass
-
-def p_parametro(p):
-    '''parametro : exp
-                 | ID'''
-    pass
-
-# Expressão lógica
-def p_exp_logica(p):
-    '''exp_logica : exp_mat op_logico exp_logica
-                  | exp_mat'''
-    pass
-
-def p_op_logico(p):
-    '''op_logico : AND
-                 | OR'''
-    pass
-
-# Expressão matemática
-def p_exp_mat(p):
-    '''exp_mat : exp_mat op_mat exp_mat
-               | parametro'''
-    pass
-
-def p_op_mat(p):
-    '''op_mat : PLUS
-              | MINUS
-              | TIMES
-              | DIVIDE'''
-    pass
-
-# Expressão
+# Expressões
 def p_exp(p):
-    'exp : exp_mat'
+    '''exp : NUMERO
+           | ID
+           | LPAREN exp RPAREN
+           | exp PLUS exp
+           | exp MINUS exp
+           | exp TIMES exp
+           | exp DIVIDE exp'''
     pass
 
-# Valor vazio
+def p_exp_logica(p):
+    '''exp_logica : exp operador_logico exp'''
+    pass
+
+def p_operador_logico(p):
+    '''operador_logico : EQUALS
+                       | NOT_EQUALS
+                       | LESS_THAN
+                       | GREATER_THAN
+                       | LESS_EQUAL
+                       | GREATER_EQUAL
+                       | AND
+                       | OR'''
+    pass
+
+# Regra para vazio
 def p_empty(p):
     'empty :'
     pass
 
-# Tratamento de erros sintáticos
+# Regra de erro
 def p_error(p):
-    if p:
-        print(f"Erro de sintaxe em '{p.value}' na linha {p.lineno}")
-    else:
-        print("Erro de sintaxe no final da entrada")
+    print(f"Erro de sintaxe na entrada: {p}")
+    
+# Chamada de rotina
+def p_chamada_rotina(p):
+    '''chamada_rotina : ID LPAREN argumentos RPAREN SEMICOLON'''
+    p[0] = ("chamada_rotina", p[1], p[3])
 
-# Função de erro do lexer para tokens não reconhecidos
-def t_error(t):
-    print(f"Token não reconhecido '{t.value[0]}' na linha {t.lineno}")
-    t.lexer.skip(1)
+# Argumentos passados para uma chamada de rotina
+def p_argumentos(p):
+    '''argumentos : lista_param
+                  | empty'''
+    p[0] = p[1]
 
-# Construir o parser com debug=True
-parser = yacc.yacc(debug=True)
+# Lista de parâmetros
+def p_lista_param(p):
+    '''lista_param : parametro COMMA lista_param
+                   | parametro'''
+    p[0] = [p[1]] + (p[3] if len(p) > 2 else [])
 
-# Função principal para ler o arquivo e analisar
-def main(filename):
-    try:
-        # Ler o conteúdo do arquivo
-        with open(filename, 'r') as file:
-            input_data = file.read()
-        
-        # Fazer análise sintática diretamente com o parser
-        print("\nAnalisando a sintaxe...")
-        parser.parse(input_data, lexer=lexer)
-        print("Análise sintática concluída.")
-    except FileNotFoundError:
-        print(f"Erro: O arquivo '{filename}' não foi encontrado.")
+def p_parametro(p):
+    '''parametro : exp
+                 | ID'''
+    p[0] = p[1]
+
+
+# Criação do parser
+parser = yacc.yacc()
