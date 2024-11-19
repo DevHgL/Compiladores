@@ -4,7 +4,9 @@
 # @author: Hugo Leonardo Melo                                        =
 #                                                                    =
 # ====================================================================
+
 import ply.lex as lex
+import ply.yacc as yacc
 
 # Palavras reservadas
 reserved_words = {
@@ -88,7 +90,7 @@ t_GREATER_EQUAL  = r'>='
 # Expressão regular para um identificador (ID)
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved_words.get(t.value, 'ID')  # Verifica se é uma palavra reservada
+    t.type = reserved_words.get(t.value.lower(), 'ID')  # Verifica se é uma palavra reservada (ignora maiúsculas/minúsculas)
     return t
 
 # Expressão regular para um número (NUMERO)
@@ -100,6 +102,7 @@ def t_NUMERO(t):
 # Expressão regular para uma string (STRING)
 def t_STRING(t):
     r'\".*?\"'
+    t.value = t.value[1:-1]  # Remove as aspas
     return t
 
 # Ignorar espaços em branco e tabulações
@@ -115,24 +118,32 @@ lexer = lex.lex()
 
 # Função para ler o arquivo e analisar o código
 def analyze_file(filename, output_filename=None):
-    with open(filename, 'r') as file:
-        data = file.read()
-    lexer.input(data)
-    
-    if output_filename:
-        with open(output_filename, 'w') as output_file:
+    try:
+        with open(filename, 'r') as file:
+            data = file.read()
+        lexer.input(data)
+        
+        if output_filename:
+            with open(output_filename, 'w') as output_file:
+                while True:
+                    tok = lexer.token()
+                    if not tok:
+                        break
+                    output_file.write(str(tok) + '\n')
+                print(f"Análise léxica concluída e armazenada em {output_filename}")
+        else:
             while True:
                 tok = lexer.token()
                 if not tok:
                     break
-                output_file.write(str(tok) + '\n')
-            print(f"Análise léxica concluída e armazenada em {output_filename}")
-    else:
-        while True:
-            tok = lexer.token()
-            if not tok:
-                break
-            print(tok)
+                print(tok)
+    except FileNotFoundError:
+        print(f"Erro: O arquivo '{filename}' não foi encontrado!")
 
-# Exemplo de chamada: analyze_file('./exemplo2.sp')
-# Para salvar a saída: analyze_file('./exemplo3.sp', './saida_lexica.txt')
+# Função principal que executa a análise automaticamente
+def main():
+    filename = input("Digite o nome do arquivo a ser analisado (ex: exemplo.sp): ")
+    analyze_file(filename)
+
+if __name__ == "__main__":
+    main()

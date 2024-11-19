@@ -1,12 +1,13 @@
 # ====================================================================
 #                                                                    =
 #          Trabalho de Compiladores - Analisador Sintático           =
-#                   @author: Hugo Leonardo Melo                      =
+#                   @author: Hugo Leonardo Melo                      =            
 #                                                                    =
 # ====================================================================
 
 from analisador_lexico import tokens, lexer  # Importando os tokens e o lexer definidos no analisador léxico
 import ply.yacc as yacc
+
 
 # Definindo a gramática com base na estrutura fornecida
 
