@@ -225,7 +225,3 @@ def p_parametro(p):
 
 # Criação do parser
 parser = yacc.yacc()
- 
-# Verificar se o código está funcionando devidadamente.
-
-# ah caralho
