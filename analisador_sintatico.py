@@ -16,6 +16,36 @@ def p_program(p):
     'program : PROGRAM ID SEMICOLON declaracoes bloco'
     pass
 
+# Definição de constantes: agora suporta STRING
+def p_const_valor(p):
+    '''const_valor : NUMBER
+                   | STRING'''  # Suporte a strings adicionadas
+    pass
+
+# Lista de variáveis agora utiliza COLON
+def p_var(p):
+    'var : lista_id COLON tipo'
+    pass
+
+# Arrays agora utilizam LBRACKET e RBRACKET
+def p_tipo(p):
+    '''tipo : INTEGER
+            | REAL
+            | CHAR
+            | BOOLEAN
+            | ARRAY LBRACKET NUMBER RBRACKET OF tipo
+            | RECORD lista_campos END'''
+    pass
+
+# Atribuição com ASSIGN
+def p_atribuicao(p):
+    'atribuicao : ID ASSIGN exp'
+    pass
+
+def p_program(p):
+    'program : PROGRAM ID SEMICOLON declaracoes bloco'
+    pass
+
 # Declarações
 def p_declaracoes(p):
     '''declaracoes : def_const def_tipos def_var def_rotina

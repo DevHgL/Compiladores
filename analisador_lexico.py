@@ -1,9 +1,14 @@
-
+# ====================================================================
+#                                                                    =
+# Trabalho de Compiladores para a gramática oferecida no classroom   =
+# @author: Hugo Leonardo Melo                                        =
+#                                                                    =
+# ====================================================================
 import ply.lex as lex
 
 # Palavras reservadas
 reserved_words = {
-    'program': 'PROGRAM',
+    
     'const': 'CONST',
     'begin': 'BEGIN',
     'end': 'END',
@@ -31,68 +36,109 @@ reserved_words = {
     'true': 'TRUE',
     'and': 'AND',
     'or': 'OR',
+
 }
+
 
 # Lista de tokens, incluindo as palavras reservadas
 tokens = [
-    'NUMBER', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE',
-    'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
-    'SEMICOLON', 'COMMA', 'ID', 'ASSIGN',
-    'EQUALS', 'NOT_EQUALS', 'LESS_THAN', 'GREATER_THAN',
-    'LESS_EQUAL', 'GREATER_EQUAL', 'COLON', 'DOT',
-    'STRING', 'LBRACKET', 'RBRACKET'
+    'PROGRAM',      # PROGRAM
+    'STRING',       # STRING
+    'COLON',        # :
+    'LBRACKET',     # [
+    'RBRACKET',     # ]
+    'ASSIGN',       # :=
+    'NUMBER',       # Números inteiros
+    'PLUS',         # +
+    'MINUS',        # -
+    'TIMES',        # *
+    'DIVIDE',       # /
+    'LPAREN',       # (
+    'RPAREN',       # )
+    'LBRACE',       # {
+    'RBRACE',       # }
+    'SEMICOLON',    # ;
+    'COMMA',        # ,
+    'ID',           # Identificadores (nomes de variáveis)
+    'ATRIBUITION',  # Atribuição =
+    'EQUALS',       # ==
+    'NOT_EQUALS',   # !=
+    'LESS_THAN',    # <
+    'GREATER_THAN', # >
+    'LESS_EQUAL',   # <=
+    'GREATER_EQUAL',# >=
+    'DOTS',         # :
+    'ASSING',       # :=
+    'DOT',          # .
+    'BREAKLINE',    # \n
+    'BREAKLINE_2',  # \r
+    'OBRACKET',     # [
+    'CBRACKET',     # ]
+
 ] + list(reserved_words.values())
 
 # Expressões regulares para tokens simples
-t_PLUS = r'\+'
-t_MINUS = r'-'
-t_TIMES = r'\*'
-t_DIVIDE = r'/'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
-t_LBRACE = r'\{'
-t_RBRACE = r'\}'
-t_SEMICOLON = r';'
-t_COMMA = r','
-t_ASSIGN = r':='
-t_EQUALS = r'=='
-t_NOT_EQUALS = r'!='
-t_LESS_THAN = r'<'
-t_GREATER_THAN = r'>'
-t_LESS_EQUAL = r'<='
-t_GREATER_EQUAL = r'>='
-t_COLON = r':'
-t_DOT = r'\.'
-t_STRING = r'\".*?\"'
-t_LBRACKET = r'\['
-t_RBRACKET = r'\]'
+t_PROGRAM      = r'PROGRAM'  # PROGRAM reconhece o início do programa
+t_STRING       = r'\".*?\"'  # STRING reconhece valores entre aspas duplas
+t_COLON        = r':'        # COLON para o caractere :
+t_LBRACKET     = r'\['       # LBRACKET para o caractere [
+t_RBRACKET     = r'\]'       # RBRACKET para o caractere ]
+t_ASSIGN       = r':='       # ASSIGN para o operador de atribuição :=
+t_PLUS           = r'\+'
+t_MINUS          = r'-'
+t_TIMES          = r'\*'
+t_DIVIDE         = r'/'
+t_LPAREN         = r'\('
+t_RPAREN         = r'\)'
+t_LBRACE         = r'\{'
+t_RBRACE         = r'\}'
+t_SEMICOLON      = r';'
+t_COMMA          = r','
+t_ATRIBUITION    = r'='
+t_ASSING         = r':='
+t_EQUALS         = r'=='
+t_NOT_EQUALS     = r'!='
+t_LESS_THAN      = r'<'
+t_GREATER_THAN   = r'>'
+t_LESS_EQUAL     = r'<='
+t_GREATER_EQUAL  = r'>='
+t_DOTS           = r':'
+t_DOT            = r'\.'
+t_OBRACKET       = r'\['
+t_CBRACKET       = r'\]'
+
+# Função para capturar quebra de linha \n
+def t_BREAKLINE(t):
+    r'\n'
+    t.lexer.lineno += 1  # Atualiza a contagem de linhas
+    return t
+
+# Função para capturar quebra de linha \r (carriage return)
+def t_BREAKLINE_2(t):
+    r'\r'
+    return t
+
+# Expressão regular para um identificador (ID)
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    t.type = reserved_words.get(t.value, 'ID')  # Verifica se é uma palavra reservada
+    return t
+
+# Expressão regular para um número (NUMBER)
+def t_NUMBER(t):
+    r'\d+'
+    t.value = int(t.value)  # Converte o número para inteiro
+    return t
 
 # Ignorar espaços em branco e tabulações
 t_ignore = ' \t'
 
-# Função para identificar identificadores e palavras reservadas
-def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved_words.get(t.value, 'ID')
-    return t
-
-# Função para identificar números
-def t_NUMERO(t):
-    r'\d+'
-    t.value = int(t.value)
-    return t
-
-# Função para rastrear quebras de linha
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
-
-# Função para tratar erros léxicos
+# Definição de regras para lidar com erros
 def t_error(t):
-    print(f"Caractere ilegal '{t.value[0]}' na linha {t.lineno}")
+    print(f"Caractere ilegal '{t.value[0]}' na posição {t.lexpos}")
     t.lexer.skip(1)
 
-# Criar o analisador léxico
+# Criação do analisador léxico
 lexer = lex.lex()
 
 # Função para ler um arquivo e analisar o código
