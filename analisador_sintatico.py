@@ -34,7 +34,7 @@ def p_lista_const(p):
     pass
 
 def p_const_valor(p):
-    '''const_valor : NUMERO
+    '''const_valor : NUMBER
                    | STRING'''
     pass
 
@@ -75,7 +75,7 @@ def p_tipo(p):
             | REAL
             | CHAR
             | BOOLEAN
-            | ARRAY LBRACKET NUMERO RBRACKET OF tipo
+            | ARRAY LBRACKET NUMBER RBRACKET OF tipo
             | RECORD lista_campos END'''
     pass
 
@@ -168,7 +168,7 @@ def p_condicional(p):
 
 # Expressões
 def p_exp(p):
-    '''exp : NUMERO
+    '''exp : NUMBER
            | ID
            | LPAREN exp RPAREN
            | exp PLUS exp
@@ -197,9 +197,13 @@ def p_empty(p):
     'empty :'
     pass
 
-# Regra de erro
+# Função para tratar erros de sintaxe
 def p_error(p):
-    print(f"Erro de sintaxe na entrada: {p}")
+    if p:
+        print(f"Erro de sintaxe no token '{p.value}', tipo '{p.type}', linha {p.lineno}")
+    else:
+        print("Erro de sintaxe: entrada inesperada ou arquivo vazio.")
+
     
 # Chamada de rotina
 def p_chamada_rotina(p):

@@ -4,6 +4,8 @@ Unused terminals:
 
     DOT
     FALSE
+    LBRACE
+    RBRACE
     TRUE
 
 Grammar
@@ -16,7 +18,7 @@ Rule 4     def_const -> CONST lista_const
 Rule 5     def_const -> empty
 Rule 6     lista_const -> ID EQUALS const_valor SEMICOLON lista_const
 Rule 7     lista_const -> ID EQUALS const_valor SEMICOLON
-Rule 8     const_valor -> NUMERO
+Rule 8     const_valor -> NUMBER
 Rule 9     const_valor -> STRING
 Rule 10    def_tipos -> TYPE lista_tipos
 Rule 11    def_tipos -> empty
@@ -33,7 +35,7 @@ Rule 21    tipo -> INTEGER
 Rule 22    tipo -> REAL
 Rule 23    tipo -> CHAR
 Rule 24    tipo -> BOOLEAN
-Rule 25    tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo
+Rule 25    tipo -> ARRAY LBRACKET NUMBER RBRACKET OF tipo
 Rule 26    tipo -> RECORD lista_campos END
 Rule 27    lista_campos -> campo SEMICOLON lista_campos
 Rule 28    lista_campos -> campo SEMICOLON
@@ -66,7 +68,7 @@ Rule 54    repeticao -> WHILE exp_logica DO bloco
 Rule 55    repeticao -> FOR atribuicao TO exp DO bloco
 Rule 56    condicional -> IF exp_logica THEN bloco
 Rule 57    condicional -> IF exp_logica THEN bloco ELSE bloco
-Rule 58    exp -> NUMERO
+Rule 58    exp -> NUMBER
 Rule 59    exp -> ID
 Rule 60    exp -> LPAREN exp RPAREN
 Rule 61    exp -> exp PLUS exp
@@ -116,18 +118,20 @@ GREATER_THAN         : 69
 ID                   : 1 6 7 12 13 19 20 34 35 51 52 59 75 81
 IF                   : 56 57
 INTEGER              : 21
+LBRACE               : 
 LBRACKET             : 25
 LESS_EQUAL           : 70
 LESS_THAN            : 68
 LPAREN               : 34 35 52 53 60 75
 MINUS                : 62
 NOT_EQUALS           : 67
-NUMERO               : 8 25 58
+NUMBER               : 8 25 58
 OF                   : 25
 OR                   : 73
 PLUS                 : 61
 PROCEDURE            : 35
 PROGRAM              : 1
+RBRACE               : 
 RBRACKET             : 25
 READ                 : 52
 REAL                 : 22
@@ -478,7 +482,7 @@ state 28
 
     (54) repeticao -> WHILE . exp_logica DO bloco
     (65) exp_logica -> . exp operador_logico exp
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -486,7 +490,7 @@ state 28
     (63) exp -> . exp TIMES exp
     (64) exp -> . exp DIVIDE exp
 
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     ID              shift and go to state 46
     LPAREN          shift and go to state 47
 
@@ -507,7 +511,7 @@ state 30
     (56) condicional -> IF . exp_logica THEN bloco
     (57) condicional -> IF . exp_logica THEN bloco ELSE bloco
     (65) exp_logica -> . exp operador_logico exp
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -515,7 +519,7 @@ state 30
     (63) exp -> . exp TIMES exp
     (64) exp -> . exp DIVIDE exp
 
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     ID              shift and go to state 46
     LPAREN          shift and go to state 47
 
@@ -589,10 +593,10 @@ state 36
 
     (6) lista_const -> ID EQUALS . const_valor SEMICOLON lista_const
     (7) lista_const -> ID EQUALS . const_valor SEMICOLON
-    (8) const_valor -> . NUMERO
+    (8) const_valor -> . NUMBER
     (9) const_valor -> . STRING
 
-    NUMERO          shift and go to state 64
+    NUMBER          shift and go to state 64
     STRING          shift and go to state 65
 
     const_valor                    shift and go to state 63
@@ -656,7 +660,7 @@ state 38
 state 39
 
     (51) atribuicao -> ID ASSIGN . exp
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -664,7 +668,7 @@ state 39
     (63) exp -> . exp TIMES exp
     (64) exp -> . exp DIVIDE exp
 
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     ID              shift and go to state 46
     LPAREN          shift and go to state 47
 
@@ -680,7 +684,7 @@ state 40
     (74) empty -> .
     (80) parametro -> . exp
     (81) parametro -> . ID
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -690,7 +694,7 @@ state 40
 
     RPAREN          reduce using rule 74 (empty -> .)
     ID              shift and go to state 68
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     LPAREN          shift and go to state 47
 
     argumentos                     shift and go to state 69
@@ -709,10 +713,10 @@ state 41
 state 42
 
     (53) escrita -> WRITE LPAREN . const_valor RPAREN
-    (8) const_valor -> . NUMERO
+    (8) const_valor -> . NUMBER
     (9) const_valor -> . STRING
 
-    NUMERO          shift and go to state 64
+    NUMBER          shift and go to state 64
     STRING          shift and go to state 65
 
     const_valor                    shift and go to state 75
@@ -757,26 +761,26 @@ state 44
 
 state 45
 
-    (58) exp -> NUMERO .
+    (58) exp -> NUMBER .
 
-    PLUS            reduce using rule 58 (exp -> NUMERO .)
-    MINUS           reduce using rule 58 (exp -> NUMERO .)
-    TIMES           reduce using rule 58 (exp -> NUMERO .)
-    DIVIDE          reduce using rule 58 (exp -> NUMERO .)
-    EQUALS          reduce using rule 58 (exp -> NUMERO .)
-    NOT_EQUALS      reduce using rule 58 (exp -> NUMERO .)
-    LESS_THAN       reduce using rule 58 (exp -> NUMERO .)
-    GREATER_THAN    reduce using rule 58 (exp -> NUMERO .)
-    LESS_EQUAL      reduce using rule 58 (exp -> NUMERO .)
-    GREATER_EQUAL   reduce using rule 58 (exp -> NUMERO .)
-    AND             reduce using rule 58 (exp -> NUMERO .)
-    OR              reduce using rule 58 (exp -> NUMERO .)
-    SEMICOLON       reduce using rule 58 (exp -> NUMERO .)
-    TO              reduce using rule 58 (exp -> NUMERO .)
-    COMMA           reduce using rule 58 (exp -> NUMERO .)
-    RPAREN          reduce using rule 58 (exp -> NUMERO .)
-    DO              reduce using rule 58 (exp -> NUMERO .)
-    THEN            reduce using rule 58 (exp -> NUMERO .)
+    PLUS            reduce using rule 58 (exp -> NUMBER .)
+    MINUS           reduce using rule 58 (exp -> NUMBER .)
+    TIMES           reduce using rule 58 (exp -> NUMBER .)
+    DIVIDE          reduce using rule 58 (exp -> NUMBER .)
+    EQUALS          reduce using rule 58 (exp -> NUMBER .)
+    NOT_EQUALS      reduce using rule 58 (exp -> NUMBER .)
+    LESS_THAN       reduce using rule 58 (exp -> NUMBER .)
+    GREATER_THAN    reduce using rule 58 (exp -> NUMBER .)
+    LESS_EQUAL      reduce using rule 58 (exp -> NUMBER .)
+    GREATER_EQUAL   reduce using rule 58 (exp -> NUMBER .)
+    AND             reduce using rule 58 (exp -> NUMBER .)
+    OR              reduce using rule 58 (exp -> NUMBER .)
+    SEMICOLON       reduce using rule 58 (exp -> NUMBER .)
+    TO              reduce using rule 58 (exp -> NUMBER .)
+    COMMA           reduce using rule 58 (exp -> NUMBER .)
+    RPAREN          reduce using rule 58 (exp -> NUMBER .)
+    DO              reduce using rule 58 (exp -> NUMBER .)
+    THEN            reduce using rule 58 (exp -> NUMBER .)
 
 
 state 46
@@ -806,7 +810,7 @@ state 46
 state 47
 
     (60) exp -> LPAREN . exp RPAREN
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -814,7 +818,7 @@ state 47
     (63) exp -> . exp TIMES exp
     (64) exp -> . exp DIVIDE exp
 
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     ID              shift and go to state 46
     LPAREN          shift and go to state 47
 
@@ -950,7 +954,7 @@ state 62
     (22) tipo -> . REAL
     (23) tipo -> . CHAR
     (24) tipo -> . BOOLEAN
-    (25) tipo -> . ARRAY LBRACKET NUMERO RBRACKET OF tipo
+    (25) tipo -> . ARRAY LBRACKET NUMBER RBRACKET OF tipo
     (26) tipo -> . RECORD lista_campos END
 
     INTEGER         shift and go to state 100
@@ -972,10 +976,10 @@ state 63
 
 state 64
 
-    (8) const_valor -> NUMERO .
+    (8) const_valor -> NUMBER .
 
-    SEMICOLON       reduce using rule 8 (const_valor -> NUMERO .)
-    RPAREN          reduce using rule 8 (const_valor -> NUMERO .)
+    SEMICOLON       reduce using rule 8 (const_valor -> NUMBER .)
+    RPAREN          reduce using rule 8 (const_valor -> NUMBER .)
 
 
 state 65
@@ -1099,7 +1103,7 @@ state 76
 state 77
 
     (65) exp_logica -> exp operador_logico . exp
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -1107,7 +1111,7 @@ state 77
     (63) exp -> . exp TIMES exp
     (64) exp -> . exp DIVIDE exp
 
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     ID              shift and go to state 46
     LPAREN          shift and go to state 47
 
@@ -1116,7 +1120,7 @@ state 77
 state 78
 
     (61) exp -> exp PLUS . exp
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -1124,7 +1128,7 @@ state 78
     (63) exp -> . exp TIMES exp
     (64) exp -> . exp DIVIDE exp
 
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     ID              shift and go to state 46
     LPAREN          shift and go to state 47
 
@@ -1133,7 +1137,7 @@ state 78
 state 79
 
     (62) exp -> exp MINUS . exp
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -1141,7 +1145,7 @@ state 79
     (63) exp -> . exp TIMES exp
     (64) exp -> . exp DIVIDE exp
 
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     ID              shift and go to state 46
     LPAREN          shift and go to state 47
 
@@ -1150,7 +1154,7 @@ state 79
 state 80
 
     (63) exp -> exp TIMES . exp
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -1158,7 +1162,7 @@ state 80
     (63) exp -> . exp TIMES exp
     (64) exp -> . exp DIVIDE exp
 
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     ID              shift and go to state 46
     LPAREN          shift and go to state 47
 
@@ -1167,7 +1171,7 @@ state 80
 state 81
 
     (64) exp -> exp DIVIDE . exp
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -1175,7 +1179,7 @@ state 81
     (63) exp -> . exp TIMES exp
     (64) exp -> . exp DIVIDE exp
 
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     ID              shift and go to state 46
     LPAREN          shift and go to state 47
 
@@ -1185,7 +1189,7 @@ state 82
 
     (66) operador_logico -> EQUALS .
 
-    NUMERO          reduce using rule 66 (operador_logico -> EQUALS .)
+    NUMBER          reduce using rule 66 (operador_logico -> EQUALS .)
     ID              reduce using rule 66 (operador_logico -> EQUALS .)
     LPAREN          reduce using rule 66 (operador_logico -> EQUALS .)
 
@@ -1194,7 +1198,7 @@ state 83
 
     (67) operador_logico -> NOT_EQUALS .
 
-    NUMERO          reduce using rule 67 (operador_logico -> NOT_EQUALS .)
+    NUMBER          reduce using rule 67 (operador_logico -> NOT_EQUALS .)
     ID              reduce using rule 67 (operador_logico -> NOT_EQUALS .)
     LPAREN          reduce using rule 67 (operador_logico -> NOT_EQUALS .)
 
@@ -1203,7 +1207,7 @@ state 84
 
     (68) operador_logico -> LESS_THAN .
 
-    NUMERO          reduce using rule 68 (operador_logico -> LESS_THAN .)
+    NUMBER          reduce using rule 68 (operador_logico -> LESS_THAN .)
     ID              reduce using rule 68 (operador_logico -> LESS_THAN .)
     LPAREN          reduce using rule 68 (operador_logico -> LESS_THAN .)
 
@@ -1212,7 +1216,7 @@ state 85
 
     (69) operador_logico -> GREATER_THAN .
 
-    NUMERO          reduce using rule 69 (operador_logico -> GREATER_THAN .)
+    NUMBER          reduce using rule 69 (operador_logico -> GREATER_THAN .)
     ID              reduce using rule 69 (operador_logico -> GREATER_THAN .)
     LPAREN          reduce using rule 69 (operador_logico -> GREATER_THAN .)
 
@@ -1221,7 +1225,7 @@ state 86
 
     (70) operador_logico -> LESS_EQUAL .
 
-    NUMERO          reduce using rule 70 (operador_logico -> LESS_EQUAL .)
+    NUMBER          reduce using rule 70 (operador_logico -> LESS_EQUAL .)
     ID              reduce using rule 70 (operador_logico -> LESS_EQUAL .)
     LPAREN          reduce using rule 70 (operador_logico -> LESS_EQUAL .)
 
@@ -1230,7 +1234,7 @@ state 87
 
     (71) operador_logico -> GREATER_EQUAL .
 
-    NUMERO          reduce using rule 71 (operador_logico -> GREATER_EQUAL .)
+    NUMBER          reduce using rule 71 (operador_logico -> GREATER_EQUAL .)
     ID              reduce using rule 71 (operador_logico -> GREATER_EQUAL .)
     LPAREN          reduce using rule 71 (operador_logico -> GREATER_EQUAL .)
 
@@ -1239,7 +1243,7 @@ state 88
 
     (72) operador_logico -> AND .
 
-    NUMERO          reduce using rule 72 (operador_logico -> AND .)
+    NUMBER          reduce using rule 72 (operador_logico -> AND .)
     ID              reduce using rule 72 (operador_logico -> AND .)
     LPAREN          reduce using rule 72 (operador_logico -> AND .)
 
@@ -1248,7 +1252,7 @@ state 89
 
     (73) operador_logico -> OR .
 
-    NUMERO          reduce using rule 73 (operador_logico -> OR .)
+    NUMBER          reduce using rule 73 (operador_logico -> OR .)
     ID              reduce using rule 73 (operador_logico -> OR .)
     LPAREN          reduce using rule 73 (operador_logico -> OR .)
 
@@ -1271,7 +1275,7 @@ state 90
 state 91
 
     (55) repeticao -> FOR atribuicao TO . exp DO bloco
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -1279,7 +1283,7 @@ state 91
     (63) exp -> . exp TIMES exp
     (64) exp -> . exp DIVIDE exp
 
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     ID              shift and go to state 46
     LPAREN          shift and go to state 47
 
@@ -1342,7 +1346,7 @@ state 97
     (22) tipo -> . REAL
     (23) tipo -> . CHAR
     (24) tipo -> . BOOLEAN
-    (25) tipo -> . ARRAY LBRACKET NUMERO RBRACKET OF tipo
+    (25) tipo -> . ARRAY LBRACKET NUMBER RBRACKET OF tipo
     (26) tipo -> . RECORD lista_campos END
 
     INTEGER         shift and go to state 100
@@ -1430,7 +1434,7 @@ state 103
 
 state 104
 
-    (25) tipo -> ARRAY . LBRACKET NUMERO RBRACKET OF tipo
+    (25) tipo -> ARRAY . LBRACKET NUMBER RBRACKET OF tipo
 
     LBRACKET        shift and go to state 126
 
@@ -1480,7 +1484,7 @@ state 108
     (79) lista_param -> . parametro
     (80) parametro -> . exp
     (81) parametro -> . ID
-    (58) exp -> . NUMERO
+    (58) exp -> . NUMBER
     (59) exp -> . ID
     (60) exp -> . LPAREN exp RPAREN
     (61) exp -> . exp PLUS exp
@@ -1489,7 +1493,7 @@ state 108
     (64) exp -> . exp DIVIDE exp
 
     ID              shift and go to state 68
-    NUMERO          shift and go to state 45
+    NUMBER          shift and go to state 45
     LPAREN          shift and go to state 47
 
     parametro                      shift and go to state 72
@@ -1807,9 +1811,9 @@ state 125
 
 state 126
 
-    (25) tipo -> ARRAY LBRACKET . NUMERO RBRACKET OF tipo
+    (25) tipo -> ARRAY LBRACKET . NUMBER RBRACKET OF tipo
 
-    NUMERO          shift and go to state 141
+    NUMBER          shift and go to state 141
 
 
 state 127
@@ -1925,7 +1929,7 @@ state 140
 
 state 141
 
-    (25) tipo -> ARRAY LBRACKET NUMERO . RBRACKET OF tipo
+    (25) tipo -> ARRAY LBRACKET NUMBER . RBRACKET OF tipo
 
     RBRACKET        shift and go to state 150
 
@@ -1968,7 +1972,7 @@ state 144
     (22) tipo -> . REAL
     (23) tipo -> . CHAR
     (24) tipo -> . BOOLEAN
-    (25) tipo -> . ARRAY LBRACKET NUMERO RBRACKET OF tipo
+    (25) tipo -> . ARRAY LBRACKET NUMBER RBRACKET OF tipo
     (26) tipo -> . RECORD lista_campos END
 
     INTEGER         shift and go to state 100
@@ -2009,7 +2013,7 @@ state 148
     (22) tipo -> . REAL
     (23) tipo -> . CHAR
     (24) tipo -> . BOOLEAN
-    (25) tipo -> . ARRAY LBRACKET NUMERO RBRACKET OF tipo
+    (25) tipo -> . ARRAY LBRACKET NUMBER RBRACKET OF tipo
     (26) tipo -> . RECORD lista_campos END
 
     INTEGER         shift and go to state 100
@@ -2045,7 +2049,7 @@ state 149
 
 state 150
 
-    (25) tipo -> ARRAY LBRACKET NUMERO RBRACKET . OF tipo
+    (25) tipo -> ARRAY LBRACKET NUMBER RBRACKET . OF tipo
 
     OF              shift and go to state 157
 
@@ -2071,7 +2075,7 @@ state 153
     (22) tipo -> . REAL
     (23) tipo -> . CHAR
     (24) tipo -> . BOOLEAN
-    (25) tipo -> . ARRAY LBRACKET NUMERO RBRACKET OF tipo
+    (25) tipo -> . ARRAY LBRACKET NUMBER RBRACKET OF tipo
     (26) tipo -> . RECORD lista_campos END
 
     INTEGER         shift and go to state 100
@@ -2112,12 +2116,12 @@ state 156
 
 state 157
 
-    (25) tipo -> ARRAY LBRACKET NUMERO RBRACKET OF . tipo
+    (25) tipo -> ARRAY LBRACKET NUMBER RBRACKET OF . tipo
     (21) tipo -> . INTEGER
     (22) tipo -> . REAL
     (23) tipo -> . CHAR
     (24) tipo -> . BOOLEAN
-    (25) tipo -> . ARRAY LBRACKET NUMERO RBRACKET OF tipo
+    (25) tipo -> . ARRAY LBRACKET NUMBER RBRACKET OF tipo
     (26) tipo -> . RECORD lista_campos END
 
     INTEGER         shift and go to state 100
@@ -2175,16 +2179,16 @@ state 160
 
 state 161
 
-    (25) tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo .
+    (25) tipo -> ARRAY LBRACKET NUMBER RBRACKET OF tipo .
 
-    SEMICOLON       reduce using rule 25 (tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo .)
-    RPAREN          reduce using rule 25 (tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo .)
-    CONST           reduce using rule 25 (tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo .)
-    BEGIN           reduce using rule 25 (tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo .)
-    TYPE            reduce using rule 25 (tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo .)
-    VAR             reduce using rule 25 (tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo .)
-    FUNCTION        reduce using rule 25 (tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo .)
-    PROCEDURE       reduce using rule 25 (tipo -> ARRAY LBRACKET NUMERO RBRACKET OF tipo .)
+    SEMICOLON       reduce using rule 25 (tipo -> ARRAY LBRACKET NUMBER RBRACKET OF tipo .)
+    RPAREN          reduce using rule 25 (tipo -> ARRAY LBRACKET NUMBER RBRACKET OF tipo .)
+    CONST           reduce using rule 25 (tipo -> ARRAY LBRACKET NUMBER RBRACKET OF tipo .)
+    BEGIN           reduce using rule 25 (tipo -> ARRAY LBRACKET NUMBER RBRACKET OF tipo .)
+    TYPE            reduce using rule 25 (tipo -> ARRAY LBRACKET NUMBER RBRACKET OF tipo .)
+    VAR             reduce using rule 25 (tipo -> ARRAY LBRACKET NUMBER RBRACKET OF tipo .)
+    FUNCTION        reduce using rule 25 (tipo -> ARRAY LBRACKET NUMBER RBRACKET OF tipo .)
+    PROCEDURE       reduce using rule 25 (tipo -> ARRAY LBRACKET NUMBER RBRACKET OF tipo .)
 
 
 state 162
