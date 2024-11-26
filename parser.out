@@ -1,0 +1,727 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    ARRAY
+    COMMA
+    DIVIDE
+    DO
+    DOT
+    ELSE
+    EQUALS
+    FALSE
+    FOR
+    FUNCTION
+    GREATER_EQUAL
+    GREATER_THAN
+    IF
+    LBRACE
+    LBRACKET
+    LESS_EQUAL
+    LESS_THAN
+    MINUS
+    NOT_EQUALS
+    OF
+    OR
+    PLUS
+    PROCEDURE
+    RBRACE
+    RBRACKET
+    RECORD
+    THEN
+    TIMES
+    TO
+    TRUE
+    WHILE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM lista_declaracoes BEGIN lista_com END
+Rule 2     lista_declaracoes -> declaracoes lista_declaracoes
+Rule 3     lista_declaracoes -> empty
+Rule 4     declaracoes -> CONST lista_const
+Rule 5     declaracoes -> VAR lista_var
+Rule 6     declaracoes -> TYPE lista_tipo
+Rule 7     declaracoes -> empty
+Rule 8     lista_const -> ID ATRIB NUMBER SEMICOLON lista_const
+Rule 9     lista_const -> empty
+Rule 10    lista_var -> ID COLON tipo SEMICOLON lista_var
+Rule 11    lista_var -> empty
+Rule 12    tipo -> INTEGER
+Rule 13    tipo -> REAL
+Rule 14    tipo -> CHAR
+Rule 15    tipo -> BOOLEAN
+Rule 16    lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo
+Rule 17    lista_tipo -> empty
+Rule 18    bloco -> BEGIN lista_com END
+Rule 19    lista_com -> comando SEMICOLON lista_com
+Rule 20    lista_com -> empty
+Rule 21    comando -> atribuicao
+Rule 22    comando -> leitura
+Rule 23    comando -> escrita
+Rule 24    atribuicao -> ID ASSIGN NUMBER
+Rule 25    leitura -> READ LPAREN ID RPAREN
+Rule 26    escrita -> WRITE LPAREN STRING RPAREN
+Rule 27    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 
+ARRAY                : 
+ASSIGN               : 24
+ATRIB                : 8 16
+BEGIN                : 1 18
+BOOLEAN              : 15
+CHAR                 : 14
+COLON                : 10
+COMMA                : 
+CONST                : 4
+DIVIDE               : 
+DO                   : 
+DOT                  : 
+ELSE                 : 
+END                  : 1 18
+EQUALS               : 
+FALSE                : 
+FOR                  : 
+FUNCTION             : 
+GREATER_EQUAL        : 
+GREATER_THAN         : 
+ID                   : 8 10 16 24 25
+IF                   : 
+INTEGER              : 12
+LBRACE               : 
+LBRACKET             : 
+LESS_EQUAL           : 
+LESS_THAN            : 
+LPAREN               : 25 26
+MINUS                : 
+NOT_EQUALS           : 
+NUMBER               : 8 24
+OF                   : 
+OR                   : 
+PLUS                 : 
+PROCEDURE            : 
+PROGRAM              : 1
+RBRACE               : 
+RBRACKET             : 
+READ                 : 25
+REAL                 : 13
+RECORD               : 
+RPAREN               : 25 26
+SEMICOLON            : 8 10 16 19
+STRING               : 26
+THEN                 : 
+TIMES                : 
+TO                   : 
+TRUE                 : 
+TYPE                 : 6
+VAR                  : 5
+WHILE                : 
+WRITE                : 26
+error                : 
+
+Nonterminals, with rules where they appear
+
+atribuicao           : 21
+bloco                : 
+comando              : 19
+declaracoes          : 2
+empty                : 3 7 9 11 17 20
+escrita              : 23
+leitura              : 22
+lista_com            : 1 18 19
+lista_const          : 4 8
+lista_declaracoes    : 1 2
+lista_tipo           : 6 16
+lista_var            : 5 10
+program              : 0
+tipo                 : 10 16
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAM lista_declaracoes BEGIN lista_com END
+
+    PROGRAM         shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PROGRAM . lista_declaracoes BEGIN lista_com END
+    (2) lista_declaracoes -> . declaracoes lista_declaracoes
+    (3) lista_declaracoes -> . empty
+    (4) declaracoes -> . CONST lista_const
+    (5) declaracoes -> . VAR lista_var
+    (6) declaracoes -> . TYPE lista_tipo
+    (7) declaracoes -> . empty
+    (27) empty -> .
+
+  ! shift/reduce conflict for CONST resolved as shift
+  ! shift/reduce conflict for VAR resolved as shift
+  ! shift/reduce conflict for TYPE resolved as shift
+    CONST           shift and go to state 6
+    VAR             shift and go to state 7
+    TYPE            shift and go to state 8
+    BEGIN           reduce using rule 27 (empty -> .)
+
+  ! CONST           [ reduce using rule 27 (empty -> .) ]
+  ! VAR             [ reduce using rule 27 (empty -> .) ]
+  ! TYPE            [ reduce using rule 27 (empty -> .) ]
+
+    lista_declaracoes              shift and go to state 3
+    declaracoes                    shift and go to state 4
+    empty                          shift and go to state 5
+
+state 3
+
+    (1) program -> PROGRAM lista_declaracoes . BEGIN lista_com END
+
+    BEGIN           shift and go to state 9
+
+
+state 4
+
+    (2) lista_declaracoes -> declaracoes . lista_declaracoes
+    (2) lista_declaracoes -> . declaracoes lista_declaracoes
+    (3) lista_declaracoes -> . empty
+    (4) declaracoes -> . CONST lista_const
+    (5) declaracoes -> . VAR lista_var
+    (6) declaracoes -> . TYPE lista_tipo
+    (7) declaracoes -> . empty
+    (27) empty -> .
+
+  ! shift/reduce conflict for CONST resolved as shift
+  ! shift/reduce conflict for VAR resolved as shift
+  ! shift/reduce conflict for TYPE resolved as shift
+    CONST           shift and go to state 6
+    VAR             shift and go to state 7
+    TYPE            shift and go to state 8
+    BEGIN           reduce using rule 27 (empty -> .)
+
+  ! CONST           [ reduce using rule 27 (empty -> .) ]
+  ! VAR             [ reduce using rule 27 (empty -> .) ]
+  ! TYPE            [ reduce using rule 27 (empty -> .) ]
+
+    declaracoes                    shift and go to state 4
+    lista_declaracoes              shift and go to state 10
+    empty                          shift and go to state 5
+
+state 5
+
+    (3) lista_declaracoes -> empty .
+    (7) declaracoes -> empty .
+
+  ! reduce/reduce conflict for BEGIN resolved using rule 3 (lista_declaracoes -> empty .)
+    BEGIN           reduce using rule 3 (lista_declaracoes -> empty .)
+    CONST           reduce using rule 7 (declaracoes -> empty .)
+    VAR             reduce using rule 7 (declaracoes -> empty .)
+    TYPE            reduce using rule 7 (declaracoes -> empty .)
+
+  ! BEGIN           [ reduce using rule 7 (declaracoes -> empty .) ]
+
+
+state 6
+
+    (4) declaracoes -> CONST . lista_const
+    (8) lista_const -> . ID ATRIB NUMBER SEMICOLON lista_const
+    (9) lista_const -> . empty
+    (27) empty -> .
+
+    ID              shift and go to state 12
+    CONST           reduce using rule 27 (empty -> .)
+    VAR             reduce using rule 27 (empty -> .)
+    TYPE            reduce using rule 27 (empty -> .)
+    BEGIN           reduce using rule 27 (empty -> .)
+
+    lista_const                    shift and go to state 11
+    empty                          shift and go to state 13
+
+state 7
+
+    (5) declaracoes -> VAR . lista_var
+    (10) lista_var -> . ID COLON tipo SEMICOLON lista_var
+    (11) lista_var -> . empty
+    (27) empty -> .
+
+    ID              shift and go to state 15
+    CONST           reduce using rule 27 (empty -> .)
+    VAR             reduce using rule 27 (empty -> .)
+    TYPE            reduce using rule 27 (empty -> .)
+    BEGIN           reduce using rule 27 (empty -> .)
+
+    lista_var                      shift and go to state 14
+    empty                          shift and go to state 16
+
+state 8
+
+    (6) declaracoes -> TYPE . lista_tipo
+    (16) lista_tipo -> . ID ATRIB tipo SEMICOLON lista_tipo
+    (17) lista_tipo -> . empty
+    (27) empty -> .
+
+    ID              shift and go to state 18
+    CONST           reduce using rule 27 (empty -> .)
+    VAR             reduce using rule 27 (empty -> .)
+    TYPE            reduce using rule 27 (empty -> .)
+    BEGIN           reduce using rule 27 (empty -> .)
+
+    lista_tipo                     shift and go to state 17
+    empty                          shift and go to state 19
+
+state 9
+
+    (1) program -> PROGRAM lista_declaracoes BEGIN . lista_com END
+    (19) lista_com -> . comando SEMICOLON lista_com
+    (20) lista_com -> . empty
+    (21) comando -> . atribuicao
+    (22) comando -> . leitura
+    (23) comando -> . escrita
+    (27) empty -> .
+    (24) atribuicao -> . ID ASSIGN NUMBER
+    (25) leitura -> . READ LPAREN ID RPAREN
+    (26) escrita -> . WRITE LPAREN STRING RPAREN
+
+    END             reduce using rule 27 (empty -> .)
+    ID              shift and go to state 26
+    READ            shift and go to state 27
+    WRITE           shift and go to state 28
+
+    lista_com                      shift and go to state 20
+    comando                        shift and go to state 21
+    empty                          shift and go to state 22
+    atribuicao                     shift and go to state 23
+    leitura                        shift and go to state 24
+    escrita                        shift and go to state 25
+
+state 10
+
+    (2) lista_declaracoes -> declaracoes lista_declaracoes .
+
+    BEGIN           reduce using rule 2 (lista_declaracoes -> declaracoes lista_declaracoes .)
+
+
+state 11
+
+    (4) declaracoes -> CONST lista_const .
+
+    CONST           reduce using rule 4 (declaracoes -> CONST lista_const .)
+    VAR             reduce using rule 4 (declaracoes -> CONST lista_const .)
+    TYPE            reduce using rule 4 (declaracoes -> CONST lista_const .)
+    BEGIN           reduce using rule 4 (declaracoes -> CONST lista_const .)
+
+
+state 12
+
+    (8) lista_const -> ID . ATRIB NUMBER SEMICOLON lista_const
+
+    ATRIB           shift and go to state 29
+
+
+state 13
+
+    (9) lista_const -> empty .
+
+    CONST           reduce using rule 9 (lista_const -> empty .)
+    VAR             reduce using rule 9 (lista_const -> empty .)
+    TYPE            reduce using rule 9 (lista_const -> empty .)
+    BEGIN           reduce using rule 9 (lista_const -> empty .)
+
+
+state 14
+
+    (5) declaracoes -> VAR lista_var .
+
+    CONST           reduce using rule 5 (declaracoes -> VAR lista_var .)
+    VAR             reduce using rule 5 (declaracoes -> VAR lista_var .)
+    TYPE            reduce using rule 5 (declaracoes -> VAR lista_var .)
+    BEGIN           reduce using rule 5 (declaracoes -> VAR lista_var .)
+
+
+state 15
+
+    (10) lista_var -> ID . COLON tipo SEMICOLON lista_var
+
+    COLON           shift and go to state 30
+
+
+state 16
+
+    (11) lista_var -> empty .
+
+    CONST           reduce using rule 11 (lista_var -> empty .)
+    VAR             reduce using rule 11 (lista_var -> empty .)
+    TYPE            reduce using rule 11 (lista_var -> empty .)
+    BEGIN           reduce using rule 11 (lista_var -> empty .)
+
+
+state 17
+
+    (6) declaracoes -> TYPE lista_tipo .
+
+    CONST           reduce using rule 6 (declaracoes -> TYPE lista_tipo .)
+    VAR             reduce using rule 6 (declaracoes -> TYPE lista_tipo .)
+    TYPE            reduce using rule 6 (declaracoes -> TYPE lista_tipo .)
+    BEGIN           reduce using rule 6 (declaracoes -> TYPE lista_tipo .)
+
+
+state 18
+
+    (16) lista_tipo -> ID . ATRIB tipo SEMICOLON lista_tipo
+
+    ATRIB           shift and go to state 31
+
+
+state 19
+
+    (17) lista_tipo -> empty .
+
+    CONST           reduce using rule 17 (lista_tipo -> empty .)
+    VAR             reduce using rule 17 (lista_tipo -> empty .)
+    TYPE            reduce using rule 17 (lista_tipo -> empty .)
+    BEGIN           reduce using rule 17 (lista_tipo -> empty .)
+
+
+state 20
+
+    (1) program -> PROGRAM lista_declaracoes BEGIN lista_com . END
+
+    END             shift and go to state 32
+
+
+state 21
+
+    (19) lista_com -> comando . SEMICOLON lista_com
+
+    SEMICOLON       shift and go to state 33
+
+
+state 22
+
+    (20) lista_com -> empty .
+
+    END             reduce using rule 20 (lista_com -> empty .)
+
+
+state 23
+
+    (21) comando -> atribuicao .
+
+    SEMICOLON       reduce using rule 21 (comando -> atribuicao .)
+
+
+state 24
+
+    (22) comando -> leitura .
+
+    SEMICOLON       reduce using rule 22 (comando -> leitura .)
+
+
+state 25
+
+    (23) comando -> escrita .
+
+    SEMICOLON       reduce using rule 23 (comando -> escrita .)
+
+
+state 26
+
+    (24) atribuicao -> ID . ASSIGN NUMBER
+
+    ASSIGN          shift and go to state 34
+
+
+state 27
+
+    (25) leitura -> READ . LPAREN ID RPAREN
+
+    LPAREN          shift and go to state 35
+
+
+state 28
+
+    (26) escrita -> WRITE . LPAREN STRING RPAREN
+
+    LPAREN          shift and go to state 36
+
+
+state 29
+
+    (8) lista_const -> ID ATRIB . NUMBER SEMICOLON lista_const
+
+    NUMBER          shift and go to state 37
+
+
+state 30
+
+    (10) lista_var -> ID COLON . tipo SEMICOLON lista_var
+    (12) tipo -> . INTEGER
+    (13) tipo -> . REAL
+    (14) tipo -> . CHAR
+    (15) tipo -> . BOOLEAN
+
+    INTEGER         shift and go to state 39
+    REAL            shift and go to state 40
+    CHAR            shift and go to state 41
+    BOOLEAN         shift and go to state 42
+
+    tipo                           shift and go to state 38
+
+state 31
+
+    (16) lista_tipo -> ID ATRIB . tipo SEMICOLON lista_tipo
+    (12) tipo -> . INTEGER
+    (13) tipo -> . REAL
+    (14) tipo -> . CHAR
+    (15) tipo -> . BOOLEAN
+
+    INTEGER         shift and go to state 39
+    REAL            shift and go to state 40
+    CHAR            shift and go to state 41
+    BOOLEAN         shift and go to state 42
+
+    tipo                           shift and go to state 43
+
+state 32
+
+    (1) program -> PROGRAM lista_declaracoes BEGIN lista_com END .
+
+    $end            reduce using rule 1 (program -> PROGRAM lista_declaracoes BEGIN lista_com END .)
+
+
+state 33
+
+    (19) lista_com -> comando SEMICOLON . lista_com
+    (19) lista_com -> . comando SEMICOLON lista_com
+    (20) lista_com -> . empty
+    (21) comando -> . atribuicao
+    (22) comando -> . leitura
+    (23) comando -> . escrita
+    (27) empty -> .
+    (24) atribuicao -> . ID ASSIGN NUMBER
+    (25) leitura -> . READ LPAREN ID RPAREN
+    (26) escrita -> . WRITE LPAREN STRING RPAREN
+
+    END             reduce using rule 27 (empty -> .)
+    ID              shift and go to state 26
+    READ            shift and go to state 27
+    WRITE           shift and go to state 28
+
+    comando                        shift and go to state 21
+    lista_com                      shift and go to state 44
+    empty                          shift and go to state 22
+    atribuicao                     shift and go to state 23
+    leitura                        shift and go to state 24
+    escrita                        shift and go to state 25
+
+state 34
+
+    (24) atribuicao -> ID ASSIGN . NUMBER
+
+    NUMBER          shift and go to state 45
+
+
+state 35
+
+    (25) leitura -> READ LPAREN . ID RPAREN
+
+    ID              shift and go to state 46
+
+
+state 36
+
+    (26) escrita -> WRITE LPAREN . STRING RPAREN
+
+    STRING          shift and go to state 47
+
+
+state 37
+
+    (8) lista_const -> ID ATRIB NUMBER . SEMICOLON lista_const
+
+    SEMICOLON       shift and go to state 48
+
+
+state 38
+
+    (10) lista_var -> ID COLON tipo . SEMICOLON lista_var
+
+    SEMICOLON       shift and go to state 49
+
+
+state 39
+
+    (12) tipo -> INTEGER .
+
+    SEMICOLON       reduce using rule 12 (tipo -> INTEGER .)
+
+
+state 40
+
+    (13) tipo -> REAL .
+
+    SEMICOLON       reduce using rule 13 (tipo -> REAL .)
+
+
+state 41
+
+    (14) tipo -> CHAR .
+
+    SEMICOLON       reduce using rule 14 (tipo -> CHAR .)
+
+
+state 42
+
+    (15) tipo -> BOOLEAN .
+
+    SEMICOLON       reduce using rule 15 (tipo -> BOOLEAN .)
+
+
+state 43
+
+    (16) lista_tipo -> ID ATRIB tipo . SEMICOLON lista_tipo
+
+    SEMICOLON       shift and go to state 50
+
+
+state 44
+
+    (19) lista_com -> comando SEMICOLON lista_com .
+
+    END             reduce using rule 19 (lista_com -> comando SEMICOLON lista_com .)
+
+
+state 45
+
+    (24) atribuicao -> ID ASSIGN NUMBER .
+
+    SEMICOLON       reduce using rule 24 (atribuicao -> ID ASSIGN NUMBER .)
+
+
+state 46
+
+    (25) leitura -> READ LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 51
+
+
+state 47
+
+    (26) escrita -> WRITE LPAREN STRING . RPAREN
+
+    RPAREN          shift and go to state 52
+
+
+state 48
+
+    (8) lista_const -> ID ATRIB NUMBER SEMICOLON . lista_const
+    (8) lista_const -> . ID ATRIB NUMBER SEMICOLON lista_const
+    (9) lista_const -> . empty
+    (27) empty -> .
+
+    ID              shift and go to state 12
+    CONST           reduce using rule 27 (empty -> .)
+    VAR             reduce using rule 27 (empty -> .)
+    TYPE            reduce using rule 27 (empty -> .)
+    BEGIN           reduce using rule 27 (empty -> .)
+
+    lista_const                    shift and go to state 53
+    empty                          shift and go to state 13
+
+state 49
+
+    (10) lista_var -> ID COLON tipo SEMICOLON . lista_var
+    (10) lista_var -> . ID COLON tipo SEMICOLON lista_var
+    (11) lista_var -> . empty
+    (27) empty -> .
+
+    ID              shift and go to state 15
+    CONST           reduce using rule 27 (empty -> .)
+    VAR             reduce using rule 27 (empty -> .)
+    TYPE            reduce using rule 27 (empty -> .)
+    BEGIN           reduce using rule 27 (empty -> .)
+
+    lista_var                      shift and go to state 54
+    empty                          shift and go to state 16
+
+state 50
+
+    (16) lista_tipo -> ID ATRIB tipo SEMICOLON . lista_tipo
+    (16) lista_tipo -> . ID ATRIB tipo SEMICOLON lista_tipo
+    (17) lista_tipo -> . empty
+    (27) empty -> .
+
+    ID              shift and go to state 18
+    CONST           reduce using rule 27 (empty -> .)
+    VAR             reduce using rule 27 (empty -> .)
+    TYPE            reduce using rule 27 (empty -> .)
+    BEGIN           reduce using rule 27 (empty -> .)
+
+    lista_tipo                     shift and go to state 55
+    empty                          shift and go to state 19
+
+state 51
+
+    (25) leitura -> READ LPAREN ID RPAREN .
+
+    SEMICOLON       reduce using rule 25 (leitura -> READ LPAREN ID RPAREN .)
+
+
+state 52
+
+    (26) escrita -> WRITE LPAREN STRING RPAREN .
+
+    SEMICOLON       reduce using rule 26 (escrita -> WRITE LPAREN STRING RPAREN .)
+
+
+state 53
+
+    (8) lista_const -> ID ATRIB NUMBER SEMICOLON lista_const .
+
+    CONST           reduce using rule 8 (lista_const -> ID ATRIB NUMBER SEMICOLON lista_const .)
+    VAR             reduce using rule 8 (lista_const -> ID ATRIB NUMBER SEMICOLON lista_const .)
+    TYPE            reduce using rule 8 (lista_const -> ID ATRIB NUMBER SEMICOLON lista_const .)
+    BEGIN           reduce using rule 8 (lista_const -> ID ATRIB NUMBER SEMICOLON lista_const .)
+
+
+state 54
+
+    (10) lista_var -> ID COLON tipo SEMICOLON lista_var .
+
+    CONST           reduce using rule 10 (lista_var -> ID COLON tipo SEMICOLON lista_var .)
+    VAR             reduce using rule 10 (lista_var -> ID COLON tipo SEMICOLON lista_var .)
+    TYPE            reduce using rule 10 (lista_var -> ID COLON tipo SEMICOLON lista_var .)
+    BEGIN           reduce using rule 10 (lista_var -> ID COLON tipo SEMICOLON lista_var .)
+
+
+state 55
+
+    (16) lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo .
+
+    CONST           reduce using rule 16 (lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo .)
+    VAR             reduce using rule 16 (lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo .)
+    TYPE            reduce using rule 16 (lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo .)
+    BEGIN           reduce using rule 16 (lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for CONST in state 2 resolved as shift
+WARNING: shift/reduce conflict for VAR in state 2 resolved as shift
+WARNING: shift/reduce conflict for TYPE in state 2 resolved as shift
+WARNING: shift/reduce conflict for CONST in state 4 resolved as shift
+WARNING: shift/reduce conflict for VAR in state 4 resolved as shift
+WARNING: shift/reduce conflict for TYPE in state 4 resolved as shift
+WARNING: reduce/reduce conflict in state 5 resolved using rule (lista_declaracoes -> empty)
+WARNING: rejected rule (declaracoes -> empty) in state 5
