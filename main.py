@@ -1,9 +1,14 @@
-from analisador_lexico import analyze_file, lexer
-from analisador_sintatico import parser
+from analisador_lexico import analyze_file
+from analisador_sintatico import parse_file
 from InquirerPy import prompt
 
 menu = [
-    {"type": "list", "message": "Escolha uma opção:", "choices": ["1. Léxico", "2. Sintático", "3. Sair"], "name": "opcao"}
+    {
+        "type": "list",
+        "message": "Escolha uma opção:",
+        "choices": ["1. Léxico", "2. Sintático", "3. Sair"],
+        "name": "opcao"
+    }
 ]
 
 def main():
@@ -14,9 +19,9 @@ def main():
             analyze_file(filename)
         elif resposta == "2. Sintático":
             filename = input("Arquivo: ")
-            with open(filename, 'r') as file:
-                data = file.read()
-                parser.parse(data)
+            result = parse_file(filename)
+            if result:
+                print("Análise sintática concluída com sucesso! Resultados salvos em 'saida_sintatico.txt'.")
         elif resposta == "3. Sair":
             break
 

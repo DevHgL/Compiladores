@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND ARRAY ASSIGN ATRIB BEGIN BOOLEAN CHAR COLON COMMA CONST DIVIDE DO DOT ELSE END EQUALS FALSE FOR FUNCTION GREATER_EQUAL GREATER_THAN ID IF INTEGER LBRACE LBRACKET LESS_EQUAL LESS_THAN LPAREN MINUS NOT_EQUALS NUMBER OF OR PLUS PROCEDURE PROGRAM RBRACE RBRACKET READ REAL RECORD RPAREN SEMICOLON STRING THEN TIMES TO TRUE TYPE VAR WHILE WRITEprogram : PROGRAM lista_declaracoes BEGIN lista_com ENDlista_declaracoes : declaracoes lista_declaracoes\n                         | emptydeclaracoes : CONST lista_const\n                   | VAR lista_var\n                   | TYPE lista_tipo\n                   | emptylista_const : ID ATRIB NUMBER SEMICOLON lista_const\n                   | emptylista_var : ID COLON tipo SEMICOLON lista_var\n                 | emptytipo : INTEGER\n            | REAL\n            | CHAR\n            | BOOLEANlista_tipo : ID ATRIB tipo SEMICOLON lista_tipo\n                  | emptybloco : BEGIN lista_com ENDlista_com : comando SEMICOLON lista_com\n                 | emptycomando : atribuicao\n               | leitura\n               | escritaatribuicao : ID ASSIGN NUMBERleitura : READ LPAREN ID RPARENescrita : WRITE LPAREN STRING RPARENempty :'
+_lr_signature = 'AND ARRAY ASSIGN ATRIB ATRIBUICAO BEGIN BOOLEAN CHAR COLON COMMA CONST DIVIDE DO DOT ELSE END EQUALS FALSE FOR FUNCTION GREATER_EQUAL GREATER_THAN ID IF INTEGER LBRACE LBRACKET LESS_EQUAL LESS_THAN LPAREN MINUS NAME NOT_EQUALS NUMBER OF OP_LOGICO OP_MAT OR PARAMETRO PARAM_LOGICO PLUS PROCEDURE PROGRAM RBRACE RBRACKET READ REAL RECORD RPAREN SEMICOLON STRING THEN TIMES TO TRUE TYPE VAR WHILE WRITEprogram : PROGRAM ID SEMICOLON declarations compound_statement DOTdeclarations : const_declaration type_declaration var_declaration\n                    | const_declaration\n                    | type_declaration\n                    | var_declaration\n                    | emptyconst_declaration : CONST const_list\n                         | emptyconst_list : ID ATRIB expression SEMICOLON\n                  | const_list ID ATRIB expression SEMICOLONexpression : EXP\n                  | EXP_CONST\n                  | EXP_COMEXP : PARAMETRO EXP_L1\n           | LPAREN EXP RPARENEXP_L1 : OP_MAT EXP\n              | emptyEXP_LOGICO : OP_LOGICO EXP\n                  | emptyCONST_VALOR : STRING\n                   | EXP_CONSTEXP_CONST : PARAMETRO EXP_CONST_LINHA\n                 | LPAREN EXP_CONST RPARENEXP_CONST_LINHA : OP_MAT EXP_CONST\n                       | emptyCOMANDO : ID\n               | NAME\n               | ATRIBUICAO\n               | WHILE LPAREN EXP_COM RPAREN DO compound_statementEXP_COM : PARAM_LOGICO EXP_COM_LINHA\n               | LPAREN EXP_COM RPARENEXP_COM_LINHA : OP_LOGICO EXP_COM\n                     | emptytype_declaration : TYPE type_list\n                       | emptytype_list : ID ATRIB type SEMICOLON\n                 | type_list ID ATRIB type SEMICOLONtype : INTEGER\n            | REAL\n            | CHAR\n            | BOOLEAN\n            | array_type\n            | record_typearray_type : ARRAY LBRACKET NUMBER RBRACKET OF typerecord_type : RECORD field_list ENDfield_list : ID COLON type SEMICOLON\n                  | field_list ID COLON type SEMICOLONvar_declaration : VAR var_list\n                      | emptyvar_list : ID COLON type SEMICOLON\n                | var_list ID COLON type SEMICOLONcompound_statement : BEGIN statement_list ENDstatement_list : statement\n                      | statement_list SEMICOLON statementstatement : assignment_statement\n                 | if_statement\n                 | while_statement\n                 | for_statement\n                 | compound_statement\n                 | read_statement\n                 | write_statement\n                 | emptyassignment_statement : ID ATRIB expressionif_statement : IF expression THEN statement ELSE statementwhile_statement : WHILE expression DO statementfor_statement : FOR ID ASSIGN expression TO expression DO statementread_statement : READ LPAREN ID RPARENwrite_statement : WRITE LPAREN expression RPARENempty :'
     
-_lr_action_items = {'PROGRAM':([0,],[2,]),'$end':([1,32,],[0,-1,]),'CONST':([2,4,5,6,7,8,11,13,14,16,17,19,48,49,50,53,54,55,],[6,6,-7,-27,-27,-27,-4,-9,-5,-11,-6,-17,-27,-27,-27,-8,-10,-16,]),'VAR':([2,4,5,6,7,8,11,13,14,16,17,19,48,49,50,53,54,55,],[7,7,-7,-27,-27,-27,-4,-9,-5,-11,-6,-17,-27,-27,-27,-8,-10,-16,]),'TYPE':([2,4,5,6,7,8,11,13,14,16,17,19,48,49,50,53,54,55,],[8,8,-7,-27,-27,-27,-4,-9,-5,-11,-6,-17,-27,-27,-27,-8,-10,-16,]),'BEGIN':([2,3,4,5,6,7,8,10,11,13,14,16,17,19,48,49,50,53,54,55,],[-27,9,-27,-3,-27,-27,-27,-2,-4,-9,-5,-11,-6,-17,-27,-27,-27,-8,-10,-16,]),'ID':([6,7,8,9,33,35,48,49,50,],[12,15,18,26,26,46,12,15,18,]),'END':([9,20,22,33,44,],[-27,32,-20,-27,-19,]),'READ':([9,33,],[27,27,]),'WRITE':([9,33,],[28,28,]),'ATRIB':([12,18,],[29,31,]),'COLON':([15,],[30,]),'SEMICOLON':([21,23,24,25,37,38,39,40,41,42,43,45,51,52,],[33,-21,-22,-23,48,49,-12,-13,-14,-15,50,-24,-25,-26,]),'ASSIGN':([26,],[34,]),'LPAREN':([27,28,],[35,36,]),'NUMBER':([29,34,],[37,45,]),'INTEGER':([30,31,],[39,39,]),'REAL':([30,31,],[40,40,]),'CHAR':([30,31,],[41,41,]),'BOOLEAN':([30,31,],[42,42,]),'STRING':([36,],[47,]),'RPAREN':([46,47,],[51,52,]),}
+_lr_action_items = {'PROGRAM':([0,],[2,]),'$end':([1,23,],[0,-1,]),'ID':([2,10,11,12,14,17,19,21,37,49,60,73,78,89,94,96,98,101,115,116,121,122,131,132,134,],[3,18,20,22,34,42,44,46,59,34,91,99,34,34,-9,-36,119,-50,-10,-37,-51,34,-46,34,-47,]),'SEMICOLON':([3,14,24,25,26,27,28,29,30,31,32,33,48,49,52,53,54,55,57,63,65,66,67,68,69,70,71,75,76,77,79,80,82,86,88,89,93,95,100,103,104,106,107,108,109,111,113,114,118,122,126,127,130,132,133,135,],[4,-69,49,-53,-55,-56,-57,-58,-59,-60,-61,-62,-52,-69,-11,-12,-13,-69,-69,94,96,-38,-39,-40,-41,-42,-43,101,-54,-63,-14,-22,-17,-30,-33,-69,115,116,121,-16,-24,-15,-23,-31,-32,-65,-67,-68,-45,-69,131,-64,134,-69,-44,-66,]),'CONST':([4,],[10,]),'TYPE':([4,6,9,17,94,115,],[11,11,-8,-7,-9,-10,]),'VAR':([4,6,9,15,16,17,19,94,96,115,116,],[12,-69,-8,12,-35,-7,-34,-9,-36,-10,-37,]),'BEGIN':([4,5,6,7,8,9,14,15,16,17,19,21,40,41,49,78,89,94,96,101,115,116,121,122,132,],[-69,14,-3,-4,-5,-6,14,-69,-35,-7,-34,-48,-2,-49,14,14,14,-9,-36,-50,-10,-37,-51,14,14,]),'DOT':([13,48,],[23,-52,]),'IF':([14,49,78,89,122,132,],[35,35,35,35,35,35,]),'WHILE':([14,49,78,89,122,132,],[36,36,36,36,36,36,]),'FOR':([14,49,78,89,122,132,],[37,37,37,37,37,37,]),'READ':([14,49,78,89,122,132,],[38,38,38,38,38,38,]),'WRITE':([14,49,78,89,122,132,],[39,39,39,39,39,39,]),'END':([14,24,25,26,27,28,29,30,31,32,33,48,49,52,53,54,55,57,76,77,79,80,82,86,88,89,98,103,104,106,107,108,109,111,113,114,122,127,131,132,134,135,],[-69,48,-53,-55,-56,-57,-58,-59,-60,-61,-62,-52,-69,-11,-12,-13,-69,-69,-54,-63,-14,-22,-17,-30,-33,-69,118,-16,-24,-15,-23,-31,-32,-65,-67,-68,-69,-64,-46,-69,-47,-66,]),'ATRIB':([18,20,34,42,44,],[43,45,50,62,64,]),'COLON':([22,46,99,119,],[47,74,120,125,]),'ELSE':([26,27,28,29,30,31,32,33,48,52,53,54,55,57,77,78,79,80,82,86,88,89,102,103,104,106,107,108,109,111,113,114,122,127,132,135,],[-55,-56,-57,-58,-59,-60,-61,-62,-52,-11,-12,-13,-69,-69,-63,-69,-14,-22,-17,-30,-33,-69,122,-16,-24,-15,-23,-31,-32,-65,-67,-68,-69,-64,-69,-66,]),'PARAMETRO':([35,36,43,50,56,61,62,81,90,105,123,],[55,55,55,55,55,55,55,55,55,55,55,]),'LPAREN':([35,36,38,39,43,50,56,61,62,81,87,90,105,110,123,],[56,56,60,61,56,56,56,56,56,105,110,56,105,110,56,]),'PARAM_LOGICO':([35,36,43,50,56,61,62,87,90,110,123,],[57,57,57,57,57,57,57,57,57,57,57,]),'INTEGER':([45,47,64,74,120,125,129,],[66,66,66,66,66,66,66,]),'REAL':([45,47,64,74,120,125,129,],[67,67,67,67,67,67,67,]),'CHAR':([45,47,64,74,120,125,129,],[68,68,68,68,68,68,68,]),'BOOLEAN':([45,47,64,74,120,125,129,],[69,69,69,69,69,69,69,]),'ARRAY':([45,47,64,74,120,125,129,],[72,72,72,72,72,72,72,]),'RECORD':([45,47,64,74,120,125,129,],[73,73,73,73,73,73,73,]),'THEN':([51,52,53,54,55,57,79,80,82,86,88,103,104,106,107,108,109,],[78,-11,-12,-13,-69,-69,-14,-22,-17,-30,-33,-16,-24,-15,-23,-31,-32,]),'DO':([52,53,54,55,57,58,79,80,82,86,88,103,104,106,107,108,109,128,],[-11,-12,-13,-69,-69,89,-14,-22,-17,-30,-33,-16,-24,-15,-23,-31,-32,132,]),'RPAREN':([52,53,54,55,57,79,80,82,83,84,85,86,88,91,92,103,104,106,107,108,109,],[-11,-12,-13,-69,-69,-14,-22,-17,106,107,108,-30,-33,113,114,-16,-24,-15,-23,-31,-32,]),'TO':([52,53,54,55,57,79,80,82,86,88,103,104,106,107,108,109,112,],[-11,-12,-13,-69,-69,-14,-22,-17,-30,-33,-16,-24,-15,-23,-31,-32,123,]),'OP_MAT':([55,],[81,]),'OP_LOGICO':([57,],[87,]),'ASSIGN':([59,],[90,]),'LBRACKET':([72,],[97,]),'NUMBER':([97,],[117,]),'RBRACKET':([117,],[124,]),'OF':([124,],[129,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'lista_declaracoes':([2,4,],[3,10,]),'declaracoes':([2,4,],[4,4,]),'empty':([2,4,6,7,8,9,33,48,49,50,],[5,5,13,16,19,22,22,13,16,19,]),'lista_const':([6,48,],[11,53,]),'lista_var':([7,49,],[14,54,]),'lista_tipo':([8,50,],[17,55,]),'lista_com':([9,33,],[20,44,]),'comando':([9,33,],[21,21,]),'atribuicao':([9,33,],[23,23,]),'leitura':([9,33,],[24,24,]),'escrita':([9,33,],[25,25,]),'tipo':([30,31,],[38,43,]),}
+_lr_goto_items = {'program':([0,],[1,]),'declarations':([4,],[5,]),'const_declaration':([4,],[6,]),'type_declaration':([4,6,],[7,15,]),'var_declaration':([4,15,],[8,40,]),'empty':([4,6,14,15,49,55,57,78,89,122,132,],[9,16,33,41,33,82,88,33,33,33,33,]),'compound_statement':([5,14,49,78,89,122,132,],[13,30,30,30,30,30,30,]),'const_list':([10,],[17,]),'type_list':([11,],[19,]),'var_list':([12,],[21,]),'statement_list':([14,],[24,]),'statement':([14,49,78,89,122,132,],[25,76,102,111,127,135,]),'assignment_statement':([14,49,78,89,122,132,],[26,26,26,26,26,26,]),'if_statement':([14,49,78,89,122,132,],[27,27,27,27,27,27,]),'while_statement':([14,49,78,89,122,132,],[28,28,28,28,28,28,]),'for_statement':([14,49,78,89,122,132,],[29,29,29,29,29,29,]),'read_statement':([14,49,78,89,122,132,],[31,31,31,31,31,31,]),'write_statement':([14,49,78,89,122,132,],[32,32,32,32,32,32,]),'expression':([35,36,43,50,61,62,90,123,],[51,58,63,77,92,93,112,128,]),'EXP':([35,36,43,50,56,61,62,81,90,105,123,],[52,52,52,52,83,52,52,103,52,83,52,]),'EXP_CONST':([35,36,43,50,56,61,62,81,90,105,123,],[53,53,53,53,84,53,53,104,53,84,53,]),'EXP_COM':([35,36,43,50,56,61,62,87,90,110,123,],[54,54,54,54,85,54,54,109,54,85,54,]),'type':([45,47,64,74,120,125,129,],[65,75,95,100,126,130,133,]),'array_type':([45,47,64,74,120,125,129,],[70,70,70,70,70,70,70,]),'record_type':([45,47,64,74,120,125,129,],[71,71,71,71,71,71,71,]),'EXP_L1':([55,],[79,]),'EXP_CONST_LINHA':([55,],[80,]),'EXP_COM_LINHA':([57,],[86,]),'field_list':([73,],[98,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,31 +27,73 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> PROGRAM lista_declaracoes BEGIN lista_com END','program',5,'p_program','analisador_sintatico.py',6),
-  ('lista_declaracoes -> declaracoes lista_declaracoes','lista_declaracoes',2,'p_lista_declaracoes','analisador_sintatico.py',10),
-  ('lista_declaracoes -> empty','lista_declaracoes',1,'p_lista_declaracoes','analisador_sintatico.py',11),
-  ('declaracoes -> CONST lista_const','declaracoes',2,'p_declaracoes','analisador_sintatico.py',15),
-  ('declaracoes -> VAR lista_var','declaracoes',2,'p_declaracoes','analisador_sintatico.py',16),
-  ('declaracoes -> TYPE lista_tipo','declaracoes',2,'p_declaracoes','analisador_sintatico.py',17),
-  ('declaracoes -> empty','declaracoes',1,'p_declaracoes','analisador_sintatico.py',18),
-  ('lista_const -> ID ATRIB NUMBER SEMICOLON lista_const','lista_const',5,'p_lista_const','analisador_sintatico.py',22),
-  ('lista_const -> empty','lista_const',1,'p_lista_const','analisador_sintatico.py',23),
-  ('lista_var -> ID COLON tipo SEMICOLON lista_var','lista_var',5,'p_lista_var','analisador_sintatico.py',27),
-  ('lista_var -> empty','lista_var',1,'p_lista_var','analisador_sintatico.py',28),
-  ('tipo -> INTEGER','tipo',1,'p_tipo','analisador_sintatico.py',32),
-  ('tipo -> REAL','tipo',1,'p_tipo','analisador_sintatico.py',33),
-  ('tipo -> CHAR','tipo',1,'p_tipo','analisador_sintatico.py',34),
-  ('tipo -> BOOLEAN','tipo',1,'p_tipo','analisador_sintatico.py',35),
-  ('lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo','lista_tipo',5,'p_lista_tipo','analisador_sintatico.py',39),
-  ('lista_tipo -> empty','lista_tipo',1,'p_lista_tipo','analisador_sintatico.py',40),
-  ('bloco -> BEGIN lista_com END','bloco',3,'p_bloco','analisador_sintatico.py',44),
-  ('lista_com -> comando SEMICOLON lista_com','lista_com',3,'p_lista_com','analisador_sintatico.py',48),
-  ('lista_com -> empty','lista_com',1,'p_lista_com','analisador_sintatico.py',49),
-  ('comando -> atribuicao','comando',1,'p_comando','analisador_sintatico.py',53),
-  ('comando -> leitura','comando',1,'p_comando','analisador_sintatico.py',54),
-  ('comando -> escrita','comando',1,'p_comando','analisador_sintatico.py',55),
-  ('atribuicao -> ID ASSIGN NUMBER','atribuicao',3,'p_atribuicao','analisador_sintatico.py',59),
-  ('leitura -> READ LPAREN ID RPAREN','leitura',4,'p_leitura','analisador_sintatico.py',63),
-  ('escrita -> WRITE LPAREN STRING RPAREN','escrita',4,'p_escrita','analisador_sintatico.py',67),
-  ('empty -> <empty>','empty',0,'p_empty','analisador_sintatico.py',72),
+  ('program -> PROGRAM ID SEMICOLON declarations compound_statement DOT','program',6,'p_program','analisador_sintatico.py',6),
+  ('declarations -> const_declaration type_declaration var_declaration','declarations',3,'p_declarations','analisador_sintatico.py',11),
+  ('declarations -> const_declaration','declarations',1,'p_declarations','analisador_sintatico.py',12),
+  ('declarations -> type_declaration','declarations',1,'p_declarations','analisador_sintatico.py',13),
+  ('declarations -> var_declaration','declarations',1,'p_declarations','analisador_sintatico.py',14),
+  ('declarations -> empty','declarations',1,'p_declarations','analisador_sintatico.py',15),
+  ('const_declaration -> CONST const_list','const_declaration',2,'p_const_declaration','analisador_sintatico.py',20),
+  ('const_declaration -> empty','const_declaration',1,'p_const_declaration','analisador_sintatico.py',21),
+  ('const_list -> ID ATRIB expression SEMICOLON','const_list',4,'p_const_list','analisador_sintatico.py',25),
+  ('const_list -> const_list ID ATRIB expression SEMICOLON','const_list',5,'p_const_list','analisador_sintatico.py',26),
+  ('expression -> EXP','expression',1,'p_expression','analisador_sintatico.py',34),
+  ('expression -> EXP_CONST','expression',1,'p_expression','analisador_sintatico.py',35),
+  ('expression -> EXP_COM','expression',1,'p_expression','analisador_sintatico.py',36),
+  ('EXP -> PARAMETRO EXP_L1','EXP',2,'p_EXP','analisador_sintatico.py',40),
+  ('EXP -> LPAREN EXP RPAREN','EXP',3,'p_EXP','analisador_sintatico.py',41),
+  ('EXP_L1 -> OP_MAT EXP','EXP_L1',2,'p_EXP_L1','analisador_sintatico.py',45),
+  ('EXP_L1 -> empty','EXP_L1',1,'p_EXP_L1','analisador_sintatico.py',46),
+  ('EXP_LOGICO -> OP_LOGICO EXP','EXP_LOGICO',2,'p_EXP_LOGICO','analisador_sintatico.py',50),
+  ('EXP_LOGICO -> empty','EXP_LOGICO',1,'p_EXP_LOGICO','analisador_sintatico.py',51),
+  ('CONST_VALOR -> STRING','CONST_VALOR',1,'p_CONST_VALOR','analisador_sintatico.py',56),
+  ('CONST_VALOR -> EXP_CONST','CONST_VALOR',1,'p_CONST_VALOR','analisador_sintatico.py',57),
+  ('EXP_CONST -> PARAMETRO EXP_CONST_LINHA','EXP_CONST',2,'p_EXP_CONST','analisador_sintatico.py',61),
+  ('EXP_CONST -> LPAREN EXP_CONST RPAREN','EXP_CONST',3,'p_EXP_CONST','analisador_sintatico.py',62),
+  ('EXP_CONST_LINHA -> OP_MAT EXP_CONST','EXP_CONST_LINHA',2,'p_EXP_CONST_LINHA','analisador_sintatico.py',66),
+  ('EXP_CONST_LINHA -> empty','EXP_CONST_LINHA',1,'p_EXP_CONST_LINHA','analisador_sintatico.py',67),
+  ('COMANDO -> ID','COMANDO',1,'p_COMANDO','analisador_sintatico.py',72),
+  ('COMANDO -> NAME','COMANDO',1,'p_COMANDO','analisador_sintatico.py',73),
+  ('COMANDO -> ATRIBUICAO','COMANDO',1,'p_COMANDO','analisador_sintatico.py',74),
+  ('COMANDO -> WHILE LPAREN EXP_COM RPAREN DO compound_statement','COMANDO',6,'p_COMANDO','analisador_sintatico.py',75),
+  ('EXP_COM -> PARAM_LOGICO EXP_COM_LINHA','EXP_COM',2,'p_EXP_COM','analisador_sintatico.py',82),
+  ('EXP_COM -> LPAREN EXP_COM RPAREN','EXP_COM',3,'p_EXP_COM','analisador_sintatico.py',83),
+  ('EXP_COM_LINHA -> OP_LOGICO EXP_COM','EXP_COM_LINHA',2,'p_EXP_COM_LINHA','analisador_sintatico.py',87),
+  ('EXP_COM_LINHA -> empty','EXP_COM_LINHA',1,'p_EXP_COM_LINHA','analisador_sintatico.py',88),
+  ('type_declaration -> TYPE type_list','type_declaration',2,'p_type_declaration','analisador_sintatico.py',93),
+  ('type_declaration -> empty','type_declaration',1,'p_type_declaration','analisador_sintatico.py',94),
+  ('type_list -> ID ATRIB type SEMICOLON','type_list',4,'p_type_list','analisador_sintatico.py',101),
+  ('type_list -> type_list ID ATRIB type SEMICOLON','type_list',5,'p_type_list','analisador_sintatico.py',102),
+  ('type -> INTEGER','type',1,'p_type','analisador_sintatico.py',109),
+  ('type -> REAL','type',1,'p_type','analisador_sintatico.py',110),
+  ('type -> CHAR','type',1,'p_type','analisador_sintatico.py',111),
+  ('type -> BOOLEAN','type',1,'p_type','analisador_sintatico.py',112),
+  ('type -> array_type','type',1,'p_type','analisador_sintatico.py',113),
+  ('type -> record_type','type',1,'p_type','analisador_sintatico.py',114),
+  ('array_type -> ARRAY LBRACKET NUMBER RBRACKET OF type','array_type',6,'p_array_type','analisador_sintatico.py',118),
+  ('record_type -> RECORD field_list END','record_type',3,'p_record_type','analisador_sintatico.py',122),
+  ('field_list -> ID COLON type SEMICOLON','field_list',4,'p_field_list','analisador_sintatico.py',126),
+  ('field_list -> field_list ID COLON type SEMICOLON','field_list',5,'p_field_list','analisador_sintatico.py',127),
+  ('var_declaration -> VAR var_list','var_declaration',2,'p_var_declaration','analisador_sintatico.py',134),
+  ('var_declaration -> empty','var_declaration',1,'p_var_declaration','analisador_sintatico.py',135),
+  ('var_list -> ID COLON type SEMICOLON','var_list',4,'p_var_list','analisador_sintatico.py',142),
+  ('var_list -> var_list ID COLON type SEMICOLON','var_list',5,'p_var_list','analisador_sintatico.py',143),
+  ('compound_statement -> BEGIN statement_list END','compound_statement',3,'p_compound_statement','analisador_sintatico.py',151),
+  ('statement_list -> statement','statement_list',1,'p_statement_list','analisador_sintatico.py',155),
+  ('statement_list -> statement_list SEMICOLON statement','statement_list',3,'p_statement_list','analisador_sintatico.py',156),
+  ('statement -> assignment_statement','statement',1,'p_statement','analisador_sintatico.py',163),
+  ('statement -> if_statement','statement',1,'p_statement','analisador_sintatico.py',164),
+  ('statement -> while_statement','statement',1,'p_statement','analisador_sintatico.py',165),
+  ('statement -> for_statement','statement',1,'p_statement','analisador_sintatico.py',166),
+  ('statement -> compound_statement','statement',1,'p_statement','analisador_sintatico.py',167),
+  ('statement -> read_statement','statement',1,'p_statement','analisador_sintatico.py',168),
+  ('statement -> write_statement','statement',1,'p_statement','analisador_sintatico.py',169),
+  ('statement -> empty','statement',1,'p_statement','analisador_sintatico.py',170),
+  ('assignment_statement -> ID ATRIB expression','assignment_statement',3,'p_assignment_statement','analisador_sintatico.py',175),
+  ('if_statement -> IF expression THEN statement ELSE statement','if_statement',6,'p_if_statement','analisador_sintatico.py',180),
+  ('while_statement -> WHILE expression DO statement','while_statement',4,'p_while_statement','analisador_sintatico.py',185),
+  ('for_statement -> FOR ID ASSIGN expression TO expression DO statement','for_statement',8,'p_for_statement','analisador_sintatico.py',190),
+  ('read_statement -> READ LPAREN ID RPAREN','read_statement',4,'p_read_statement','analisador_sintatico.py',195),
+  ('write_statement -> WRITE LPAREN expression RPAREN','write_statement',4,'p_write_statement','analisador_sintatico.py',200),
+  ('empty -> <empty>','empty',0,'p_empty','analisador_sintatico.py',205),
 ]

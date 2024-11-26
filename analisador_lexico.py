@@ -1,5 +1,14 @@
 import ply.lex as lex
 
+# Lista de tokens
+tokens = [
+    'STRING', 'COLON', 'LBRACKET', 'RBRACKET', 'ASSIGN', 'ATRIB',
+    'NUMBER', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'LPAREN', 'RPAREN',
+    'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'ID', 'EQUALS', 'NOT_EQUALS',
+    'LESS_THAN', 'GREATER_THAN', 'LESS_EQUAL', 'GREATER_EQUAL', 'DOT',
+    'PARAMETRO', 'OP_MAT', 'OP_LOGICO', 'NAME', 'ATRIBUICAO', 'PARAM_LOGICO'
+]
+
 # Palavras reservadas
 reserved_words = {
     'program': 'PROGRAM',
@@ -32,34 +41,8 @@ reserved_words = {
     'or': 'OR',
 }
 
-# Lista de tokens
-tokens = [
-    'STRING',       # Strings entre aspas
-    'COLON',        # :
-    'LBRACKET',     # [
-    'RBRACKET',     # ]
-    'ASSIGN',       # :=
-    'ATRIB',       # =
-    'NUMBER',       # Números inteiros
-    'PLUS',         # +
-    'MINUS',        # -
-    'TIMES',        # *
-    'DIVIDE',       # /
-    'LPAREN',       # (
-    'RPAREN',       # )
-    'LBRACE',       # {
-    'RBRACE',       # }
-    'SEMICOLON',    # ;
-    'COMMA',        # ,
-    'ID',           # Identificadores
-    'EQUALS',       # ==
-    'NOT_EQUALS',   # !=
-    'LESS_THAN',    # <
-    'GREATER_THAN', # >
-    'LESS_EQUAL',   # <=
-    'GREATER_EQUAL',# >=
-    'DOT',          # .
-] + list(reserved_words.values())
+# Adicionar palavras reservadas à lista de tokens
+tokens = tokens + list(reserved_words.values())
 
 # Expressões regulares para tokens simples
 t_STRING = r'\".*?\"'
@@ -67,7 +50,7 @@ t_COLON = r':'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
 t_ASSIGN = r':='
-t_ATRIB= r'='
+t_ATRIB = r'='
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
@@ -86,6 +69,12 @@ t_LESS_EQUAL = r'<='
 t_GREATER_EQUAL = r'>='
 t_DOT = r'\.'
 
+t_PARAMETRO = r'parametro_regex'
+t_OP_MAT = r'op_mat_regex'
+t_OP_LOGICO = r'op_logico_regex'
+t_NAME = r'name_regex'
+t_ATRIBUICAO = r'atribuicao_regex'
+t_PARAM_LOGICO = r'param_logico_regex'
 
 # Definição de identificadores
 def t_ID(t):
@@ -111,21 +100,21 @@ def t_newline(t):
 def t_error(t):
     print(f"Caractere ilegal '{t.value[0]}' na linha {t.lineno}")
     t.lexer.skip(1)
-    
-    
-
 
 # Construir o analisador léxico
 lexer = lex.lex()
 
-# Função para analisar um arquivo
+# Função para analisar um arquivo e salvar a saída em um arquivo de texto
 def analyze_file(filename):
     try:
         with open(filename, 'r') as file:
             data = file.read()
         lexer.input(data)
-        for tok in lexer:
-            print(f"{tok.type}({tok.value}) na linha {tok.lineno}")
+        
+        with open("saida_lexico.txt", "w") as output_file:
+            for tok in lexer:
+                output_file.write(f"{tok.type}({tok.value}) na linha {tok.lineno}\n")
+        print("Análise léxica concluída com sucesso! Resultados salvos em 'saida_lexico.txt'.")
     except FileNotFoundError:
         print(f"Erro: Arquivo '{filename}' não encontrado!")
     except Exception as e:

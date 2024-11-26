@@ -3,149 +3,202 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     AND
-    ARRAY
     COMMA
     DIVIDE
-    DO
-    DOT
-    ELSE
     EQUALS
     FALSE
-    FOR
     FUNCTION
     GREATER_EQUAL
     GREATER_THAN
-    IF
     LBRACE
-    LBRACKET
     LESS_EQUAL
     LESS_THAN
     MINUS
     NOT_EQUALS
-    OF
     OR
     PLUS
     PROCEDURE
     RBRACE
-    RBRACKET
-    RECORD
-    THEN
     TIMES
-    TO
     TRUE
-    WHILE
 
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> PROGRAM lista_declaracoes BEGIN lista_com END
-Rule 2     lista_declaracoes -> declaracoes lista_declaracoes
-Rule 3     lista_declaracoes -> empty
-Rule 4     declaracoes -> CONST lista_const
-Rule 5     declaracoes -> VAR lista_var
-Rule 6     declaracoes -> TYPE lista_tipo
-Rule 7     declaracoes -> empty
-Rule 8     lista_const -> ID ATRIB NUMBER SEMICOLON lista_const
-Rule 9     lista_const -> empty
-Rule 10    lista_var -> ID COLON tipo SEMICOLON lista_var
-Rule 11    lista_var -> empty
-Rule 12    tipo -> INTEGER
-Rule 13    tipo -> REAL
-Rule 14    tipo -> CHAR
-Rule 15    tipo -> BOOLEAN
-Rule 16    lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo
-Rule 17    lista_tipo -> empty
-Rule 18    bloco -> BEGIN lista_com END
-Rule 19    lista_com -> comando SEMICOLON lista_com
-Rule 20    lista_com -> empty
-Rule 21    comando -> atribuicao
-Rule 22    comando -> leitura
-Rule 23    comando -> escrita
-Rule 24    atribuicao -> ID ASSIGN NUMBER
-Rule 25    leitura -> READ LPAREN ID RPAREN
-Rule 26    escrita -> WRITE LPAREN STRING RPAREN
-Rule 27    empty -> <empty>
+Rule 1     program -> PROGRAM ID SEMICOLON declarations compound_statement DOT
+Rule 2     declarations -> const_declaration type_declaration var_declaration
+Rule 3     declarations -> const_declaration
+Rule 4     declarations -> type_declaration
+Rule 5     declarations -> var_declaration
+Rule 6     declarations -> empty
+Rule 7     const_declaration -> CONST const_list
+Rule 8     const_declaration -> empty
+Rule 9     const_list -> ID ATRIB expression SEMICOLON
+Rule 10    const_list -> const_list ID ATRIB expression SEMICOLON
+Rule 11    expression -> EXP
+Rule 12    expression -> EXP_CONST
+Rule 13    expression -> EXP_COM
+Rule 14    EXP -> PARAMETRO EXP_L1
+Rule 15    EXP -> LPAREN EXP RPAREN
+Rule 16    EXP_L1 -> OP_MAT EXP
+Rule 17    EXP_L1 -> empty
+Rule 18    EXP_LOGICO -> OP_LOGICO EXP
+Rule 19    EXP_LOGICO -> empty
+Rule 20    CONST_VALOR -> STRING
+Rule 21    CONST_VALOR -> EXP_CONST
+Rule 22    EXP_CONST -> PARAMETRO EXP_CONST_LINHA
+Rule 23    EXP_CONST -> LPAREN EXP_CONST RPAREN
+Rule 24    EXP_CONST_LINHA -> OP_MAT EXP_CONST
+Rule 25    EXP_CONST_LINHA -> empty
+Rule 26    COMANDO -> ID
+Rule 27    COMANDO -> NAME
+Rule 28    COMANDO -> ATRIBUICAO
+Rule 29    COMANDO -> WHILE LPAREN EXP_COM RPAREN DO compound_statement
+Rule 30    EXP_COM -> PARAM_LOGICO EXP_COM_LINHA
+Rule 31    EXP_COM -> LPAREN EXP_COM RPAREN
+Rule 32    EXP_COM_LINHA -> OP_LOGICO EXP_COM
+Rule 33    EXP_COM_LINHA -> empty
+Rule 34    type_declaration -> TYPE type_list
+Rule 35    type_declaration -> empty
+Rule 36    type_list -> ID ATRIB type SEMICOLON
+Rule 37    type_list -> type_list ID ATRIB type SEMICOLON
+Rule 38    type -> INTEGER
+Rule 39    type -> REAL
+Rule 40    type -> CHAR
+Rule 41    type -> BOOLEAN
+Rule 42    type -> array_type
+Rule 43    type -> record_type
+Rule 44    array_type -> ARRAY LBRACKET NUMBER RBRACKET OF type
+Rule 45    record_type -> RECORD field_list END
+Rule 46    field_list -> ID COLON type SEMICOLON
+Rule 47    field_list -> field_list ID COLON type SEMICOLON
+Rule 48    var_declaration -> VAR var_list
+Rule 49    var_declaration -> empty
+Rule 50    var_list -> ID COLON type SEMICOLON
+Rule 51    var_list -> var_list ID COLON type SEMICOLON
+Rule 52    compound_statement -> BEGIN statement_list END
+Rule 53    statement_list -> statement
+Rule 54    statement_list -> statement_list SEMICOLON statement
+Rule 55    statement -> assignment_statement
+Rule 56    statement -> if_statement
+Rule 57    statement -> while_statement
+Rule 58    statement -> for_statement
+Rule 59    statement -> compound_statement
+Rule 60    statement -> read_statement
+Rule 61    statement -> write_statement
+Rule 62    statement -> empty
+Rule 63    assignment_statement -> ID ATRIB expression
+Rule 64    if_statement -> IF expression THEN statement ELSE statement
+Rule 65    while_statement -> WHILE expression DO statement
+Rule 66    for_statement -> FOR ID ASSIGN expression TO expression DO statement
+Rule 67    read_statement -> READ LPAREN ID RPAREN
+Rule 68    write_statement -> WRITE LPAREN expression RPAREN
+Rule 69    empty -> <empty>
 
 Terminals, with rules where they appear
 
 AND                  : 
-ARRAY                : 
-ASSIGN               : 24
-ATRIB                : 8 16
-BEGIN                : 1 18
-BOOLEAN              : 15
-CHAR                 : 14
-COLON                : 10
+ARRAY                : 44
+ASSIGN               : 66
+ATRIB                : 9 10 36 37 63
+ATRIBUICAO           : 28
+BEGIN                : 52
+BOOLEAN              : 41
+CHAR                 : 40
+COLON                : 46 47 50 51
 COMMA                : 
-CONST                : 4
+CONST                : 7
 DIVIDE               : 
-DO                   : 
-DOT                  : 
-ELSE                 : 
-END                  : 1 18
+DO                   : 29 65 66
+DOT                  : 1
+ELSE                 : 64
+END                  : 45 52
 EQUALS               : 
 FALSE                : 
-FOR                  : 
+FOR                  : 66
 FUNCTION             : 
 GREATER_EQUAL        : 
 GREATER_THAN         : 
-ID                   : 8 10 16 24 25
-IF                   : 
-INTEGER              : 12
+ID                   : 1 9 10 26 36 37 46 47 50 51 63 66 67
+IF                   : 64
+INTEGER              : 38
 LBRACE               : 
-LBRACKET             : 
+LBRACKET             : 44
 LESS_EQUAL           : 
 LESS_THAN            : 
-LPAREN               : 25 26
+LPAREN               : 15 23 29 31 67 68
 MINUS                : 
+NAME                 : 27
 NOT_EQUALS           : 
-NUMBER               : 8 24
-OF                   : 
+NUMBER               : 44
+OF                   : 44
+OP_LOGICO            : 18 32
+OP_MAT               : 16 24
 OR                   : 
+PARAMETRO            : 14 22
+PARAM_LOGICO         : 30
 PLUS                 : 
 PROCEDURE            : 
 PROGRAM              : 1
 RBRACE               : 
-RBRACKET             : 
-READ                 : 25
-REAL                 : 13
-RECORD               : 
-RPAREN               : 25 26
-SEMICOLON            : 8 10 16 19
-STRING               : 26
-THEN                 : 
+RBRACKET             : 44
+READ                 : 67
+REAL                 : 39
+RECORD               : 45
+RPAREN               : 15 23 29 31 67 68
+SEMICOLON            : 1 9 10 36 37 46 47 50 51 54
+STRING               : 20
+THEN                 : 64
 TIMES                : 
-TO                   : 
+TO                   : 66
 TRUE                 : 
-TYPE                 : 6
-VAR                  : 5
-WHILE                : 
-WRITE                : 26
+TYPE                 : 34
+VAR                  : 48
+WHILE                : 29 65
+WRITE                : 68
 error                : 
 
 Nonterminals, with rules where they appear
 
-atribuicao           : 21
-bloco                : 
-comando              : 19
-declaracoes          : 2
-empty                : 3 7 9 11 17 20
-escrita              : 23
-leitura              : 22
-lista_com            : 1 18 19
-lista_const          : 4 8
-lista_declaracoes    : 1 2
-lista_tipo           : 6 16
-lista_var            : 5 10
+COMANDO              : 
+CONST_VALOR          : 
+EXP                  : 11 15 16 18
+EXP_COM              : 13 29 31 32
+EXP_COM_LINHA        : 30
+EXP_CONST            : 12 21 23 24
+EXP_CONST_LINHA      : 22
+EXP_L1               : 14
+EXP_LOGICO           : 
+array_type           : 42
+assignment_statement : 55
+compound_statement   : 1 29 59
+const_declaration    : 2 3
+const_list           : 7 10
+declarations         : 1
+empty                : 6 8 17 19 25 33 35 49 62
+expression           : 9 10 63 64 65 66 66 68
+field_list           : 45 47
+for_statement        : 58
+if_statement         : 56
 program              : 0
-tipo                 : 10 16
+read_statement       : 60
+record_type          : 43
+statement            : 53 54 64 64 65 66
+statement_list       : 52 54
+type                 : 36 37 44 46 47 50 51
+type_declaration     : 2 4
+type_list            : 34 37
+var_declaration      : 2 5
+var_list             : 48 51
+while_statement      : 57
+write_statement      : 61
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . program
-    (1) program -> . PROGRAM lista_declaracoes BEGIN lista_com END
+    (1) program -> . PROGRAM ID SEMICOLON declarations compound_statement DOT
 
     PROGRAM         shift and go to state 2
 
@@ -159,569 +212,1683 @@ state 1
 
 state 2
 
-    (1) program -> PROGRAM . lista_declaracoes BEGIN lista_com END
-    (2) lista_declaracoes -> . declaracoes lista_declaracoes
-    (3) lista_declaracoes -> . empty
-    (4) declaracoes -> . CONST lista_const
-    (5) declaracoes -> . VAR lista_var
-    (6) declaracoes -> . TYPE lista_tipo
-    (7) declaracoes -> . empty
-    (27) empty -> .
+    (1) program -> PROGRAM . ID SEMICOLON declarations compound_statement DOT
 
-  ! shift/reduce conflict for CONST resolved as shift
-  ! shift/reduce conflict for VAR resolved as shift
-  ! shift/reduce conflict for TYPE resolved as shift
-    CONST           shift and go to state 6
-    VAR             shift and go to state 7
-    TYPE            shift and go to state 8
-    BEGIN           reduce using rule 27 (empty -> .)
+    ID              shift and go to state 3
 
-  ! CONST           [ reduce using rule 27 (empty -> .) ]
-  ! VAR             [ reduce using rule 27 (empty -> .) ]
-  ! TYPE            [ reduce using rule 27 (empty -> .) ]
-
-    lista_declaracoes              shift and go to state 3
-    declaracoes                    shift and go to state 4
-    empty                          shift and go to state 5
 
 state 3
 
-    (1) program -> PROGRAM lista_declaracoes . BEGIN lista_com END
+    (1) program -> PROGRAM ID . SEMICOLON declarations compound_statement DOT
 
-    BEGIN           shift and go to state 9
+    SEMICOLON       shift and go to state 4
 
 
 state 4
 
-    (2) lista_declaracoes -> declaracoes . lista_declaracoes
-    (2) lista_declaracoes -> . declaracoes lista_declaracoes
-    (3) lista_declaracoes -> . empty
-    (4) declaracoes -> . CONST lista_const
-    (5) declaracoes -> . VAR lista_var
-    (6) declaracoes -> . TYPE lista_tipo
-    (7) declaracoes -> . empty
-    (27) empty -> .
+    (1) program -> PROGRAM ID SEMICOLON . declarations compound_statement DOT
+    (2) declarations -> . const_declaration type_declaration var_declaration
+    (3) declarations -> . const_declaration
+    (4) declarations -> . type_declaration
+    (5) declarations -> . var_declaration
+    (6) declarations -> . empty
+    (7) const_declaration -> . CONST const_list
+    (8) const_declaration -> . empty
+    (34) type_declaration -> . TYPE type_list
+    (35) type_declaration -> . empty
+    (48) var_declaration -> . VAR var_list
+    (49) var_declaration -> . empty
+    (69) empty -> .
 
-  ! shift/reduce conflict for CONST resolved as shift
-  ! shift/reduce conflict for VAR resolved as shift
   ! shift/reduce conflict for TYPE resolved as shift
-    CONST           shift and go to state 6
-    VAR             shift and go to state 7
-    TYPE            shift and go to state 8
-    BEGIN           reduce using rule 27 (empty -> .)
+  ! shift/reduce conflict for VAR resolved as shift
+    CONST           shift and go to state 10
+    TYPE            shift and go to state 11
+    VAR             shift and go to state 12
+    BEGIN           reduce using rule 69 (empty -> .)
 
-  ! CONST           [ reduce using rule 27 (empty -> .) ]
-  ! VAR             [ reduce using rule 27 (empty -> .) ]
-  ! TYPE            [ reduce using rule 27 (empty -> .) ]
+  ! TYPE            [ reduce using rule 69 (empty -> .) ]
+  ! VAR             [ reduce using rule 69 (empty -> .) ]
 
-    declaracoes                    shift and go to state 4
-    lista_declaracoes              shift and go to state 10
-    empty                          shift and go to state 5
+    declarations                   shift and go to state 5
+    const_declaration              shift and go to state 6
+    type_declaration               shift and go to state 7
+    var_declaration                shift and go to state 8
+    empty                          shift and go to state 9
 
 state 5
 
-    (3) lista_declaracoes -> empty .
-    (7) declaracoes -> empty .
+    (1) program -> PROGRAM ID SEMICOLON declarations . compound_statement DOT
+    (52) compound_statement -> . BEGIN statement_list END
 
-  ! reduce/reduce conflict for BEGIN resolved using rule 3 (lista_declaracoes -> empty .)
-    BEGIN           reduce using rule 3 (lista_declaracoes -> empty .)
-    CONST           reduce using rule 7 (declaracoes -> empty .)
-    VAR             reduce using rule 7 (declaracoes -> empty .)
-    TYPE            reduce using rule 7 (declaracoes -> empty .)
+    BEGIN           shift and go to state 14
 
-  ! BEGIN           [ reduce using rule 7 (declaracoes -> empty .) ]
-
+    compound_statement             shift and go to state 13
 
 state 6
 
-    (4) declaracoes -> CONST . lista_const
-    (8) lista_const -> . ID ATRIB NUMBER SEMICOLON lista_const
-    (9) lista_const -> . empty
-    (27) empty -> .
+    (2) declarations -> const_declaration . type_declaration var_declaration
+    (3) declarations -> const_declaration .
+    (34) type_declaration -> . TYPE type_list
+    (35) type_declaration -> . empty
+    (69) empty -> .
 
-    ID              shift and go to state 12
-    CONST           reduce using rule 27 (empty -> .)
-    VAR             reduce using rule 27 (empty -> .)
-    TYPE            reduce using rule 27 (empty -> .)
-    BEGIN           reduce using rule 27 (empty -> .)
+  ! reduce/reduce conflict for BEGIN resolved using rule 3 (declarations -> const_declaration .)
+    BEGIN           reduce using rule 3 (declarations -> const_declaration .)
+    TYPE            shift and go to state 11
+    VAR             reduce using rule 69 (empty -> .)
 
-    lista_const                    shift and go to state 11
-    empty                          shift and go to state 13
+  ! BEGIN           [ reduce using rule 69 (empty -> .) ]
+
+    type_declaration               shift and go to state 15
+    empty                          shift and go to state 16
 
 state 7
 
-    (5) declaracoes -> VAR . lista_var
-    (10) lista_var -> . ID COLON tipo SEMICOLON lista_var
-    (11) lista_var -> . empty
-    (27) empty -> .
+    (4) declarations -> type_declaration .
 
-    ID              shift and go to state 15
-    CONST           reduce using rule 27 (empty -> .)
-    VAR             reduce using rule 27 (empty -> .)
-    TYPE            reduce using rule 27 (empty -> .)
-    BEGIN           reduce using rule 27 (empty -> .)
+    BEGIN           reduce using rule 4 (declarations -> type_declaration .)
 
-    lista_var                      shift and go to state 14
-    empty                          shift and go to state 16
 
 state 8
 
-    (6) declaracoes -> TYPE . lista_tipo
-    (16) lista_tipo -> . ID ATRIB tipo SEMICOLON lista_tipo
-    (17) lista_tipo -> . empty
-    (27) empty -> .
+    (5) declarations -> var_declaration .
 
-    ID              shift and go to state 18
-    CONST           reduce using rule 27 (empty -> .)
-    VAR             reduce using rule 27 (empty -> .)
-    TYPE            reduce using rule 27 (empty -> .)
-    BEGIN           reduce using rule 27 (empty -> .)
+    BEGIN           reduce using rule 5 (declarations -> var_declaration .)
 
-    lista_tipo                     shift and go to state 17
-    empty                          shift and go to state 19
 
 state 9
 
-    (1) program -> PROGRAM lista_declaracoes BEGIN . lista_com END
-    (19) lista_com -> . comando SEMICOLON lista_com
-    (20) lista_com -> . empty
-    (21) comando -> . atribuicao
-    (22) comando -> . leitura
-    (23) comando -> . escrita
-    (27) empty -> .
-    (24) atribuicao -> . ID ASSIGN NUMBER
-    (25) leitura -> . READ LPAREN ID RPAREN
-    (26) escrita -> . WRITE LPAREN STRING RPAREN
+    (6) declarations -> empty .
+    (8) const_declaration -> empty .
+    (35) type_declaration -> empty .
+    (49) var_declaration -> empty .
 
-    END             reduce using rule 27 (empty -> .)
-    ID              shift and go to state 26
-    READ            shift and go to state 27
-    WRITE           shift and go to state 28
+  ! reduce/reduce conflict for BEGIN resolved using rule 6 (declarations -> empty .)
+  ! reduce/reduce conflict for BEGIN resolved using rule 6 (declarations -> empty .)
+  ! reduce/reduce conflict for BEGIN resolved using rule 6 (declarations -> empty .)
+    BEGIN           reduce using rule 6 (declarations -> empty .)
+    TYPE            reduce using rule 8 (const_declaration -> empty .)
+    VAR             reduce using rule 8 (const_declaration -> empty .)
 
-    lista_com                      shift and go to state 20
-    comando                        shift and go to state 21
-    empty                          shift and go to state 22
-    atribuicao                     shift and go to state 23
-    leitura                        shift and go to state 24
-    escrita                        shift and go to state 25
+  ! BEGIN           [ reduce using rule 8 (const_declaration -> empty .) ]
+  ! BEGIN           [ reduce using rule 35 (type_declaration -> empty .) ]
+  ! BEGIN           [ reduce using rule 49 (var_declaration -> empty .) ]
+
 
 state 10
 
-    (2) lista_declaracoes -> declaracoes lista_declaracoes .
+    (7) const_declaration -> CONST . const_list
+    (9) const_list -> . ID ATRIB expression SEMICOLON
+    (10) const_list -> . const_list ID ATRIB expression SEMICOLON
 
-    BEGIN           reduce using rule 2 (lista_declaracoes -> declaracoes lista_declaracoes .)
+    ID              shift and go to state 18
 
+    const_list                     shift and go to state 17
 
 state 11
 
-    (4) declaracoes -> CONST lista_const .
+    (34) type_declaration -> TYPE . type_list
+    (36) type_list -> . ID ATRIB type SEMICOLON
+    (37) type_list -> . type_list ID ATRIB type SEMICOLON
 
-    CONST           reduce using rule 4 (declaracoes -> CONST lista_const .)
-    VAR             reduce using rule 4 (declaracoes -> CONST lista_const .)
-    TYPE            reduce using rule 4 (declaracoes -> CONST lista_const .)
-    BEGIN           reduce using rule 4 (declaracoes -> CONST lista_const .)
+    ID              shift and go to state 20
 
+    type_list                      shift and go to state 19
 
 state 12
 
-    (8) lista_const -> ID . ATRIB NUMBER SEMICOLON lista_const
+    (48) var_declaration -> VAR . var_list
+    (50) var_list -> . ID COLON type SEMICOLON
+    (51) var_list -> . var_list ID COLON type SEMICOLON
 
-    ATRIB           shift and go to state 29
+    ID              shift and go to state 22
 
+    var_list                       shift and go to state 21
 
 state 13
 
-    (9) lista_const -> empty .
+    (1) program -> PROGRAM ID SEMICOLON declarations compound_statement . DOT
 
-    CONST           reduce using rule 9 (lista_const -> empty .)
-    VAR             reduce using rule 9 (lista_const -> empty .)
-    TYPE            reduce using rule 9 (lista_const -> empty .)
-    BEGIN           reduce using rule 9 (lista_const -> empty .)
+    DOT             shift and go to state 23
 
 
 state 14
 
-    (5) declaracoes -> VAR lista_var .
+    (52) compound_statement -> BEGIN . statement_list END
+    (53) statement_list -> . statement
+    (54) statement_list -> . statement_list SEMICOLON statement
+    (55) statement -> . assignment_statement
+    (56) statement -> . if_statement
+    (57) statement -> . while_statement
+    (58) statement -> . for_statement
+    (59) statement -> . compound_statement
+    (60) statement -> . read_statement
+    (61) statement -> . write_statement
+    (62) statement -> . empty
+    (63) assignment_statement -> . ID ATRIB expression
+    (64) if_statement -> . IF expression THEN statement ELSE statement
+    (65) while_statement -> . WHILE expression DO statement
+    (66) for_statement -> . FOR ID ASSIGN expression TO expression DO statement
+    (52) compound_statement -> . BEGIN statement_list END
+    (67) read_statement -> . READ LPAREN ID RPAREN
+    (68) write_statement -> . WRITE LPAREN expression RPAREN
+    (69) empty -> .
 
-    CONST           reduce using rule 5 (declaracoes -> VAR lista_var .)
-    VAR             reduce using rule 5 (declaracoes -> VAR lista_var .)
-    TYPE            reduce using rule 5 (declaracoes -> VAR lista_var .)
-    BEGIN           reduce using rule 5 (declaracoes -> VAR lista_var .)
+    ID              shift and go to state 34
+    IF              shift and go to state 35
+    WHILE           shift and go to state 36
+    FOR             shift and go to state 37
+    BEGIN           shift and go to state 14
+    READ            shift and go to state 38
+    WRITE           shift and go to state 39
+    END             reduce using rule 69 (empty -> .)
+    SEMICOLON       reduce using rule 69 (empty -> .)
 
+    statement_list                 shift and go to state 24
+    statement                      shift and go to state 25
+    assignment_statement           shift and go to state 26
+    if_statement                   shift and go to state 27
+    while_statement                shift and go to state 28
+    for_statement                  shift and go to state 29
+    compound_statement             shift and go to state 30
+    read_statement                 shift and go to state 31
+    write_statement                shift and go to state 32
+    empty                          shift and go to state 33
 
 state 15
 
-    (10) lista_var -> ID . COLON tipo SEMICOLON lista_var
+    (2) declarations -> const_declaration type_declaration . var_declaration
+    (48) var_declaration -> . VAR var_list
+    (49) var_declaration -> . empty
+    (69) empty -> .
 
-    COLON           shift and go to state 30
+    VAR             shift and go to state 12
+    BEGIN           reduce using rule 69 (empty -> .)
 
+    var_declaration                shift and go to state 40
+    empty                          shift and go to state 41
 
 state 16
 
-    (11) lista_var -> empty .
+    (35) type_declaration -> empty .
 
-    CONST           reduce using rule 11 (lista_var -> empty .)
-    VAR             reduce using rule 11 (lista_var -> empty .)
-    TYPE            reduce using rule 11 (lista_var -> empty .)
-    BEGIN           reduce using rule 11 (lista_var -> empty .)
+    VAR             reduce using rule 35 (type_declaration -> empty .)
+    BEGIN           reduce using rule 35 (type_declaration -> empty .)
 
 
 state 17
 
-    (6) declaracoes -> TYPE lista_tipo .
+    (7) const_declaration -> CONST const_list .
+    (10) const_list -> const_list . ID ATRIB expression SEMICOLON
 
-    CONST           reduce using rule 6 (declaracoes -> TYPE lista_tipo .)
-    VAR             reduce using rule 6 (declaracoes -> TYPE lista_tipo .)
-    TYPE            reduce using rule 6 (declaracoes -> TYPE lista_tipo .)
-    BEGIN           reduce using rule 6 (declaracoes -> TYPE lista_tipo .)
+    TYPE            reduce using rule 7 (const_declaration -> CONST const_list .)
+    VAR             reduce using rule 7 (const_declaration -> CONST const_list .)
+    BEGIN           reduce using rule 7 (const_declaration -> CONST const_list .)
+    ID              shift and go to state 42
 
 
 state 18
 
-    (16) lista_tipo -> ID . ATRIB tipo SEMICOLON lista_tipo
+    (9) const_list -> ID . ATRIB expression SEMICOLON
 
-    ATRIB           shift and go to state 31
+    ATRIB           shift and go to state 43
 
 
 state 19
 
-    (17) lista_tipo -> empty .
+    (34) type_declaration -> TYPE type_list .
+    (37) type_list -> type_list . ID ATRIB type SEMICOLON
 
-    CONST           reduce using rule 17 (lista_tipo -> empty .)
-    VAR             reduce using rule 17 (lista_tipo -> empty .)
-    TYPE            reduce using rule 17 (lista_tipo -> empty .)
-    BEGIN           reduce using rule 17 (lista_tipo -> empty .)
+    BEGIN           reduce using rule 34 (type_declaration -> TYPE type_list .)
+    VAR             reduce using rule 34 (type_declaration -> TYPE type_list .)
+    ID              shift and go to state 44
 
 
 state 20
 
-    (1) program -> PROGRAM lista_declaracoes BEGIN lista_com . END
+    (36) type_list -> ID . ATRIB type SEMICOLON
 
-    END             shift and go to state 32
+    ATRIB           shift and go to state 45
 
 
 state 21
 
-    (19) lista_com -> comando . SEMICOLON lista_com
+    (48) var_declaration -> VAR var_list .
+    (51) var_list -> var_list . ID COLON type SEMICOLON
 
-    SEMICOLON       shift and go to state 33
+    BEGIN           reduce using rule 48 (var_declaration -> VAR var_list .)
+    ID              shift and go to state 46
 
 
 state 22
 
-    (20) lista_com -> empty .
+    (50) var_list -> ID . COLON type SEMICOLON
 
-    END             reduce using rule 20 (lista_com -> empty .)
+    COLON           shift and go to state 47
 
 
 state 23
 
-    (21) comando -> atribuicao .
+    (1) program -> PROGRAM ID SEMICOLON declarations compound_statement DOT .
 
-    SEMICOLON       reduce using rule 21 (comando -> atribuicao .)
+    $end            reduce using rule 1 (program -> PROGRAM ID SEMICOLON declarations compound_statement DOT .)
 
 
 state 24
 
-    (22) comando -> leitura .
+    (52) compound_statement -> BEGIN statement_list . END
+    (54) statement_list -> statement_list . SEMICOLON statement
 
-    SEMICOLON       reduce using rule 22 (comando -> leitura .)
+    END             shift and go to state 48
+    SEMICOLON       shift and go to state 49
 
 
 state 25
 
-    (23) comando -> escrita .
+    (53) statement_list -> statement .
 
-    SEMICOLON       reduce using rule 23 (comando -> escrita .)
+    END             reduce using rule 53 (statement_list -> statement .)
+    SEMICOLON       reduce using rule 53 (statement_list -> statement .)
 
 
 state 26
 
-    (24) atribuicao -> ID . ASSIGN NUMBER
+    (55) statement -> assignment_statement .
 
-    ASSIGN          shift and go to state 34
+    END             reduce using rule 55 (statement -> assignment_statement .)
+    SEMICOLON       reduce using rule 55 (statement -> assignment_statement .)
+    ELSE            reduce using rule 55 (statement -> assignment_statement .)
 
 
 state 27
 
-    (25) leitura -> READ . LPAREN ID RPAREN
+    (56) statement -> if_statement .
 
-    LPAREN          shift and go to state 35
+    END             reduce using rule 56 (statement -> if_statement .)
+    SEMICOLON       reduce using rule 56 (statement -> if_statement .)
+    ELSE            reduce using rule 56 (statement -> if_statement .)
 
 
 state 28
 
-    (26) escrita -> WRITE . LPAREN STRING RPAREN
+    (57) statement -> while_statement .
 
-    LPAREN          shift and go to state 36
+    END             reduce using rule 57 (statement -> while_statement .)
+    SEMICOLON       reduce using rule 57 (statement -> while_statement .)
+    ELSE            reduce using rule 57 (statement -> while_statement .)
 
 
 state 29
 
-    (8) lista_const -> ID ATRIB . NUMBER SEMICOLON lista_const
+    (58) statement -> for_statement .
 
-    NUMBER          shift and go to state 37
+    END             reduce using rule 58 (statement -> for_statement .)
+    SEMICOLON       reduce using rule 58 (statement -> for_statement .)
+    ELSE            reduce using rule 58 (statement -> for_statement .)
 
 
 state 30
 
-    (10) lista_var -> ID COLON . tipo SEMICOLON lista_var
-    (12) tipo -> . INTEGER
-    (13) tipo -> . REAL
-    (14) tipo -> . CHAR
-    (15) tipo -> . BOOLEAN
+    (59) statement -> compound_statement .
 
-    INTEGER         shift and go to state 39
-    REAL            shift and go to state 40
-    CHAR            shift and go to state 41
-    BOOLEAN         shift and go to state 42
+    END             reduce using rule 59 (statement -> compound_statement .)
+    SEMICOLON       reduce using rule 59 (statement -> compound_statement .)
+    ELSE            reduce using rule 59 (statement -> compound_statement .)
 
-    tipo                           shift and go to state 38
 
 state 31
 
-    (16) lista_tipo -> ID ATRIB . tipo SEMICOLON lista_tipo
-    (12) tipo -> . INTEGER
-    (13) tipo -> . REAL
-    (14) tipo -> . CHAR
-    (15) tipo -> . BOOLEAN
+    (60) statement -> read_statement .
 
-    INTEGER         shift and go to state 39
-    REAL            shift and go to state 40
-    CHAR            shift and go to state 41
-    BOOLEAN         shift and go to state 42
+    END             reduce using rule 60 (statement -> read_statement .)
+    SEMICOLON       reduce using rule 60 (statement -> read_statement .)
+    ELSE            reduce using rule 60 (statement -> read_statement .)
 
-    tipo                           shift and go to state 43
 
 state 32
 
-    (1) program -> PROGRAM lista_declaracoes BEGIN lista_com END .
+    (61) statement -> write_statement .
 
-    $end            reduce using rule 1 (program -> PROGRAM lista_declaracoes BEGIN lista_com END .)
+    END             reduce using rule 61 (statement -> write_statement .)
+    SEMICOLON       reduce using rule 61 (statement -> write_statement .)
+    ELSE            reduce using rule 61 (statement -> write_statement .)
 
 
 state 33
 
-    (19) lista_com -> comando SEMICOLON . lista_com
-    (19) lista_com -> . comando SEMICOLON lista_com
-    (20) lista_com -> . empty
-    (21) comando -> . atribuicao
-    (22) comando -> . leitura
-    (23) comando -> . escrita
-    (27) empty -> .
-    (24) atribuicao -> . ID ASSIGN NUMBER
-    (25) leitura -> . READ LPAREN ID RPAREN
-    (26) escrita -> . WRITE LPAREN STRING RPAREN
+    (62) statement -> empty .
 
-    END             reduce using rule 27 (empty -> .)
-    ID              shift and go to state 26
-    READ            shift and go to state 27
-    WRITE           shift and go to state 28
+    END             reduce using rule 62 (statement -> empty .)
+    SEMICOLON       reduce using rule 62 (statement -> empty .)
+    ELSE            reduce using rule 62 (statement -> empty .)
 
-    comando                        shift and go to state 21
-    lista_com                      shift and go to state 44
-    empty                          shift and go to state 22
-    atribuicao                     shift and go to state 23
-    leitura                        shift and go to state 24
-    escrita                        shift and go to state 25
 
 state 34
 
-    (24) atribuicao -> ID ASSIGN . NUMBER
+    (63) assignment_statement -> ID . ATRIB expression
 
-    NUMBER          shift and go to state 45
+    ATRIB           shift and go to state 50
 
 
 state 35
 
-    (25) leitura -> READ LPAREN . ID RPAREN
+    (64) if_statement -> IF . expression THEN statement ELSE statement
+    (11) expression -> . EXP
+    (12) expression -> . EXP_CONST
+    (13) expression -> . EXP_COM
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
 
-    ID              shift and go to state 46
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 56
+    PARAM_LOGICO    shift and go to state 57
 
+    expression                     shift and go to state 51
+    EXP                            shift and go to state 52
+    EXP_CONST                      shift and go to state 53
+    EXP_COM                        shift and go to state 54
 
 state 36
 
-    (26) escrita -> WRITE LPAREN . STRING RPAREN
+    (65) while_statement -> WHILE . expression DO statement
+    (11) expression -> . EXP
+    (12) expression -> . EXP_CONST
+    (13) expression -> . EXP_COM
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
 
-    STRING          shift and go to state 47
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 56
+    PARAM_LOGICO    shift and go to state 57
 
+    expression                     shift and go to state 58
+    EXP                            shift and go to state 52
+    EXP_CONST                      shift and go to state 53
+    EXP_COM                        shift and go to state 54
 
 state 37
 
-    (8) lista_const -> ID ATRIB NUMBER . SEMICOLON lista_const
+    (66) for_statement -> FOR . ID ASSIGN expression TO expression DO statement
 
-    SEMICOLON       shift and go to state 48
+    ID              shift and go to state 59
 
 
 state 38
 
-    (10) lista_var -> ID COLON tipo . SEMICOLON lista_var
+    (67) read_statement -> READ . LPAREN ID RPAREN
 
-    SEMICOLON       shift and go to state 49
+    LPAREN          shift and go to state 60
 
 
 state 39
 
-    (12) tipo -> INTEGER .
+    (68) write_statement -> WRITE . LPAREN expression RPAREN
 
-    SEMICOLON       reduce using rule 12 (tipo -> INTEGER .)
+    LPAREN          shift and go to state 61
 
 
 state 40
 
-    (13) tipo -> REAL .
+    (2) declarations -> const_declaration type_declaration var_declaration .
 
-    SEMICOLON       reduce using rule 13 (tipo -> REAL .)
+    BEGIN           reduce using rule 2 (declarations -> const_declaration type_declaration var_declaration .)
 
 
 state 41
 
-    (14) tipo -> CHAR .
+    (49) var_declaration -> empty .
 
-    SEMICOLON       reduce using rule 14 (tipo -> CHAR .)
+    BEGIN           reduce using rule 49 (var_declaration -> empty .)
 
 
 state 42
 
-    (15) tipo -> BOOLEAN .
+    (10) const_list -> const_list ID . ATRIB expression SEMICOLON
 
-    SEMICOLON       reduce using rule 15 (tipo -> BOOLEAN .)
+    ATRIB           shift and go to state 62
 
 
 state 43
 
-    (16) lista_tipo -> ID ATRIB tipo . SEMICOLON lista_tipo
+    (9) const_list -> ID ATRIB . expression SEMICOLON
+    (11) expression -> . EXP
+    (12) expression -> . EXP_CONST
+    (13) expression -> . EXP_COM
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
 
-    SEMICOLON       shift and go to state 50
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 56
+    PARAM_LOGICO    shift and go to state 57
 
+    expression                     shift and go to state 63
+    EXP                            shift and go to state 52
+    EXP_CONST                      shift and go to state 53
+    EXP_COM                        shift and go to state 54
 
 state 44
 
-    (19) lista_com -> comando SEMICOLON lista_com .
+    (37) type_list -> type_list ID . ATRIB type SEMICOLON
 
-    END             reduce using rule 19 (lista_com -> comando SEMICOLON lista_com .)
+    ATRIB           shift and go to state 64
 
 
 state 45
 
-    (24) atribuicao -> ID ASSIGN NUMBER .
+    (36) type_list -> ID ATRIB . type SEMICOLON
+    (38) type -> . INTEGER
+    (39) type -> . REAL
+    (40) type -> . CHAR
+    (41) type -> . BOOLEAN
+    (42) type -> . array_type
+    (43) type -> . record_type
+    (44) array_type -> . ARRAY LBRACKET NUMBER RBRACKET OF type
+    (45) record_type -> . RECORD field_list END
 
-    SEMICOLON       reduce using rule 24 (atribuicao -> ID ASSIGN NUMBER .)
+    INTEGER         shift and go to state 66
+    REAL            shift and go to state 67
+    CHAR            shift and go to state 68
+    BOOLEAN         shift and go to state 69
+    ARRAY           shift and go to state 72
+    RECORD          shift and go to state 73
 
+    type                           shift and go to state 65
+    array_type                     shift and go to state 70
+    record_type                    shift and go to state 71
 
 state 46
 
-    (25) leitura -> READ LPAREN ID . RPAREN
+    (51) var_list -> var_list ID . COLON type SEMICOLON
 
-    RPAREN          shift and go to state 51
+    COLON           shift and go to state 74
 
 
 state 47
 
-    (26) escrita -> WRITE LPAREN STRING . RPAREN
+    (50) var_list -> ID COLON . type SEMICOLON
+    (38) type -> . INTEGER
+    (39) type -> . REAL
+    (40) type -> . CHAR
+    (41) type -> . BOOLEAN
+    (42) type -> . array_type
+    (43) type -> . record_type
+    (44) array_type -> . ARRAY LBRACKET NUMBER RBRACKET OF type
+    (45) record_type -> . RECORD field_list END
 
-    RPAREN          shift and go to state 52
+    INTEGER         shift and go to state 66
+    REAL            shift and go to state 67
+    CHAR            shift and go to state 68
+    BOOLEAN         shift and go to state 69
+    ARRAY           shift and go to state 72
+    RECORD          shift and go to state 73
 
+    type                           shift and go to state 75
+    array_type                     shift and go to state 70
+    record_type                    shift and go to state 71
 
 state 48
 
-    (8) lista_const -> ID ATRIB NUMBER SEMICOLON . lista_const
-    (8) lista_const -> . ID ATRIB NUMBER SEMICOLON lista_const
-    (9) lista_const -> . empty
-    (27) empty -> .
+    (52) compound_statement -> BEGIN statement_list END .
 
-    ID              shift and go to state 12
-    CONST           reduce using rule 27 (empty -> .)
-    VAR             reduce using rule 27 (empty -> .)
-    TYPE            reduce using rule 27 (empty -> .)
-    BEGIN           reduce using rule 27 (empty -> .)
+    DOT             reduce using rule 52 (compound_statement -> BEGIN statement_list END .)
+    END             reduce using rule 52 (compound_statement -> BEGIN statement_list END .)
+    SEMICOLON       reduce using rule 52 (compound_statement -> BEGIN statement_list END .)
+    ELSE            reduce using rule 52 (compound_statement -> BEGIN statement_list END .)
 
-    lista_const                    shift and go to state 53
-    empty                          shift and go to state 13
 
 state 49
 
-    (10) lista_var -> ID COLON tipo SEMICOLON . lista_var
-    (10) lista_var -> . ID COLON tipo SEMICOLON lista_var
-    (11) lista_var -> . empty
-    (27) empty -> .
+    (54) statement_list -> statement_list SEMICOLON . statement
+    (55) statement -> . assignment_statement
+    (56) statement -> . if_statement
+    (57) statement -> . while_statement
+    (58) statement -> . for_statement
+    (59) statement -> . compound_statement
+    (60) statement -> . read_statement
+    (61) statement -> . write_statement
+    (62) statement -> . empty
+    (63) assignment_statement -> . ID ATRIB expression
+    (64) if_statement -> . IF expression THEN statement ELSE statement
+    (65) while_statement -> . WHILE expression DO statement
+    (66) for_statement -> . FOR ID ASSIGN expression TO expression DO statement
+    (52) compound_statement -> . BEGIN statement_list END
+    (67) read_statement -> . READ LPAREN ID RPAREN
+    (68) write_statement -> . WRITE LPAREN expression RPAREN
+    (69) empty -> .
 
-    ID              shift and go to state 15
-    CONST           reduce using rule 27 (empty -> .)
-    VAR             reduce using rule 27 (empty -> .)
-    TYPE            reduce using rule 27 (empty -> .)
-    BEGIN           reduce using rule 27 (empty -> .)
+    ID              shift and go to state 34
+    IF              shift and go to state 35
+    WHILE           shift and go to state 36
+    FOR             shift and go to state 37
+    BEGIN           shift and go to state 14
+    READ            shift and go to state 38
+    WRITE           shift and go to state 39
+    END             reduce using rule 69 (empty -> .)
+    SEMICOLON       reduce using rule 69 (empty -> .)
 
-    lista_var                      shift and go to state 54
-    empty                          shift and go to state 16
+    statement                      shift and go to state 76
+    assignment_statement           shift and go to state 26
+    if_statement                   shift and go to state 27
+    while_statement                shift and go to state 28
+    for_statement                  shift and go to state 29
+    compound_statement             shift and go to state 30
+    read_statement                 shift and go to state 31
+    write_statement                shift and go to state 32
+    empty                          shift and go to state 33
 
 state 50
 
-    (16) lista_tipo -> ID ATRIB tipo SEMICOLON . lista_tipo
-    (16) lista_tipo -> . ID ATRIB tipo SEMICOLON lista_tipo
-    (17) lista_tipo -> . empty
-    (27) empty -> .
+    (63) assignment_statement -> ID ATRIB . expression
+    (11) expression -> . EXP
+    (12) expression -> . EXP_CONST
+    (13) expression -> . EXP_COM
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
 
-    ID              shift and go to state 18
-    CONST           reduce using rule 27 (empty -> .)
-    VAR             reduce using rule 27 (empty -> .)
-    TYPE            reduce using rule 27 (empty -> .)
-    BEGIN           reduce using rule 27 (empty -> .)
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 56
+    PARAM_LOGICO    shift and go to state 57
 
-    lista_tipo                     shift and go to state 55
-    empty                          shift and go to state 19
+    expression                     shift and go to state 77
+    EXP                            shift and go to state 52
+    EXP_CONST                      shift and go to state 53
+    EXP_COM                        shift and go to state 54
 
 state 51
 
-    (25) leitura -> READ LPAREN ID RPAREN .
+    (64) if_statement -> IF expression . THEN statement ELSE statement
 
-    SEMICOLON       reduce using rule 25 (leitura -> READ LPAREN ID RPAREN .)
+    THEN            shift and go to state 78
 
 
 state 52
 
-    (26) escrita -> WRITE LPAREN STRING RPAREN .
+    (11) expression -> EXP .
 
-    SEMICOLON       reduce using rule 26 (escrita -> WRITE LPAREN STRING RPAREN .)
+    THEN            reduce using rule 11 (expression -> EXP .)
+    DO              reduce using rule 11 (expression -> EXP .)
+    SEMICOLON       reduce using rule 11 (expression -> EXP .)
+    END             reduce using rule 11 (expression -> EXP .)
+    ELSE            reduce using rule 11 (expression -> EXP .)
+    RPAREN          reduce using rule 11 (expression -> EXP .)
+    TO              reduce using rule 11 (expression -> EXP .)
 
 
 state 53
 
-    (8) lista_const -> ID ATRIB NUMBER SEMICOLON lista_const .
+    (12) expression -> EXP_CONST .
 
-    CONST           reduce using rule 8 (lista_const -> ID ATRIB NUMBER SEMICOLON lista_const .)
-    VAR             reduce using rule 8 (lista_const -> ID ATRIB NUMBER SEMICOLON lista_const .)
-    TYPE            reduce using rule 8 (lista_const -> ID ATRIB NUMBER SEMICOLON lista_const .)
-    BEGIN           reduce using rule 8 (lista_const -> ID ATRIB NUMBER SEMICOLON lista_const .)
+    THEN            reduce using rule 12 (expression -> EXP_CONST .)
+    DO              reduce using rule 12 (expression -> EXP_CONST .)
+    SEMICOLON       reduce using rule 12 (expression -> EXP_CONST .)
+    END             reduce using rule 12 (expression -> EXP_CONST .)
+    ELSE            reduce using rule 12 (expression -> EXP_CONST .)
+    RPAREN          reduce using rule 12 (expression -> EXP_CONST .)
+    TO              reduce using rule 12 (expression -> EXP_CONST .)
 
 
 state 54
 
-    (10) lista_var -> ID COLON tipo SEMICOLON lista_var .
+    (13) expression -> EXP_COM .
 
-    CONST           reduce using rule 10 (lista_var -> ID COLON tipo SEMICOLON lista_var .)
-    VAR             reduce using rule 10 (lista_var -> ID COLON tipo SEMICOLON lista_var .)
-    TYPE            reduce using rule 10 (lista_var -> ID COLON tipo SEMICOLON lista_var .)
-    BEGIN           reduce using rule 10 (lista_var -> ID COLON tipo SEMICOLON lista_var .)
+    THEN            reduce using rule 13 (expression -> EXP_COM .)
+    DO              reduce using rule 13 (expression -> EXP_COM .)
+    SEMICOLON       reduce using rule 13 (expression -> EXP_COM .)
+    END             reduce using rule 13 (expression -> EXP_COM .)
+    ELSE            reduce using rule 13 (expression -> EXP_COM .)
+    RPAREN          reduce using rule 13 (expression -> EXP_COM .)
+    TO              reduce using rule 13 (expression -> EXP_COM .)
 
 
 state 55
 
-    (16) lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo .
+    (14) EXP -> PARAMETRO . EXP_L1
+    (22) EXP_CONST -> PARAMETRO . EXP_CONST_LINHA
+    (16) EXP_L1 -> . OP_MAT EXP
+    (17) EXP_L1 -> . empty
+    (24) EXP_CONST_LINHA -> . OP_MAT EXP_CONST
+    (25) EXP_CONST_LINHA -> . empty
+    (69) empty -> .
 
-    CONST           reduce using rule 16 (lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo .)
-    VAR             reduce using rule 16 (lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo .)
-    TYPE            reduce using rule 16 (lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo .)
-    BEGIN           reduce using rule 16 (lista_tipo -> ID ATRIB tipo SEMICOLON lista_tipo .)
+    OP_MAT          shift and go to state 81
+    THEN            reduce using rule 69 (empty -> .)
+    DO              reduce using rule 69 (empty -> .)
+    SEMICOLON       reduce using rule 69 (empty -> .)
+    END             reduce using rule 69 (empty -> .)
+    ELSE            reduce using rule 69 (empty -> .)
+    RPAREN          reduce using rule 69 (empty -> .)
+    TO              reduce using rule 69 (empty -> .)
+
+    EXP_L1                         shift and go to state 79
+    EXP_CONST_LINHA                shift and go to state 80
+    empty                          shift and go to state 82
+
+state 56
+
+    (15) EXP -> LPAREN . EXP RPAREN
+    (23) EXP_CONST -> LPAREN . EXP_CONST RPAREN
+    (31) EXP_COM -> LPAREN . EXP_COM RPAREN
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
+
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 56
+    PARAM_LOGICO    shift and go to state 57
+
+    EXP                            shift and go to state 83
+    EXP_CONST                      shift and go to state 84
+    EXP_COM                        shift and go to state 85
+
+state 57
+
+    (30) EXP_COM -> PARAM_LOGICO . EXP_COM_LINHA
+    (32) EXP_COM_LINHA -> . OP_LOGICO EXP_COM
+    (33) EXP_COM_LINHA -> . empty
+    (69) empty -> .
+
+    OP_LOGICO       shift and go to state 87
+    THEN            reduce using rule 69 (empty -> .)
+    DO              reduce using rule 69 (empty -> .)
+    SEMICOLON       reduce using rule 69 (empty -> .)
+    END             reduce using rule 69 (empty -> .)
+    ELSE            reduce using rule 69 (empty -> .)
+    RPAREN          reduce using rule 69 (empty -> .)
+    TO              reduce using rule 69 (empty -> .)
+
+    EXP_COM_LINHA                  shift and go to state 86
+    empty                          shift and go to state 88
+
+state 58
+
+    (65) while_statement -> WHILE expression . DO statement
+
+    DO              shift and go to state 89
+
+
+state 59
+
+    (66) for_statement -> FOR ID . ASSIGN expression TO expression DO statement
+
+    ASSIGN          shift and go to state 90
+
+
+state 60
+
+    (67) read_statement -> READ LPAREN . ID RPAREN
+
+    ID              shift and go to state 91
+
+
+state 61
+
+    (68) write_statement -> WRITE LPAREN . expression RPAREN
+    (11) expression -> . EXP
+    (12) expression -> . EXP_CONST
+    (13) expression -> . EXP_COM
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
+
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 56
+    PARAM_LOGICO    shift and go to state 57
+
+    expression                     shift and go to state 92
+    EXP                            shift and go to state 52
+    EXP_CONST                      shift and go to state 53
+    EXP_COM                        shift and go to state 54
+
+state 62
+
+    (10) const_list -> const_list ID ATRIB . expression SEMICOLON
+    (11) expression -> . EXP
+    (12) expression -> . EXP_CONST
+    (13) expression -> . EXP_COM
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
+
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 56
+    PARAM_LOGICO    shift and go to state 57
+
+    expression                     shift and go to state 93
+    EXP                            shift and go to state 52
+    EXP_CONST                      shift and go to state 53
+    EXP_COM                        shift and go to state 54
+
+state 63
+
+    (9) const_list -> ID ATRIB expression . SEMICOLON
+
+    SEMICOLON       shift and go to state 94
+
+
+state 64
+
+    (37) type_list -> type_list ID ATRIB . type SEMICOLON
+    (38) type -> . INTEGER
+    (39) type -> . REAL
+    (40) type -> . CHAR
+    (41) type -> . BOOLEAN
+    (42) type -> . array_type
+    (43) type -> . record_type
+    (44) array_type -> . ARRAY LBRACKET NUMBER RBRACKET OF type
+    (45) record_type -> . RECORD field_list END
+
+    INTEGER         shift and go to state 66
+    REAL            shift and go to state 67
+    CHAR            shift and go to state 68
+    BOOLEAN         shift and go to state 69
+    ARRAY           shift and go to state 72
+    RECORD          shift and go to state 73
+
+    type                           shift and go to state 95
+    array_type                     shift and go to state 70
+    record_type                    shift and go to state 71
+
+state 65
+
+    (36) type_list -> ID ATRIB type . SEMICOLON
+
+    SEMICOLON       shift and go to state 96
+
+
+state 66
+
+    (38) type -> INTEGER .
+
+    SEMICOLON       reduce using rule 38 (type -> INTEGER .)
+
+
+state 67
+
+    (39) type -> REAL .
+
+    SEMICOLON       reduce using rule 39 (type -> REAL .)
+
+
+state 68
+
+    (40) type -> CHAR .
+
+    SEMICOLON       reduce using rule 40 (type -> CHAR .)
+
+
+state 69
+
+    (41) type -> BOOLEAN .
+
+    SEMICOLON       reduce using rule 41 (type -> BOOLEAN .)
+
+
+state 70
+
+    (42) type -> array_type .
+
+    SEMICOLON       reduce using rule 42 (type -> array_type .)
+
+
+state 71
+
+    (43) type -> record_type .
+
+    SEMICOLON       reduce using rule 43 (type -> record_type .)
+
+
+state 72
+
+    (44) array_type -> ARRAY . LBRACKET NUMBER RBRACKET OF type
+
+    LBRACKET        shift and go to state 97
+
+
+state 73
+
+    (45) record_type -> RECORD . field_list END
+    (46) field_list -> . ID COLON type SEMICOLON
+    (47) field_list -> . field_list ID COLON type SEMICOLON
+
+    ID              shift and go to state 99
+
+    field_list                     shift and go to state 98
+
+state 74
+
+    (51) var_list -> var_list ID COLON . type SEMICOLON
+    (38) type -> . INTEGER
+    (39) type -> . REAL
+    (40) type -> . CHAR
+    (41) type -> . BOOLEAN
+    (42) type -> . array_type
+    (43) type -> . record_type
+    (44) array_type -> . ARRAY LBRACKET NUMBER RBRACKET OF type
+    (45) record_type -> . RECORD field_list END
+
+    INTEGER         shift and go to state 66
+    REAL            shift and go to state 67
+    CHAR            shift and go to state 68
+    BOOLEAN         shift and go to state 69
+    ARRAY           shift and go to state 72
+    RECORD          shift and go to state 73
+
+    type                           shift and go to state 100
+    array_type                     shift and go to state 70
+    record_type                    shift and go to state 71
+
+state 75
+
+    (50) var_list -> ID COLON type . SEMICOLON
+
+    SEMICOLON       shift and go to state 101
+
+
+state 76
+
+    (54) statement_list -> statement_list SEMICOLON statement .
+
+    END             reduce using rule 54 (statement_list -> statement_list SEMICOLON statement .)
+    SEMICOLON       reduce using rule 54 (statement_list -> statement_list SEMICOLON statement .)
+
+
+state 77
+
+    (63) assignment_statement -> ID ATRIB expression .
+
+    END             reduce using rule 63 (assignment_statement -> ID ATRIB expression .)
+    SEMICOLON       reduce using rule 63 (assignment_statement -> ID ATRIB expression .)
+    ELSE            reduce using rule 63 (assignment_statement -> ID ATRIB expression .)
+
+
+state 78
+
+    (64) if_statement -> IF expression THEN . statement ELSE statement
+    (55) statement -> . assignment_statement
+    (56) statement -> . if_statement
+    (57) statement -> . while_statement
+    (58) statement -> . for_statement
+    (59) statement -> . compound_statement
+    (60) statement -> . read_statement
+    (61) statement -> . write_statement
+    (62) statement -> . empty
+    (63) assignment_statement -> . ID ATRIB expression
+    (64) if_statement -> . IF expression THEN statement ELSE statement
+    (65) while_statement -> . WHILE expression DO statement
+    (66) for_statement -> . FOR ID ASSIGN expression TO expression DO statement
+    (52) compound_statement -> . BEGIN statement_list END
+    (67) read_statement -> . READ LPAREN ID RPAREN
+    (68) write_statement -> . WRITE LPAREN expression RPAREN
+    (69) empty -> .
+
+    ID              shift and go to state 34
+    IF              shift and go to state 35
+    WHILE           shift and go to state 36
+    FOR             shift and go to state 37
+    BEGIN           shift and go to state 14
+    READ            shift and go to state 38
+    WRITE           shift and go to state 39
+    ELSE            reduce using rule 69 (empty -> .)
+
+    statement                      shift and go to state 102
+    assignment_statement           shift and go to state 26
+    if_statement                   shift and go to state 27
+    while_statement                shift and go to state 28
+    for_statement                  shift and go to state 29
+    compound_statement             shift and go to state 30
+    read_statement                 shift and go to state 31
+    write_statement                shift and go to state 32
+    empty                          shift and go to state 33
+
+state 79
+
+    (14) EXP -> PARAMETRO EXP_L1 .
+
+    THEN            reduce using rule 14 (EXP -> PARAMETRO EXP_L1 .)
+    DO              reduce using rule 14 (EXP -> PARAMETRO EXP_L1 .)
+    SEMICOLON       reduce using rule 14 (EXP -> PARAMETRO EXP_L1 .)
+    END             reduce using rule 14 (EXP -> PARAMETRO EXP_L1 .)
+    ELSE            reduce using rule 14 (EXP -> PARAMETRO EXP_L1 .)
+    RPAREN          reduce using rule 14 (EXP -> PARAMETRO EXP_L1 .)
+    TO              reduce using rule 14 (EXP -> PARAMETRO EXP_L1 .)
+
+
+state 80
+
+    (22) EXP_CONST -> PARAMETRO EXP_CONST_LINHA .
+
+    THEN            reduce using rule 22 (EXP_CONST -> PARAMETRO EXP_CONST_LINHA .)
+    DO              reduce using rule 22 (EXP_CONST -> PARAMETRO EXP_CONST_LINHA .)
+    SEMICOLON       reduce using rule 22 (EXP_CONST -> PARAMETRO EXP_CONST_LINHA .)
+    END             reduce using rule 22 (EXP_CONST -> PARAMETRO EXP_CONST_LINHA .)
+    ELSE            reduce using rule 22 (EXP_CONST -> PARAMETRO EXP_CONST_LINHA .)
+    RPAREN          reduce using rule 22 (EXP_CONST -> PARAMETRO EXP_CONST_LINHA .)
+    TO              reduce using rule 22 (EXP_CONST -> PARAMETRO EXP_CONST_LINHA .)
+
+
+state 81
+
+    (16) EXP_L1 -> OP_MAT . EXP
+    (24) EXP_CONST_LINHA -> OP_MAT . EXP_CONST
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 105
+
+    EXP                            shift and go to state 103
+    EXP_CONST                      shift and go to state 104
+
+state 82
+
+    (17) EXP_L1 -> empty .
+    (25) EXP_CONST_LINHA -> empty .
+
+  ! reduce/reduce conflict for THEN resolved using rule 17 (EXP_L1 -> empty .)
+  ! reduce/reduce conflict for DO resolved using rule 17 (EXP_L1 -> empty .)
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 17 (EXP_L1 -> empty .)
+  ! reduce/reduce conflict for END resolved using rule 17 (EXP_L1 -> empty .)
+  ! reduce/reduce conflict for ELSE resolved using rule 17 (EXP_L1 -> empty .)
+  ! reduce/reduce conflict for RPAREN resolved using rule 17 (EXP_L1 -> empty .)
+  ! reduce/reduce conflict for TO resolved using rule 17 (EXP_L1 -> empty .)
+    THEN            reduce using rule 17 (EXP_L1 -> empty .)
+    DO              reduce using rule 17 (EXP_L1 -> empty .)
+    SEMICOLON       reduce using rule 17 (EXP_L1 -> empty .)
+    END             reduce using rule 17 (EXP_L1 -> empty .)
+    ELSE            reduce using rule 17 (EXP_L1 -> empty .)
+    RPAREN          reduce using rule 17 (EXP_L1 -> empty .)
+    TO              reduce using rule 17 (EXP_L1 -> empty .)
+
+  ! THEN            [ reduce using rule 25 (EXP_CONST_LINHA -> empty .) ]
+  ! DO              [ reduce using rule 25 (EXP_CONST_LINHA -> empty .) ]
+  ! SEMICOLON       [ reduce using rule 25 (EXP_CONST_LINHA -> empty .) ]
+  ! END             [ reduce using rule 25 (EXP_CONST_LINHA -> empty .) ]
+  ! ELSE            [ reduce using rule 25 (EXP_CONST_LINHA -> empty .) ]
+  ! RPAREN          [ reduce using rule 25 (EXP_CONST_LINHA -> empty .) ]
+  ! TO              [ reduce using rule 25 (EXP_CONST_LINHA -> empty .) ]
+
+
+state 83
+
+    (15) EXP -> LPAREN EXP . RPAREN
+
+    RPAREN          shift and go to state 106
+
+
+state 84
+
+    (23) EXP_CONST -> LPAREN EXP_CONST . RPAREN
+
+    RPAREN          shift and go to state 107
+
+
+state 85
+
+    (31) EXP_COM -> LPAREN EXP_COM . RPAREN
+
+    RPAREN          shift and go to state 108
+
+
+state 86
+
+    (30) EXP_COM -> PARAM_LOGICO EXP_COM_LINHA .
+
+    THEN            reduce using rule 30 (EXP_COM -> PARAM_LOGICO EXP_COM_LINHA .)
+    DO              reduce using rule 30 (EXP_COM -> PARAM_LOGICO EXP_COM_LINHA .)
+    SEMICOLON       reduce using rule 30 (EXP_COM -> PARAM_LOGICO EXP_COM_LINHA .)
+    END             reduce using rule 30 (EXP_COM -> PARAM_LOGICO EXP_COM_LINHA .)
+    ELSE            reduce using rule 30 (EXP_COM -> PARAM_LOGICO EXP_COM_LINHA .)
+    RPAREN          reduce using rule 30 (EXP_COM -> PARAM_LOGICO EXP_COM_LINHA .)
+    TO              reduce using rule 30 (EXP_COM -> PARAM_LOGICO EXP_COM_LINHA .)
+
+
+state 87
+
+    (32) EXP_COM_LINHA -> OP_LOGICO . EXP_COM
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
+
+    PARAM_LOGICO    shift and go to state 57
+    LPAREN          shift and go to state 110
+
+    EXP_COM                        shift and go to state 109
+
+state 88
+
+    (33) EXP_COM_LINHA -> empty .
+
+    THEN            reduce using rule 33 (EXP_COM_LINHA -> empty .)
+    DO              reduce using rule 33 (EXP_COM_LINHA -> empty .)
+    SEMICOLON       reduce using rule 33 (EXP_COM_LINHA -> empty .)
+    END             reduce using rule 33 (EXP_COM_LINHA -> empty .)
+    ELSE            reduce using rule 33 (EXP_COM_LINHA -> empty .)
+    RPAREN          reduce using rule 33 (EXP_COM_LINHA -> empty .)
+    TO              reduce using rule 33 (EXP_COM_LINHA -> empty .)
+
+
+state 89
+
+    (65) while_statement -> WHILE expression DO . statement
+    (55) statement -> . assignment_statement
+    (56) statement -> . if_statement
+    (57) statement -> . while_statement
+    (58) statement -> . for_statement
+    (59) statement -> . compound_statement
+    (60) statement -> . read_statement
+    (61) statement -> . write_statement
+    (62) statement -> . empty
+    (63) assignment_statement -> . ID ATRIB expression
+    (64) if_statement -> . IF expression THEN statement ELSE statement
+    (65) while_statement -> . WHILE expression DO statement
+    (66) for_statement -> . FOR ID ASSIGN expression TO expression DO statement
+    (52) compound_statement -> . BEGIN statement_list END
+    (67) read_statement -> . READ LPAREN ID RPAREN
+    (68) write_statement -> . WRITE LPAREN expression RPAREN
+    (69) empty -> .
+
+    ID              shift and go to state 34
+    IF              shift and go to state 35
+    WHILE           shift and go to state 36
+    FOR             shift and go to state 37
+    BEGIN           shift and go to state 14
+    READ            shift and go to state 38
+    WRITE           shift and go to state 39
+    END             reduce using rule 69 (empty -> .)
+    SEMICOLON       reduce using rule 69 (empty -> .)
+    ELSE            reduce using rule 69 (empty -> .)
+
+    statement                      shift and go to state 111
+    assignment_statement           shift and go to state 26
+    if_statement                   shift and go to state 27
+    while_statement                shift and go to state 28
+    for_statement                  shift and go to state 29
+    compound_statement             shift and go to state 30
+    read_statement                 shift and go to state 31
+    write_statement                shift and go to state 32
+    empty                          shift and go to state 33
+
+state 90
+
+    (66) for_statement -> FOR ID ASSIGN . expression TO expression DO statement
+    (11) expression -> . EXP
+    (12) expression -> . EXP_CONST
+    (13) expression -> . EXP_COM
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
+
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 56
+    PARAM_LOGICO    shift and go to state 57
+
+    expression                     shift and go to state 112
+    EXP                            shift and go to state 52
+    EXP_CONST                      shift and go to state 53
+    EXP_COM                        shift and go to state 54
+
+state 91
+
+    (67) read_statement -> READ LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 113
+
+
+state 92
+
+    (68) write_statement -> WRITE LPAREN expression . RPAREN
+
+    RPAREN          shift and go to state 114
+
+
+state 93
+
+    (10) const_list -> const_list ID ATRIB expression . SEMICOLON
+
+    SEMICOLON       shift and go to state 115
+
+
+state 94
+
+    (9) const_list -> ID ATRIB expression SEMICOLON .
+
+    ID              reduce using rule 9 (const_list -> ID ATRIB expression SEMICOLON .)
+    TYPE            reduce using rule 9 (const_list -> ID ATRIB expression SEMICOLON .)
+    VAR             reduce using rule 9 (const_list -> ID ATRIB expression SEMICOLON .)
+    BEGIN           reduce using rule 9 (const_list -> ID ATRIB expression SEMICOLON .)
+
+
+state 95
+
+    (37) type_list -> type_list ID ATRIB type . SEMICOLON
+
+    SEMICOLON       shift and go to state 116
+
+
+state 96
+
+    (36) type_list -> ID ATRIB type SEMICOLON .
+
+    ID              reduce using rule 36 (type_list -> ID ATRIB type SEMICOLON .)
+    BEGIN           reduce using rule 36 (type_list -> ID ATRIB type SEMICOLON .)
+    VAR             reduce using rule 36 (type_list -> ID ATRIB type SEMICOLON .)
+
+
+state 97
+
+    (44) array_type -> ARRAY LBRACKET . NUMBER RBRACKET OF type
+
+    NUMBER          shift and go to state 117
+
+
+state 98
+
+    (45) record_type -> RECORD field_list . END
+    (47) field_list -> field_list . ID COLON type SEMICOLON
+
+    END             shift and go to state 118
+    ID              shift and go to state 119
+
+
+state 99
+
+    (46) field_list -> ID . COLON type SEMICOLON
+
+    COLON           shift and go to state 120
+
+
+state 100
+
+    (51) var_list -> var_list ID COLON type . SEMICOLON
+
+    SEMICOLON       shift and go to state 121
+
+
+state 101
+
+    (50) var_list -> ID COLON type SEMICOLON .
+
+    ID              reduce using rule 50 (var_list -> ID COLON type SEMICOLON .)
+    BEGIN           reduce using rule 50 (var_list -> ID COLON type SEMICOLON .)
+
+
+state 102
+
+    (64) if_statement -> IF expression THEN statement . ELSE statement
+
+    ELSE            shift and go to state 122
+
+
+state 103
+
+    (16) EXP_L1 -> OP_MAT EXP .
+
+    THEN            reduce using rule 16 (EXP_L1 -> OP_MAT EXP .)
+    DO              reduce using rule 16 (EXP_L1 -> OP_MAT EXP .)
+    SEMICOLON       reduce using rule 16 (EXP_L1 -> OP_MAT EXP .)
+    END             reduce using rule 16 (EXP_L1 -> OP_MAT EXP .)
+    ELSE            reduce using rule 16 (EXP_L1 -> OP_MAT EXP .)
+    RPAREN          reduce using rule 16 (EXP_L1 -> OP_MAT EXP .)
+    TO              reduce using rule 16 (EXP_L1 -> OP_MAT EXP .)
+
+
+state 104
+
+    (24) EXP_CONST_LINHA -> OP_MAT EXP_CONST .
+
+    THEN            reduce using rule 24 (EXP_CONST_LINHA -> OP_MAT EXP_CONST .)
+    DO              reduce using rule 24 (EXP_CONST_LINHA -> OP_MAT EXP_CONST .)
+    SEMICOLON       reduce using rule 24 (EXP_CONST_LINHA -> OP_MAT EXP_CONST .)
+    END             reduce using rule 24 (EXP_CONST_LINHA -> OP_MAT EXP_CONST .)
+    ELSE            reduce using rule 24 (EXP_CONST_LINHA -> OP_MAT EXP_CONST .)
+    RPAREN          reduce using rule 24 (EXP_CONST_LINHA -> OP_MAT EXP_CONST .)
+    TO              reduce using rule 24 (EXP_CONST_LINHA -> OP_MAT EXP_CONST .)
+
+
+state 105
+
+    (15) EXP -> LPAREN . EXP RPAREN
+    (23) EXP_CONST -> LPAREN . EXP_CONST RPAREN
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 105
+
+    EXP                            shift and go to state 83
+    EXP_CONST                      shift and go to state 84
+
+state 106
+
+    (15) EXP -> LPAREN EXP RPAREN .
+
+    THEN            reduce using rule 15 (EXP -> LPAREN EXP RPAREN .)
+    DO              reduce using rule 15 (EXP -> LPAREN EXP RPAREN .)
+    SEMICOLON       reduce using rule 15 (EXP -> LPAREN EXP RPAREN .)
+    END             reduce using rule 15 (EXP -> LPAREN EXP RPAREN .)
+    ELSE            reduce using rule 15 (EXP -> LPAREN EXP RPAREN .)
+    RPAREN          reduce using rule 15 (EXP -> LPAREN EXP RPAREN .)
+    TO              reduce using rule 15 (EXP -> LPAREN EXP RPAREN .)
+
+
+state 107
+
+    (23) EXP_CONST -> LPAREN EXP_CONST RPAREN .
+
+    THEN            reduce using rule 23 (EXP_CONST -> LPAREN EXP_CONST RPAREN .)
+    DO              reduce using rule 23 (EXP_CONST -> LPAREN EXP_CONST RPAREN .)
+    SEMICOLON       reduce using rule 23 (EXP_CONST -> LPAREN EXP_CONST RPAREN .)
+    END             reduce using rule 23 (EXP_CONST -> LPAREN EXP_CONST RPAREN .)
+    ELSE            reduce using rule 23 (EXP_CONST -> LPAREN EXP_CONST RPAREN .)
+    RPAREN          reduce using rule 23 (EXP_CONST -> LPAREN EXP_CONST RPAREN .)
+    TO              reduce using rule 23 (EXP_CONST -> LPAREN EXP_CONST RPAREN .)
+
+
+state 108
+
+    (31) EXP_COM -> LPAREN EXP_COM RPAREN .
+
+    THEN            reduce using rule 31 (EXP_COM -> LPAREN EXP_COM RPAREN .)
+    DO              reduce using rule 31 (EXP_COM -> LPAREN EXP_COM RPAREN .)
+    SEMICOLON       reduce using rule 31 (EXP_COM -> LPAREN EXP_COM RPAREN .)
+    END             reduce using rule 31 (EXP_COM -> LPAREN EXP_COM RPAREN .)
+    ELSE            reduce using rule 31 (EXP_COM -> LPAREN EXP_COM RPAREN .)
+    RPAREN          reduce using rule 31 (EXP_COM -> LPAREN EXP_COM RPAREN .)
+    TO              reduce using rule 31 (EXP_COM -> LPAREN EXP_COM RPAREN .)
+
+
+state 109
+
+    (32) EXP_COM_LINHA -> OP_LOGICO EXP_COM .
+
+    THEN            reduce using rule 32 (EXP_COM_LINHA -> OP_LOGICO EXP_COM .)
+    DO              reduce using rule 32 (EXP_COM_LINHA -> OP_LOGICO EXP_COM .)
+    SEMICOLON       reduce using rule 32 (EXP_COM_LINHA -> OP_LOGICO EXP_COM .)
+    END             reduce using rule 32 (EXP_COM_LINHA -> OP_LOGICO EXP_COM .)
+    ELSE            reduce using rule 32 (EXP_COM_LINHA -> OP_LOGICO EXP_COM .)
+    RPAREN          reduce using rule 32 (EXP_COM_LINHA -> OP_LOGICO EXP_COM .)
+    TO              reduce using rule 32 (EXP_COM_LINHA -> OP_LOGICO EXP_COM .)
+
+
+state 110
+
+    (31) EXP_COM -> LPAREN . EXP_COM RPAREN
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
+
+    PARAM_LOGICO    shift and go to state 57
+    LPAREN          shift and go to state 110
+
+    EXP_COM                        shift and go to state 85
+
+state 111
+
+    (65) while_statement -> WHILE expression DO statement .
+
+    END             reduce using rule 65 (while_statement -> WHILE expression DO statement .)
+    SEMICOLON       reduce using rule 65 (while_statement -> WHILE expression DO statement .)
+    ELSE            reduce using rule 65 (while_statement -> WHILE expression DO statement .)
+
+
+state 112
+
+    (66) for_statement -> FOR ID ASSIGN expression . TO expression DO statement
+
+    TO              shift and go to state 123
+
+
+state 113
+
+    (67) read_statement -> READ LPAREN ID RPAREN .
+
+    END             reduce using rule 67 (read_statement -> READ LPAREN ID RPAREN .)
+    SEMICOLON       reduce using rule 67 (read_statement -> READ LPAREN ID RPAREN .)
+    ELSE            reduce using rule 67 (read_statement -> READ LPAREN ID RPAREN .)
+
+
+state 114
+
+    (68) write_statement -> WRITE LPAREN expression RPAREN .
+
+    END             reduce using rule 68 (write_statement -> WRITE LPAREN expression RPAREN .)
+    SEMICOLON       reduce using rule 68 (write_statement -> WRITE LPAREN expression RPAREN .)
+    ELSE            reduce using rule 68 (write_statement -> WRITE LPAREN expression RPAREN .)
+
+
+state 115
+
+    (10) const_list -> const_list ID ATRIB expression SEMICOLON .
+
+    ID              reduce using rule 10 (const_list -> const_list ID ATRIB expression SEMICOLON .)
+    TYPE            reduce using rule 10 (const_list -> const_list ID ATRIB expression SEMICOLON .)
+    VAR             reduce using rule 10 (const_list -> const_list ID ATRIB expression SEMICOLON .)
+    BEGIN           reduce using rule 10 (const_list -> const_list ID ATRIB expression SEMICOLON .)
+
+
+state 116
+
+    (37) type_list -> type_list ID ATRIB type SEMICOLON .
+
+    ID              reduce using rule 37 (type_list -> type_list ID ATRIB type SEMICOLON .)
+    BEGIN           reduce using rule 37 (type_list -> type_list ID ATRIB type SEMICOLON .)
+    VAR             reduce using rule 37 (type_list -> type_list ID ATRIB type SEMICOLON .)
+
+
+state 117
+
+    (44) array_type -> ARRAY LBRACKET NUMBER . RBRACKET OF type
+
+    RBRACKET        shift and go to state 124
+
+
+state 118
+
+    (45) record_type -> RECORD field_list END .
+
+    SEMICOLON       reduce using rule 45 (record_type -> RECORD field_list END .)
+
+
+state 119
+
+    (47) field_list -> field_list ID . COLON type SEMICOLON
+
+    COLON           shift and go to state 125
+
+
+state 120
+
+    (46) field_list -> ID COLON . type SEMICOLON
+    (38) type -> . INTEGER
+    (39) type -> . REAL
+    (40) type -> . CHAR
+    (41) type -> . BOOLEAN
+    (42) type -> . array_type
+    (43) type -> . record_type
+    (44) array_type -> . ARRAY LBRACKET NUMBER RBRACKET OF type
+    (45) record_type -> . RECORD field_list END
+
+    INTEGER         shift and go to state 66
+    REAL            shift and go to state 67
+    CHAR            shift and go to state 68
+    BOOLEAN         shift and go to state 69
+    ARRAY           shift and go to state 72
+    RECORD          shift and go to state 73
+
+    type                           shift and go to state 126
+    array_type                     shift and go to state 70
+    record_type                    shift and go to state 71
+
+state 121
+
+    (51) var_list -> var_list ID COLON type SEMICOLON .
+
+    ID              reduce using rule 51 (var_list -> var_list ID COLON type SEMICOLON .)
+    BEGIN           reduce using rule 51 (var_list -> var_list ID COLON type SEMICOLON .)
+
+
+state 122
+
+    (64) if_statement -> IF expression THEN statement ELSE . statement
+    (55) statement -> . assignment_statement
+    (56) statement -> . if_statement
+    (57) statement -> . while_statement
+    (58) statement -> . for_statement
+    (59) statement -> . compound_statement
+    (60) statement -> . read_statement
+    (61) statement -> . write_statement
+    (62) statement -> . empty
+    (63) assignment_statement -> . ID ATRIB expression
+    (64) if_statement -> . IF expression THEN statement ELSE statement
+    (65) while_statement -> . WHILE expression DO statement
+    (66) for_statement -> . FOR ID ASSIGN expression TO expression DO statement
+    (52) compound_statement -> . BEGIN statement_list END
+    (67) read_statement -> . READ LPAREN ID RPAREN
+    (68) write_statement -> . WRITE LPAREN expression RPAREN
+    (69) empty -> .
+
+    ID              shift and go to state 34
+    IF              shift and go to state 35
+    WHILE           shift and go to state 36
+    FOR             shift and go to state 37
+    BEGIN           shift and go to state 14
+    READ            shift and go to state 38
+    WRITE           shift and go to state 39
+    END             reduce using rule 69 (empty -> .)
+    SEMICOLON       reduce using rule 69 (empty -> .)
+    ELSE            reduce using rule 69 (empty -> .)
+
+    statement                      shift and go to state 127
+    assignment_statement           shift and go to state 26
+    if_statement                   shift and go to state 27
+    while_statement                shift and go to state 28
+    for_statement                  shift and go to state 29
+    compound_statement             shift and go to state 30
+    read_statement                 shift and go to state 31
+    write_statement                shift and go to state 32
+    empty                          shift and go to state 33
+
+state 123
+
+    (66) for_statement -> FOR ID ASSIGN expression TO . expression DO statement
+    (11) expression -> . EXP
+    (12) expression -> . EXP_CONST
+    (13) expression -> . EXP_COM
+    (14) EXP -> . PARAMETRO EXP_L1
+    (15) EXP -> . LPAREN EXP RPAREN
+    (22) EXP_CONST -> . PARAMETRO EXP_CONST_LINHA
+    (23) EXP_CONST -> . LPAREN EXP_CONST RPAREN
+    (30) EXP_COM -> . PARAM_LOGICO EXP_COM_LINHA
+    (31) EXP_COM -> . LPAREN EXP_COM RPAREN
+
+    PARAMETRO       shift and go to state 55
+    LPAREN          shift and go to state 56
+    PARAM_LOGICO    shift and go to state 57
+
+    expression                     shift and go to state 128
+    EXP                            shift and go to state 52
+    EXP_CONST                      shift and go to state 53
+    EXP_COM                        shift and go to state 54
+
+state 124
+
+    (44) array_type -> ARRAY LBRACKET NUMBER RBRACKET . OF type
+
+    OF              shift and go to state 129
+
+
+state 125
+
+    (47) field_list -> field_list ID COLON . type SEMICOLON
+    (38) type -> . INTEGER
+    (39) type -> . REAL
+    (40) type -> . CHAR
+    (41) type -> . BOOLEAN
+    (42) type -> . array_type
+    (43) type -> . record_type
+    (44) array_type -> . ARRAY LBRACKET NUMBER RBRACKET OF type
+    (45) record_type -> . RECORD field_list END
+
+    INTEGER         shift and go to state 66
+    REAL            shift and go to state 67
+    CHAR            shift and go to state 68
+    BOOLEAN         shift and go to state 69
+    ARRAY           shift and go to state 72
+    RECORD          shift and go to state 73
+
+    type                           shift and go to state 130
+    array_type                     shift and go to state 70
+    record_type                    shift and go to state 71
+
+state 126
+
+    (46) field_list -> ID COLON type . SEMICOLON
+
+    SEMICOLON       shift and go to state 131
+
+
+state 127
+
+    (64) if_statement -> IF expression THEN statement ELSE statement .
+
+    END             reduce using rule 64 (if_statement -> IF expression THEN statement ELSE statement .)
+    SEMICOLON       reduce using rule 64 (if_statement -> IF expression THEN statement ELSE statement .)
+    ELSE            reduce using rule 64 (if_statement -> IF expression THEN statement ELSE statement .)
+
+
+state 128
+
+    (66) for_statement -> FOR ID ASSIGN expression TO expression . DO statement
+
+    DO              shift and go to state 132
+
+
+state 129
+
+    (44) array_type -> ARRAY LBRACKET NUMBER RBRACKET OF . type
+    (38) type -> . INTEGER
+    (39) type -> . REAL
+    (40) type -> . CHAR
+    (41) type -> . BOOLEAN
+    (42) type -> . array_type
+    (43) type -> . record_type
+    (44) array_type -> . ARRAY LBRACKET NUMBER RBRACKET OF type
+    (45) record_type -> . RECORD field_list END
+
+    INTEGER         shift and go to state 66
+    REAL            shift and go to state 67
+    CHAR            shift and go to state 68
+    BOOLEAN         shift and go to state 69
+    ARRAY           shift and go to state 72
+    RECORD          shift and go to state 73
+
+    type                           shift and go to state 133
+    array_type                     shift and go to state 70
+    record_type                    shift and go to state 71
+
+state 130
+
+    (47) field_list -> field_list ID COLON type . SEMICOLON
+
+    SEMICOLON       shift and go to state 134
+
+
+state 131
+
+    (46) field_list -> ID COLON type SEMICOLON .
+
+    END             reduce using rule 46 (field_list -> ID COLON type SEMICOLON .)
+    ID              reduce using rule 46 (field_list -> ID COLON type SEMICOLON .)
+
+
+state 132
+
+    (66) for_statement -> FOR ID ASSIGN expression TO expression DO . statement
+    (55) statement -> . assignment_statement
+    (56) statement -> . if_statement
+    (57) statement -> . while_statement
+    (58) statement -> . for_statement
+    (59) statement -> . compound_statement
+    (60) statement -> . read_statement
+    (61) statement -> . write_statement
+    (62) statement -> . empty
+    (63) assignment_statement -> . ID ATRIB expression
+    (64) if_statement -> . IF expression THEN statement ELSE statement
+    (65) while_statement -> . WHILE expression DO statement
+    (66) for_statement -> . FOR ID ASSIGN expression TO expression DO statement
+    (52) compound_statement -> . BEGIN statement_list END
+    (67) read_statement -> . READ LPAREN ID RPAREN
+    (68) write_statement -> . WRITE LPAREN expression RPAREN
+    (69) empty -> .
+
+    ID              shift and go to state 34
+    IF              shift and go to state 35
+    WHILE           shift and go to state 36
+    FOR             shift and go to state 37
+    BEGIN           shift and go to state 14
+    READ            shift and go to state 38
+    WRITE           shift and go to state 39
+    END             reduce using rule 69 (empty -> .)
+    SEMICOLON       reduce using rule 69 (empty -> .)
+    ELSE            reduce using rule 69 (empty -> .)
+
+    statement                      shift and go to state 135
+    assignment_statement           shift and go to state 26
+    if_statement                   shift and go to state 27
+    while_statement                shift and go to state 28
+    for_statement                  shift and go to state 29
+    compound_statement             shift and go to state 30
+    read_statement                 shift and go to state 31
+    write_statement                shift and go to state 32
+    empty                          shift and go to state 33
+
+state 133
+
+    (44) array_type -> ARRAY LBRACKET NUMBER RBRACKET OF type .
+
+    SEMICOLON       reduce using rule 44 (array_type -> ARRAY LBRACKET NUMBER RBRACKET OF type .)
+
+
+state 134
+
+    (47) field_list -> field_list ID COLON type SEMICOLON .
+
+    END             reduce using rule 47 (field_list -> field_list ID COLON type SEMICOLON .)
+    ID              reduce using rule 47 (field_list -> field_list ID COLON type SEMICOLON .)
+
+
+state 135
+
+    (66) for_statement -> FOR ID ASSIGN expression TO expression DO statement .
+
+    END             reduce using rule 66 (for_statement -> FOR ID ASSIGN expression TO expression DO statement .)
+    SEMICOLON       reduce using rule 66 (for_statement -> FOR ID ASSIGN expression TO expression DO statement .)
+    ELSE            reduce using rule 66 (for_statement -> FOR ID ASSIGN expression TO expression DO statement .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for CONST in state 2 resolved as shift
-WARNING: shift/reduce conflict for VAR in state 2 resolved as shift
-WARNING: shift/reduce conflict for TYPE in state 2 resolved as shift
-WARNING: shift/reduce conflict for CONST in state 4 resolved as shift
-WARNING: shift/reduce conflict for VAR in state 4 resolved as shift
 WARNING: shift/reduce conflict for TYPE in state 4 resolved as shift
-WARNING: reduce/reduce conflict in state 5 resolved using rule (lista_declaracoes -> empty)
-WARNING: rejected rule (declaracoes -> empty) in state 5
+WARNING: shift/reduce conflict for VAR in state 4 resolved as shift
+WARNING: reduce/reduce conflict in state 6 resolved using rule (declarations -> const_declaration)
+WARNING: rejected rule (empty -> <empty>) in state 6
+WARNING: reduce/reduce conflict in state 9 resolved using rule (declarations -> empty)
+WARNING: rejected rule (const_declaration -> empty) in state 9
+WARNING: reduce/reduce conflict in state 9 resolved using rule (declarations -> empty)
+WARNING: rejected rule (type_declaration -> empty) in state 9
+WARNING: reduce/reduce conflict in state 9 resolved using rule (declarations -> empty)
+WARNING: rejected rule (var_declaration -> empty) in state 9
+WARNING: reduce/reduce conflict in state 82 resolved using rule (EXP_L1 -> empty)
+WARNING: rejected rule (EXP_CONST_LINHA -> empty) in state 82
+WARNING: Rule (EXP_CONST_LINHA -> empty) is never reduced
