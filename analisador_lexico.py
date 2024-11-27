@@ -1,12 +1,12 @@
 import ply.lex as lex
 
-# Lista de tokens
+# Tokens
 tokens = [
-    'STRING', 'COLON', 'LBRACKET', 'RBRACKET', 'ASSIGN', 'ATRIB',
+    'STRING', 'CHAR', 'COLON', 'LBRACKET', 'RBRACKET', 'ASSIGN', 'ATRIB',
     'NUMBER', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'LPAREN', 'RPAREN',
     'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'ID', 'EQUALS', 'NOT_EQUALS',
     'LESS_THAN', 'GREATER_THAN', 'LESS_EQUAL', 'GREATER_EQUAL', 'DOT',
-    'PARAMETRO', 'OP_MAT', 'OP_LOGICO', 'NAME', 'ATRIBUICAO', 'PARAM_LOGICO'
+    'PARAM_GRAMATICA', 'OP_MAT', 'OP_LOGICO', 'NAME', 'ATRIBUICAO', 'PARAM_LOGICO'
 ]
 
 # Palavras reservadas
@@ -19,7 +19,6 @@ reserved_words = {
     'var': 'VAR',
     'integer': 'INTEGER',
     'real': 'REAL',
-    'char': 'CHAR',
     'boolean': 'BOOLEAN',
     'array': 'ARRAY',
     'of': 'OF',
@@ -41,11 +40,13 @@ reserved_words = {
     'or': 'OR',
 }
 
+
 # Adicionar palavras reservadas à lista de tokens
 tokens = tokens + list(reserved_words.values())
 
 # Expressões regulares para tokens simples
 t_STRING = r'\".*?\"'
+t_CHAR   = r'\'.*?\''  # Caractere
 t_COLON = r':'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
@@ -60,7 +61,7 @@ t_RPAREN = r'\)'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_SEMICOLON = r';'
-t_COMMA = r','
+t_COMMA = r',' 
 t_EQUALS = r'=='
 t_NOT_EQUALS = r'!='
 t_LESS_THAN = r'<'
@@ -69,7 +70,8 @@ t_LESS_EQUAL = r'<='
 t_GREATER_EQUAL = r'>='
 t_DOT = r'\.'
 
-t_PARAMETRO = r'parametro_regex'
+# Atualizando a expressão regular do token renomeado
+t_PARAM_GRAMATICA = r'parametro_regex'
 t_OP_MAT = r'op_mat_regex'
 t_OP_LOGICO = r'op_logico_regex'
 t_NAME = r'name_regex'
