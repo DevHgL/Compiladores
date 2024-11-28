@@ -1,107 +1,117 @@
 import ply.lex as lex
 
-# Tokens
-tokens = [
-    'STRING', 'CHAR', 'COLON', 'LBRACKET', 'RBRACKET', 'ASSIGN', 'ATRIB',
-    'NUMBER', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'LPAREN', 'RPAREN',
-    'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'ID', 'EQUALS', 'NOT_EQUALS',
-    'LESS_THAN', 'GREATER_THAN', 'LESS_EQUAL', 'GREATER_EQUAL', 'DOT',
-    'PARAM_GRAMATICA', 'OP_MAT', 'OP_LOGICO', 'NAME', 'ATRIBUICAO', 'PARAM_LOGICO'
-]
-
-# Palavras reservadas
-reserved_words = {
-    'program': 'PROGRAM',
-    'const': 'CONST',
+# Lista de palavras reservadas
+reserved = {
     'begin': 'BEGIN',
     'end': 'END',
+    'const': 'CONST',
     'type': 'TYPE',
     'var': 'VAR',
-    'integer': 'INTEGER',
-    'real': 'REAL',
-    'boolean': 'BOOLEAN',
+    'function': 'FUNCTION',
+    'procedure': 'PROCEDURE',
+    'if': 'IF',
+    'then': 'THEN',
+    'else': 'ELSE',
+    'while': 'WHILE',
+    'do': 'DO',
+    'for': 'FOR',
+    'to': 'TO',
+    'read': 'READ',
+    'write': 'WRITE',
     'array': 'ARRAY',
     'of': 'OF',
     'record': 'RECORD',
-    'function': 'FUNCTION',
-    'procedure': 'PROCEDURE',
-    'while': 'WHILE',
-    'do': 'DO',
-    'if': 'IF',
-    'then': 'THEN',
-    'for': 'FOR',
-    'write': 'WRITE',
-    'read': 'READ',
-    'to': 'TO',
-    'else': 'ELSE',
-    'false': 'FALSE',
     'true': 'TRUE',
+    'false': 'FALSE',
+    'integer': 'INTEGER',
+    'real': 'REAL',
+    'char': 'CHAR',
+    'boolean': 'BOOLEAN',
     'and': 'AND',
-    'or': 'OR',
+    'or': 'OR'
 }
 
-
-# Adicionar palavras reservadas à lista de tokens
-tokens = tokens + list(reserved_words.values())
+# Lista de todos os tokens
+tokens = [
+    'ID',           # Identificadores
+    'NUMERO',       # Números (inteiros ou reais)
+    'PALAVRA',      # Strings
+    'ATRIBUICAO',   # :=
+    'COMPARACAO',   # ==, <=, >=, !=
+    'MAIS',         # +
+    'MENOS',        # -
+    'VEZES',        # *
+    'DIVIDE',       # /
+    'MENOR',        # <
+    'MAIOR',        # >
+    'PONTO',        # .
+    'VIRGULA',      # ,
+    'DOISPONTOS',   # :
+    'PONTOVIRGULA', # ;
+    'ABREPAR',      # (
+    'FECHAPAR',     # )
+    'ABRECOL',      # [
+    'FECHACOL',     # ]
+    'IGUAL'         # =
+] + list(reserved.values())
 
 # Expressões regulares para tokens simples
-t_STRING = r'\".*?\"'
-t_CHAR   = r'\'.*?\''  # Caractere
-t_COLON = r':'
-t_LBRACKET = r'\['
-t_RBRACKET = r'\]'
-t_ASSIGN = r':='
-t_ATRIB = r'='
-t_PLUS = r'\+'
-t_MINUS = r'-'
-t_TIMES = r'\*'
+t_MAIS = r'\+'
+t_MENOS = r'-'
+t_VEZES = r'\*'
 t_DIVIDE = r'/'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
-t_LBRACE = r'\{'
-t_RBRACE = r'\}'
-t_SEMICOLON = r';'
-t_COMMA = r',' 
-t_EQUALS = r'=='
-t_NOT_EQUALS = r'!='
-t_LESS_THAN = r'<'
-t_GREATER_THAN = r'>'
-t_LESS_EQUAL = r'<='
-t_GREATER_EQUAL = r'>='
-t_DOT = r'\.'
+t_IGUAL = r'='
+t_MENOR = r'<'
+t_MAIOR = r'>'
+t_PONTO = r'\.'
+t_VIRGULA = r','
+t_DOISPONTOS = r':'
+t_PONTOVIRGULA = r';'
+t_ABREPAR = r'\('
+t_FECHAPAR = r'\)'
+t_ABRECOL = r'\['
+t_FECHACOL = r'\]'
 
-# Atualizando a expressão regular do token renomeado
-t_PARAM_GRAMATICA = r'parametro_regex'
-t_OP_MAT = r'op_mat_regex'
-t_OP_LOGICO = r'op_logico_regex'
-t_NAME = r'name_regex'
-t_ATRIBUICAO = r'atribuicao_regex'
-t_PARAM_LOGICO = r'param_logico_regex'
+# Expressões regulares com ações
+def t_ATRIBUICAO(t):
+    r':='
+    return t
 
-# Definição de identificadores
+def t_COMPARACAO(t):
+    r'==|<=|>=|!='
+    return t
+
+def t_PALAVRA(t):
+    r'\"[^\"]*\"'
+    return t
+
+def t_NUMERO(t):
+    r'\d+(\.\d+)?'
+    t.value = float(t.value) if '.' in t.value else int(t.value)
+    return t
+
 def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved_words.get(t.value, 'ID')  # Verifica palavras reservadas
+    r'[a-zA-Z][a-zA-Z0-9_]*'
+    # Verifica se é uma palavra reservada
+    t.type = reserved.get(t.value.lower(), 'ID')
     return t
 
-# Definição de números
-def t_NUMBER(t):
-    r'\d+'
-    t.value = int(t.value)  # Converte o valor para inteiro
-    return t
+# Caracteres ignorados
+t_ignore = ' \t'  # Espaços e tabs
+t_ignore_COMMENT = r'\{[^}]*\}'  # Comentários entre chaves
 
-# Ignorar espaços e tabulações
-t_ignore = ' \t'
-
-# Contar novas linhas
+# Nova linha
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-# Lidar com caracteres ilegais
+# Tratamento de erros
 def t_error(t):
-    print(f"Caractere ilegal '{t.value[0]}' na linha {t.lineno}")
+    print(f"Caractere ilegal '{t.value[0]}' na linha {t.lexer.lineno}")
     t.lexer.skip(1)
+
+# Constrói o lexer
+lexer = lex.lex()
 
 # Construir o analisador léxico
 lexer = lex.lex()
