@@ -4,18 +4,19 @@ Unused terminals:
 
     ABRECOL
     ABREPAR
-    COMPARACAO
+    AND
     DIVIDE
     DOISPONTOS
+    FALSE
     FECHACOL
     FECHAPAR
-    IGUAL
     MAIOR
     MAIS
     MENOR
     MENOS
+    OR
     PONTO
-    PONTOVIRGULA
+    TRUE
     VEZES
     VIRGULA
 
@@ -23,19 +24,19 @@ Grammar
 
 Rule 0     S' -> PROGRAMA
 Rule 1     PROGRAMA -> DECLARACOES BLOCO
-Rule 2     LISTA_COM -> <empty>
-Rule 3     LISTA_COM -> COMANDO LISTA_COM_RESTO
-Rule 4     LISTA_COM_RESTO -> ; COMANDO LISTA_COM_RESTO
-Rule 5     LISTA_COM_RESTO -> ;
-Rule 6     BLOCO -> BEGIN COMANDO LISTA_COM END
-Rule 7     DECLARACOES -> DEF_CONST DEF_TIPOS DEF_VAR DEF_ROTINA
-Rule 8     DEF_CONST -> <empty>
-Rule 9     DEF_CONST -> CONSTANTE DEF_CONST
-Rule 10    CONSTANTE -> CONST ID = CONST_VALOR ;
-Rule 11    CONST_VALOR -> PALAVRA
-Rule 12    CONST_VALOR -> EXP_MAT
-Rule 13    DEF_TIPOS -> <empty>
-Rule 14    DEF_TIPOS -> TIPO DEF_TIPOS
+Rule 2     DECLARACOES -> DEF_CONST DEF_TIPOS DEF_VAR DEF_ROTINA
+Rule 3     DEF_CONST -> CONSTANTE DEF_CONST
+Rule 4     DEF_CONST -> <empty>
+Rule 5     CONSTANTE -> CONST ID = CONST_VALOR ;
+Rule 6     CONST_VALOR -> EXP_CONST
+Rule 7     PARAMETRO -> ID
+Rule 8     PARAMETRO -> PALAVRA
+Rule 9     EXP_CONST -> PARAMETRO EXP_CONST_L
+Rule 10    EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST )
+Rule 11    EXP_CONST_L -> OP_MAT EXP_CONST
+Rule 12    EXP_CONST_L -> <empty>
+Rule 13    DEF_TIPOS -> TIPO DEF_TIPOS
+Rule 14    DEF_TIPOS -> <empty>
 Rule 15    TIPO -> TYPE ID = TIPO_DADO ;
 Rule 16    TIPO_DADO -> INTEGER
 Rule 17    TIPO_DADO -> REAL
@@ -44,151 +45,150 @@ Rule 19    TIPO_DADO -> BOOLEAN
 Rule 20    TIPO_DADO -> ARRAY [ NUMERO ] OF TIPO_DADO
 Rule 21    TIPO_DADO -> RECORD CAMPOS END
 Rule 22    TIPO_DADO -> ID
-Rule 23    DEF_VAR -> <empty>
-Rule 24    DEF_VAR -> VARIAVEL DEF_VAR
+Rule 23    DEF_VAR -> VARIAVEL DEF_VAR
+Rule 24    DEF_VAR -> <empty>
 Rule 25    VARIAVEL -> VAR CAMPOS ;
 Rule 26    CAMPOS -> CAMPO LISTA_CAMPOS
-Rule 27    LISTA_CAMPOS -> <empty>
-Rule 28    LISTA_CAMPOS -> ; CAMPO LISTA_CAMPOS
-Rule 29    CAMPO -> ID LISTA_ID : TIPO_DADO
-Rule 30    LISTA_ID -> <empty>
-Rule 31    LISTA_ID -> , ID LISTA_ID
-Rule 32    DEF_ROTINA -> <empty>
-Rule 33    DEF_ROTINA -> ROTINA DEF_ROTINA
-Rule 34    ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA
-Rule 35    ROTINA -> PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA
-Rule 36    PARAM_ROTINA -> <empty>
-Rule 37    PARAM_ROTINA -> ( CAMPOS )
-Rule 38    BLOCO_ROTINA -> DEF_VAR BLOCO
-Rule 39    COMANDO -> ID ATRIBUICAO EXP
-Rule 40    COMANDO -> WHILE EXP_LOGICA DO BLOCO
-Rule 41    COMANDO -> IF EXP_LOGICA THEN BLOCO alternativa_else
-Rule 42    COMANDO -> FOR FOR_PARAMS DO BLOCO
-Rule 43    COMANDO -> WRITE CONST_VALOR
-Rule 44    COMANDO -> READ ID
-Rule 45    alternativa_else -> ELSE BLOCO
-Rule 46    alternativa_else -> <empty>
-Rule 47    FOR_PARAMS -> ID ATRIBUICAO PARAMETRO TO PARAMETRO
-Rule 48    EXP -> EXP_MAT
-Rule 49    EXP -> EXP_LOGICA
-Rule 50    EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA
-Rule 51    EXP_LOGICA -> PARAM_LOGICO
-Rule 52    PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO
-Rule 53    EXP_MAT -> PARAMETRO OP_MAT EXP_MAT
-Rule 54    EXP_MAT -> PARAMETRO
-Rule 55    OP_LOGICO -> AND
-Rule 56    OP_LOGICO -> OR
-Rule 57    OP_COMP -> >
-Rule 58    OP_COMP -> <
-Rule 59    OP_COMP -> =
-Rule 60    OP_MAT -> +
-Rule 61    OP_MAT -> -
-Rule 62    OP_MAT -> *
-Rule 63    OP_MAT -> /
-Rule 64    PARAMETRO -> ID
-Rule 65    PARAMETRO -> NUMERO
-Rule 66    PARAMETRO -> FALSE
-Rule 67    PARAMETRO -> TRUE
+Rule 27    CAMPO -> ID LISTA_ID : TIPO_DADO
+Rule 28    LISTA_ID -> , ID LISTA_ID
+Rule 29    LISTA_ID -> <empty>
+Rule 30    LISTA_COM -> COMANDO PONTOVIRGULA LISTA_COM
+Rule 31    LISTA_COM -> COMANDO
+Rule 32    LISTA_CAMPOS -> CAMPO PONTOVIRGULA LISTA_CAMPOS
+Rule 33    LISTA_CAMPOS -> CAMPO
+Rule 34    DEF_ROTINA -> ROTINA DEF_ROTINA
+Rule 35    DEF_ROTINA -> <empty>
+Rule 36    ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA
+Rule 37    ROTINA -> PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA
+Rule 38    PARAM_ROTINA -> ( CAMPOS )
+Rule 39    PARAM_ROTINA -> <empty>
+Rule 40    BLOCO_ROTINA -> DEF_VAR BLOCO
+Rule 41    BLOCO -> BEGIN COMANDO LISTA_COM END
+Rule 42    COMANDO -> ID atribuicao_regra
+Rule 43    COMANDO -> WHILE EXP_COM DO BLOCO
+Rule 44    COMANDO -> IF EXP_COM THEN BLOCO else_regra
+Rule 45    COMANDO -> FOR FOR_PARAMS DO BLOCO
+Rule 46    COMANDO -> WRITE CONST_VALOR
+Rule 47    COMANDO -> READ ID
+Rule 48    atribuicao_regra -> ATRIBUICAO EXP
+Rule 49    else_regra -> ELSE BLOCO
+Rule 50    else_regra -> <empty>
+Rule 51    FOR_PARAMS -> ID ATRIBUICAO PARAMETRO TO PARAMETRO
+Rule 52    EXP -> PARAMETRO OP_MAT EXP
+Rule 53    EXP -> PARAMETRO
+Rule 54    EXP_COM -> PARAMETRO OP_COMP PARAMETRO
+Rule 55    EXP_COM -> PARAMETRO
+Rule 56    OP_MAT -> +
+Rule 57    OP_MAT -> -
+Rule 58    OP_MAT -> *
+Rule 59    OP_MAT -> /
+Rule 60    OP_COMP -> >
+Rule 61    OP_COMP -> <
+Rule 62    OP_COMP -> IGUAL
+Rule 63    OP_COMP -> DIFERENTE
+Rule 64    OP_COMP -> MAIOR_IGUAL
+Rule 65    OP_COMP -> MENOR_IGUAL
 
 Terminals, with rules where they appear
 
-(                    : 37
-)                    : 37
-*                    : 62
-+                    : 60
-,                    : 31
--                    : 61
-/                    : 63
-:                    : 29 34
-;                    : 4 5 10 15 25 28
-<                    : 58
-=                    : 10 15 59
->                    : 57
+(                    : 10 38
+)                    : 10 38
+*                    : 58
++                    : 56
+,                    : 28
+-                    : 57
+/                    : 59
+:                    : 27 36
+;                    : 5 15 25
+<                    : 61
+=                    : 5 15
+>                    : 60
 ABRECOL              : 
 ABREPAR              : 
-AND                  : 55
+AND                  : 
 ARRAY                : 20
-ATRIBUICAO           : 39 47
-BEGIN                : 6
+ATRIBUICAO           : 48 51
+BEGIN                : 41
 BOOLEAN              : 19
 CHAR                 : 18
-COMPARACAO           : 
-CONST                : 10
+CONST                : 5
+DIFERENTE            : 63
 DIVIDE               : 
-DO                   : 40 42
+DO                   : 43 45
 DOISPONTOS           : 
-ELSE                 : 45
-END                  : 6 21
-FALSE                : 66
+ELSE                 : 49
+END                  : 21 41
+FALSE                : 
 FECHACOL             : 
 FECHAPAR             : 
-FOR                  : 42
-FUNCTION             : 34
-ID                   : 10 15 22 29 31 34 35 39 44 47 64
-IF                   : 41
-IGUAL                : 
+FOR                  : 45
+FUNCTION             : 36
+ID                   : 5 7 15 22 27 28 36 37 42 47 51
+IF                   : 44
+IGUAL                : 62
 INTEGER              : 16
 MAIOR                : 
+MAIOR_IGUAL          : 64
 MAIS                 : 
 MENOR                : 
+MENOR_IGUAL          : 65
 MENOS                : 
-NUMERO               : 20 65
+NUMERO               : 20
 OF                   : 20
-OR                   : 56
-PALAVRA              : 11
+OR                   : 
+PALAVRA              : 8
 PONTO                : 
-PONTOVIRGULA         : 
-PROCEDURE            : 35
-READ                 : 44
+PONTOVIRGULA         : 30 32
+PROCEDURE            : 37
+READ                 : 47
 REAL                 : 17
 RECORD               : 21
-THEN                 : 41
-TO                   : 47
-TRUE                 : 67
+THEN                 : 44
+TO                   : 51
+TRUE                 : 
 TYPE                 : 15
 VAR                  : 25
 VEZES                : 
 VIRGULA              : 
-WHILE                : 40
-WRITE                : 43
+WHILE                : 43
+WRITE                : 46
 [                    : 20
 ]                    : 20
 error                : 
 
 Nonterminals, with rules where they appear
 
-BLOCO                : 1 38 40 41 42 45
-BLOCO_ROTINA         : 34 35
-CAMPO                : 26 28
-CAMPOS               : 21 25 37
-COMANDO              : 3 4 6
-CONSTANTE            : 9
-CONST_VALOR          : 10 43
+BLOCO                : 1 40 43 44 45 49
+BLOCO_ROTINA         : 36 37
+CAMPO                : 26 32 33
+CAMPOS               : 21 25 38
+COMANDO              : 30 31 41
+CONSTANTE            : 3
+CONST_VALOR          : 5 46
 DECLARACOES          : 1
-DEF_CONST            : 7 9
-DEF_ROTINA           : 7 33
-DEF_TIPOS            : 7 14
-DEF_VAR              : 7 24 38
-EXP                  : 39
-EXP_LOGICA           : 40 41 49 50
-EXP_MAT              : 12 48 53
-FOR_PARAMS           : 42
-LISTA_CAMPOS         : 26 28
-LISTA_COM            : 6
-LISTA_COM_RESTO      : 3 4
-LISTA_ID             : 29 31
-OP_COMP              : 52
-OP_LOGICO            : 50
-OP_MAT               : 53
-PARAMETRO            : 47 47 52 52 53 54
-PARAM_LOGICO         : 50 51
-PARAM_ROTINA         : 34 35
+DEF_CONST            : 2 3
+DEF_ROTINA           : 2 34
+DEF_TIPOS            : 2 13
+DEF_VAR              : 2 23 40
+EXP                  : 48 52
+EXP_COM              : 43 44
+EXP_CONST            : 6 10 11
+EXP_CONST_L          : 9
+FOR_PARAMS           : 45
+LISTA_CAMPOS         : 26 32
+LISTA_COM            : 30 41
+LISTA_ID             : 27 28
+OP_COMP              : 54
+OP_MAT               : 10 11 52
+PARAMETRO            : 9 10 51 51 52 53 54 54 55
+PARAM_ROTINA         : 36 37
 PROGRAMA             : 0
-ROTINA               : 33
-TIPO                 : 14
-TIPO_DADO            : 15 20 29 34
-VARIAVEL             : 24
-alternativa_else     : 41
+ROTINA               : 34
+TIPO                 : 13
+TIPO_DADO            : 15 20 27 36
+VARIAVEL             : 23
+atribuicao_regra     : 42
+else_regra           : 44
 
 Parsing method: LALR
 
@@ -196,16 +196,16 @@ state 0
 
     (0) S' -> . PROGRAMA
     (1) PROGRAMA -> . DECLARACOES BLOCO
-    (7) DECLARACOES -> . DEF_CONST DEF_TIPOS DEF_VAR DEF_ROTINA
-    (8) DEF_CONST -> .
-    (9) DEF_CONST -> . CONSTANTE DEF_CONST
-    (10) CONSTANTE -> . CONST ID = CONST_VALOR ;
+    (2) DECLARACOES -> . DEF_CONST DEF_TIPOS DEF_VAR DEF_ROTINA
+    (3) DEF_CONST -> . CONSTANTE DEF_CONST
+    (4) DEF_CONST -> .
+    (5) CONSTANTE -> . CONST ID = CONST_VALOR ;
 
-    TYPE            reduce using rule 8 (DEF_CONST -> .)
-    VAR             reduce using rule 8 (DEF_CONST -> .)
-    FUNCTION        reduce using rule 8 (DEF_CONST -> .)
-    PROCEDURE       reduce using rule 8 (DEF_CONST -> .)
-    BEGIN           reduce using rule 8 (DEF_CONST -> .)
+    TYPE            reduce using rule 4 (DEF_CONST -> .)
+    VAR             reduce using rule 4 (DEF_CONST -> .)
+    FUNCTION        reduce using rule 4 (DEF_CONST -> .)
+    PROCEDURE       reduce using rule 4 (DEF_CONST -> .)
+    BEGIN           reduce using rule 4 (DEF_CONST -> .)
     CONST           shift and go to state 5
 
     PROGRAMA                       shift and go to state 1
@@ -222,7 +222,7 @@ state 1
 state 2
 
     (1) PROGRAMA -> DECLARACOES . BLOCO
-    (6) BLOCO -> . BEGIN COMANDO LISTA_COM END
+    (41) BLOCO -> . BEGIN COMANDO LISTA_COM END
 
     BEGIN           shift and go to state 7
 
@@ -230,15 +230,15 @@ state 2
 
 state 3
 
-    (7) DECLARACOES -> DEF_CONST . DEF_TIPOS DEF_VAR DEF_ROTINA
-    (13) DEF_TIPOS -> .
-    (14) DEF_TIPOS -> . TIPO DEF_TIPOS
+    (2) DECLARACOES -> DEF_CONST . DEF_TIPOS DEF_VAR DEF_ROTINA
+    (13) DEF_TIPOS -> . TIPO DEF_TIPOS
+    (14) DEF_TIPOS -> .
     (15) TIPO -> . TYPE ID = TIPO_DADO ;
 
-    VAR             reduce using rule 13 (DEF_TIPOS -> .)
-    FUNCTION        reduce using rule 13 (DEF_TIPOS -> .)
-    PROCEDURE       reduce using rule 13 (DEF_TIPOS -> .)
-    BEGIN           reduce using rule 13 (DEF_TIPOS -> .)
+    VAR             reduce using rule 14 (DEF_TIPOS -> .)
+    FUNCTION        reduce using rule 14 (DEF_TIPOS -> .)
+    PROCEDURE       reduce using rule 14 (DEF_TIPOS -> .)
+    BEGIN           reduce using rule 14 (DEF_TIPOS -> .)
     TYPE            shift and go to state 10
 
     DEF_TIPOS                      shift and go to state 8
@@ -246,16 +246,16 @@ state 3
 
 state 4
 
-    (9) DEF_CONST -> CONSTANTE . DEF_CONST
-    (8) DEF_CONST -> .
-    (9) DEF_CONST -> . CONSTANTE DEF_CONST
-    (10) CONSTANTE -> . CONST ID = CONST_VALOR ;
+    (3) DEF_CONST -> CONSTANTE . DEF_CONST
+    (3) DEF_CONST -> . CONSTANTE DEF_CONST
+    (4) DEF_CONST -> .
+    (5) CONSTANTE -> . CONST ID = CONST_VALOR ;
 
-    TYPE            reduce using rule 8 (DEF_CONST -> .)
-    VAR             reduce using rule 8 (DEF_CONST -> .)
-    FUNCTION        reduce using rule 8 (DEF_CONST -> .)
-    PROCEDURE       reduce using rule 8 (DEF_CONST -> .)
-    BEGIN           reduce using rule 8 (DEF_CONST -> .)
+    TYPE            reduce using rule 4 (DEF_CONST -> .)
+    VAR             reduce using rule 4 (DEF_CONST -> .)
+    FUNCTION        reduce using rule 4 (DEF_CONST -> .)
+    PROCEDURE       reduce using rule 4 (DEF_CONST -> .)
+    BEGIN           reduce using rule 4 (DEF_CONST -> .)
     CONST           shift and go to state 5
 
     CONSTANTE                      shift and go to state 4
@@ -263,7 +263,7 @@ state 4
 
 state 5
 
-    (10) CONSTANTE -> CONST . ID = CONST_VALOR ;
+    (5) CONSTANTE -> CONST . ID = CONST_VALOR ;
 
     ID              shift and go to state 12
 
@@ -277,13 +277,13 @@ state 6
 
 state 7
 
-    (6) BLOCO -> BEGIN . COMANDO LISTA_COM END
-    (39) COMANDO -> . ID ATRIBUICAO EXP
-    (40) COMANDO -> . WHILE EXP_LOGICA DO BLOCO
-    (41) COMANDO -> . IF EXP_LOGICA THEN BLOCO alternativa_else
-    (42) COMANDO -> . FOR FOR_PARAMS DO BLOCO
-    (43) COMANDO -> . WRITE CONST_VALOR
-    (44) COMANDO -> . READ ID
+    (41) BLOCO -> BEGIN . COMANDO LISTA_COM END
+    (42) COMANDO -> . ID atribuicao_regra
+    (43) COMANDO -> . WHILE EXP_COM DO BLOCO
+    (44) COMANDO -> . IF EXP_COM THEN BLOCO else_regra
+    (45) COMANDO -> . FOR FOR_PARAMS DO BLOCO
+    (46) COMANDO -> . WRITE CONST_VALOR
+    (47) COMANDO -> . READ ID
 
     ID              shift and go to state 14
     WHILE           shift and go to state 15
@@ -296,14 +296,14 @@ state 7
 
 state 8
 
-    (7) DECLARACOES -> DEF_CONST DEF_TIPOS . DEF_VAR DEF_ROTINA
-    (23) DEF_VAR -> .
-    (24) DEF_VAR -> . VARIAVEL DEF_VAR
+    (2) DECLARACOES -> DEF_CONST DEF_TIPOS . DEF_VAR DEF_ROTINA
+    (23) DEF_VAR -> . VARIAVEL DEF_VAR
+    (24) DEF_VAR -> .
     (25) VARIAVEL -> . VAR CAMPOS ;
 
-    FUNCTION        reduce using rule 23 (DEF_VAR -> .)
-    PROCEDURE       reduce using rule 23 (DEF_VAR -> .)
-    BEGIN           reduce using rule 23 (DEF_VAR -> .)
+    FUNCTION        reduce using rule 24 (DEF_VAR -> .)
+    PROCEDURE       reduce using rule 24 (DEF_VAR -> .)
+    BEGIN           reduce using rule 24 (DEF_VAR -> .)
     VAR             shift and go to state 22
 
     DEF_VAR                        shift and go to state 20
@@ -311,15 +311,15 @@ state 8
 
 state 9
 
-    (14) DEF_TIPOS -> TIPO . DEF_TIPOS
-    (13) DEF_TIPOS -> .
-    (14) DEF_TIPOS -> . TIPO DEF_TIPOS
+    (13) DEF_TIPOS -> TIPO . DEF_TIPOS
+    (13) DEF_TIPOS -> . TIPO DEF_TIPOS
+    (14) DEF_TIPOS -> .
     (15) TIPO -> . TYPE ID = TIPO_DADO ;
 
-    VAR             reduce using rule 13 (DEF_TIPOS -> .)
-    FUNCTION        reduce using rule 13 (DEF_TIPOS -> .)
-    PROCEDURE       reduce using rule 13 (DEF_TIPOS -> .)
-    BEGIN           reduce using rule 13 (DEF_TIPOS -> .)
+    VAR             reduce using rule 14 (DEF_TIPOS -> .)
+    FUNCTION        reduce using rule 14 (DEF_TIPOS -> .)
+    PROCEDURE       reduce using rule 14 (DEF_TIPOS -> .)
+    BEGIN           reduce using rule 14 (DEF_TIPOS -> .)
     TYPE            shift and go to state 10
 
     TIPO                           shift and go to state 9
@@ -334,35 +334,34 @@ state 10
 
 state 11
 
-    (9) DEF_CONST -> CONSTANTE DEF_CONST .
+    (3) DEF_CONST -> CONSTANTE DEF_CONST .
 
-    TYPE            reduce using rule 9 (DEF_CONST -> CONSTANTE DEF_CONST .)
-    VAR             reduce using rule 9 (DEF_CONST -> CONSTANTE DEF_CONST .)
-    FUNCTION        reduce using rule 9 (DEF_CONST -> CONSTANTE DEF_CONST .)
-    PROCEDURE       reduce using rule 9 (DEF_CONST -> CONSTANTE DEF_CONST .)
-    BEGIN           reduce using rule 9 (DEF_CONST -> CONSTANTE DEF_CONST .)
+    TYPE            reduce using rule 3 (DEF_CONST -> CONSTANTE DEF_CONST .)
+    VAR             reduce using rule 3 (DEF_CONST -> CONSTANTE DEF_CONST .)
+    FUNCTION        reduce using rule 3 (DEF_CONST -> CONSTANTE DEF_CONST .)
+    PROCEDURE       reduce using rule 3 (DEF_CONST -> CONSTANTE DEF_CONST .)
+    BEGIN           reduce using rule 3 (DEF_CONST -> CONSTANTE DEF_CONST .)
 
 
 state 12
 
-    (10) CONSTANTE -> CONST ID . = CONST_VALOR ;
+    (5) CONSTANTE -> CONST ID . = CONST_VALOR ;
 
     =               shift and go to state 25
 
 
 state 13
 
-    (6) BLOCO -> BEGIN COMANDO . LISTA_COM END
-    (2) LISTA_COM -> .
-    (3) LISTA_COM -> . COMANDO LISTA_COM_RESTO
-    (39) COMANDO -> . ID ATRIBUICAO EXP
-    (40) COMANDO -> . WHILE EXP_LOGICA DO BLOCO
-    (41) COMANDO -> . IF EXP_LOGICA THEN BLOCO alternativa_else
-    (42) COMANDO -> . FOR FOR_PARAMS DO BLOCO
-    (43) COMANDO -> . WRITE CONST_VALOR
-    (44) COMANDO -> . READ ID
+    (41) BLOCO -> BEGIN COMANDO . LISTA_COM END
+    (30) LISTA_COM -> . COMANDO PONTOVIRGULA LISTA_COM
+    (31) LISTA_COM -> . COMANDO
+    (42) COMANDO -> . ID atribuicao_regra
+    (43) COMANDO -> . WHILE EXP_COM DO BLOCO
+    (44) COMANDO -> . IF EXP_COM THEN BLOCO else_regra
+    (45) COMANDO -> . FOR FOR_PARAMS DO BLOCO
+    (46) COMANDO -> . WRITE CONST_VALOR
+    (47) COMANDO -> . READ ID
 
-    END             reduce using rule 2 (LISTA_COM -> .)
     ID              shift and go to state 14
     WHILE           shift and go to state 15
     IF              shift and go to state 16
@@ -375,538 +374,459 @@ state 13
 
 state 14
 
-    (39) COMANDO -> ID . ATRIBUICAO EXP
+    (42) COMANDO -> ID . atribuicao_regra
+    (48) atribuicao_regra -> . ATRIBUICAO EXP
 
-    ATRIBUICAO      shift and go to state 28
+    ATRIBUICAO      shift and go to state 29
 
+    atribuicao_regra               shift and go to state 28
 
 state 15
 
-    (40) COMANDO -> WHILE . EXP_LOGICA DO BLOCO
-    (50) EXP_LOGICA -> . PARAM_LOGICO OP_LOGICO EXP_LOGICA
-    (51) EXP_LOGICA -> . PARAM_LOGICO
-    (52) PARAM_LOGICO -> . PARAMETRO OP_COMP PARAMETRO
-    (64) PARAMETRO -> . ID
-    (65) PARAMETRO -> . NUMERO
-    (66) PARAMETRO -> . FALSE
-    (67) PARAMETRO -> . TRUE
+    (43) COMANDO -> WHILE . EXP_COM DO BLOCO
+    (54) EXP_COM -> . PARAMETRO OP_COMP PARAMETRO
+    (55) EXP_COM -> . PARAMETRO
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
     ID              shift and go to state 32
-    NUMERO          shift and go to state 33
-    FALSE           shift and go to state 34
-    TRUE            shift and go to state 35
+    PALAVRA         shift and go to state 33
 
-    EXP_LOGICA                     shift and go to state 29
-    PARAM_LOGICO                   shift and go to state 30
+    EXP_COM                        shift and go to state 30
     PARAMETRO                      shift and go to state 31
 
 state 16
 
-    (41) COMANDO -> IF . EXP_LOGICA THEN BLOCO alternativa_else
-    (50) EXP_LOGICA -> . PARAM_LOGICO OP_LOGICO EXP_LOGICA
-    (51) EXP_LOGICA -> . PARAM_LOGICO
-    (52) PARAM_LOGICO -> . PARAMETRO OP_COMP PARAMETRO
-    (64) PARAMETRO -> . ID
-    (65) PARAMETRO -> . NUMERO
-    (66) PARAMETRO -> . FALSE
-    (67) PARAMETRO -> . TRUE
+    (44) COMANDO -> IF . EXP_COM THEN BLOCO else_regra
+    (54) EXP_COM -> . PARAMETRO OP_COMP PARAMETRO
+    (55) EXP_COM -> . PARAMETRO
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
     ID              shift and go to state 32
-    NUMERO          shift and go to state 33
-    FALSE           shift and go to state 34
-    TRUE            shift and go to state 35
+    PALAVRA         shift and go to state 33
 
-    EXP_LOGICA                     shift and go to state 36
-    PARAM_LOGICO                   shift and go to state 30
+    EXP_COM                        shift and go to state 34
     PARAMETRO                      shift and go to state 31
 
 state 17
 
-    (42) COMANDO -> FOR . FOR_PARAMS DO BLOCO
-    (47) FOR_PARAMS -> . ID ATRIBUICAO PARAMETRO TO PARAMETRO
+    (45) COMANDO -> FOR . FOR_PARAMS DO BLOCO
+    (51) FOR_PARAMS -> . ID ATRIBUICAO PARAMETRO TO PARAMETRO
 
-    ID              shift and go to state 38
+    ID              shift and go to state 36
 
-    FOR_PARAMS                     shift and go to state 37
+    FOR_PARAMS                     shift and go to state 35
 
 state 18
 
-    (43) COMANDO -> WRITE . CONST_VALOR
-    (11) CONST_VALOR -> . PALAVRA
-    (12) CONST_VALOR -> . EXP_MAT
-    (53) EXP_MAT -> . PARAMETRO OP_MAT EXP_MAT
-    (54) EXP_MAT -> . PARAMETRO
-    (64) PARAMETRO -> . ID
-    (65) PARAMETRO -> . NUMERO
-    (66) PARAMETRO -> . FALSE
-    (67) PARAMETRO -> . TRUE
+    (46) COMANDO -> WRITE . CONST_VALOR
+    (6) CONST_VALOR -> . EXP_CONST
+    (9) EXP_CONST -> . PARAMETRO EXP_CONST_L
+    (10) EXP_CONST -> . ( PARAMETRO OP_MAT EXP_CONST )
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
-    PALAVRA         shift and go to state 40
+    (               shift and go to state 40
     ID              shift and go to state 32
-    NUMERO          shift and go to state 33
-    FALSE           shift and go to state 34
-    TRUE            shift and go to state 35
+    PALAVRA         shift and go to state 33
 
-    CONST_VALOR                    shift and go to state 39
-    EXP_MAT                        shift and go to state 41
-    PARAMETRO                      shift and go to state 42
+    CONST_VALOR                    shift and go to state 37
+    EXP_CONST                      shift and go to state 38
+    PARAMETRO                      shift and go to state 39
 
 state 19
 
-    (44) COMANDO -> READ . ID
+    (47) COMANDO -> READ . ID
 
-    ID              shift and go to state 43
+    ID              shift and go to state 41
 
 
 state 20
 
-    (7) DECLARACOES -> DEF_CONST DEF_TIPOS DEF_VAR . DEF_ROTINA
-    (32) DEF_ROTINA -> .
-    (33) DEF_ROTINA -> . ROTINA DEF_ROTINA
-    (34) ROTINA -> . FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA
-    (35) ROTINA -> . PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA
+    (2) DECLARACOES -> DEF_CONST DEF_TIPOS DEF_VAR . DEF_ROTINA
+    (34) DEF_ROTINA -> . ROTINA DEF_ROTINA
+    (35) DEF_ROTINA -> .
+    (36) ROTINA -> . FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA
+    (37) ROTINA -> . PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA
 
-    BEGIN           reduce using rule 32 (DEF_ROTINA -> .)
-    FUNCTION        shift and go to state 46
-    PROCEDURE       shift and go to state 47
+    BEGIN           reduce using rule 35 (DEF_ROTINA -> .)
+    FUNCTION        shift and go to state 44
+    PROCEDURE       shift and go to state 45
 
-    DEF_ROTINA                     shift and go to state 44
-    ROTINA                         shift and go to state 45
+    DEF_ROTINA                     shift and go to state 42
+    ROTINA                         shift and go to state 43
 
 state 21
 
-    (24) DEF_VAR -> VARIAVEL . DEF_VAR
-    (23) DEF_VAR -> .
-    (24) DEF_VAR -> . VARIAVEL DEF_VAR
+    (23) DEF_VAR -> VARIAVEL . DEF_VAR
+    (23) DEF_VAR -> . VARIAVEL DEF_VAR
+    (24) DEF_VAR -> .
     (25) VARIAVEL -> . VAR CAMPOS ;
 
-    FUNCTION        reduce using rule 23 (DEF_VAR -> .)
-    PROCEDURE       reduce using rule 23 (DEF_VAR -> .)
-    BEGIN           reduce using rule 23 (DEF_VAR -> .)
+    FUNCTION        reduce using rule 24 (DEF_VAR -> .)
+    PROCEDURE       reduce using rule 24 (DEF_VAR -> .)
+    BEGIN           reduce using rule 24 (DEF_VAR -> .)
     VAR             shift and go to state 22
 
     VARIAVEL                       shift and go to state 21
-    DEF_VAR                        shift and go to state 48
+    DEF_VAR                        shift and go to state 46
 
 state 22
 
     (25) VARIAVEL -> VAR . CAMPOS ;
     (26) CAMPOS -> . CAMPO LISTA_CAMPOS
-    (29) CAMPO -> . ID LISTA_ID : TIPO_DADO
+    (27) CAMPO -> . ID LISTA_ID : TIPO_DADO
 
-    ID              shift and go to state 51
+    ID              shift and go to state 49
 
-    CAMPOS                         shift and go to state 49
-    CAMPO                          shift and go to state 50
+    CAMPOS                         shift and go to state 47
+    CAMPO                          shift and go to state 48
 
 state 23
 
-    (14) DEF_TIPOS -> TIPO DEF_TIPOS .
+    (13) DEF_TIPOS -> TIPO DEF_TIPOS .
 
-    VAR             reduce using rule 14 (DEF_TIPOS -> TIPO DEF_TIPOS .)
-    FUNCTION        reduce using rule 14 (DEF_TIPOS -> TIPO DEF_TIPOS .)
-    PROCEDURE       reduce using rule 14 (DEF_TIPOS -> TIPO DEF_TIPOS .)
-    BEGIN           reduce using rule 14 (DEF_TIPOS -> TIPO DEF_TIPOS .)
+    VAR             reduce using rule 13 (DEF_TIPOS -> TIPO DEF_TIPOS .)
+    FUNCTION        reduce using rule 13 (DEF_TIPOS -> TIPO DEF_TIPOS .)
+    PROCEDURE       reduce using rule 13 (DEF_TIPOS -> TIPO DEF_TIPOS .)
+    BEGIN           reduce using rule 13 (DEF_TIPOS -> TIPO DEF_TIPOS .)
 
 
 state 24
 
     (15) TIPO -> TYPE ID . = TIPO_DADO ;
 
-    =               shift and go to state 52
+    =               shift and go to state 50
 
 
 state 25
 
-    (10) CONSTANTE -> CONST ID = . CONST_VALOR ;
-    (11) CONST_VALOR -> . PALAVRA
-    (12) CONST_VALOR -> . EXP_MAT
-    (53) EXP_MAT -> . PARAMETRO OP_MAT EXP_MAT
-    (54) EXP_MAT -> . PARAMETRO
-    (64) PARAMETRO -> . ID
-    (65) PARAMETRO -> . NUMERO
-    (66) PARAMETRO -> . FALSE
-    (67) PARAMETRO -> . TRUE
+    (5) CONSTANTE -> CONST ID = . CONST_VALOR ;
+    (6) CONST_VALOR -> . EXP_CONST
+    (9) EXP_CONST -> . PARAMETRO EXP_CONST_L
+    (10) EXP_CONST -> . ( PARAMETRO OP_MAT EXP_CONST )
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
-    PALAVRA         shift and go to state 40
+    (               shift and go to state 40
     ID              shift and go to state 32
-    NUMERO          shift and go to state 33
-    FALSE           shift and go to state 34
-    TRUE            shift and go to state 35
+    PALAVRA         shift and go to state 33
 
-    CONST_VALOR                    shift and go to state 53
-    EXP_MAT                        shift and go to state 41
-    PARAMETRO                      shift and go to state 42
+    CONST_VALOR                    shift and go to state 51
+    EXP_CONST                      shift and go to state 38
+    PARAMETRO                      shift and go to state 39
 
 state 26
 
-    (3) LISTA_COM -> COMANDO . LISTA_COM_RESTO
-    (4) LISTA_COM_RESTO -> . ; COMANDO LISTA_COM_RESTO
-    (5) LISTA_COM_RESTO -> . ;
+    (30) LISTA_COM -> COMANDO . PONTOVIRGULA LISTA_COM
+    (31) LISTA_COM -> COMANDO .
 
-    ;               shift and go to state 55
+    PONTOVIRGULA    shift and go to state 52
+    END             reduce using rule 31 (LISTA_COM -> COMANDO .)
 
-    LISTA_COM_RESTO                shift and go to state 54
 
 state 27
 
-    (6) BLOCO -> BEGIN COMANDO LISTA_COM . END
+    (41) BLOCO -> BEGIN COMANDO LISTA_COM . END
 
-    END             shift and go to state 56
+    END             shift and go to state 53
 
 
 state 28
 
-    (39) COMANDO -> ID ATRIBUICAO . EXP
-    (48) EXP -> . EXP_MAT
-    (49) EXP -> . EXP_LOGICA
-    (53) EXP_MAT -> . PARAMETRO OP_MAT EXP_MAT
-    (54) EXP_MAT -> . PARAMETRO
-    (50) EXP_LOGICA -> . PARAM_LOGICO OP_LOGICO EXP_LOGICA
-    (51) EXP_LOGICA -> . PARAM_LOGICO
-    (64) PARAMETRO -> . ID
-    (65) PARAMETRO -> . NUMERO
-    (66) PARAMETRO -> . FALSE
-    (67) PARAMETRO -> . TRUE
-    (52) PARAM_LOGICO -> . PARAMETRO OP_COMP PARAMETRO
+    (42) COMANDO -> ID atribuicao_regra .
 
-    ID              shift and go to state 32
-    NUMERO          shift and go to state 33
-    FALSE           shift and go to state 34
-    TRUE            shift and go to state 35
+    ID              reduce using rule 42 (COMANDO -> ID atribuicao_regra .)
+    WHILE           reduce using rule 42 (COMANDO -> ID atribuicao_regra .)
+    IF              reduce using rule 42 (COMANDO -> ID atribuicao_regra .)
+    FOR             reduce using rule 42 (COMANDO -> ID atribuicao_regra .)
+    WRITE           reduce using rule 42 (COMANDO -> ID atribuicao_regra .)
+    READ            reduce using rule 42 (COMANDO -> ID atribuicao_regra .)
+    PONTOVIRGULA    reduce using rule 42 (COMANDO -> ID atribuicao_regra .)
+    END             reduce using rule 42 (COMANDO -> ID atribuicao_regra .)
 
-    EXP                            shift and go to state 57
-    EXP_MAT                        shift and go to state 58
-    EXP_LOGICA                     shift and go to state 59
-    PARAMETRO                      shift and go to state 60
-    PARAM_LOGICO                   shift and go to state 30
 
 state 29
 
-    (40) COMANDO -> WHILE EXP_LOGICA . DO BLOCO
+    (48) atribuicao_regra -> ATRIBUICAO . EXP
+    (52) EXP -> . PARAMETRO OP_MAT EXP
+    (53) EXP -> . PARAMETRO
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
-    DO              shift and go to state 61
+    ID              shift and go to state 32
+    PALAVRA         shift and go to state 33
 
+    EXP                            shift and go to state 54
+    PARAMETRO                      shift and go to state 55
 
 state 30
 
-    (50) EXP_LOGICA -> PARAM_LOGICO . OP_LOGICO EXP_LOGICA
-    (51) EXP_LOGICA -> PARAM_LOGICO .
-    (55) OP_LOGICO -> . AND
-    (56) OP_LOGICO -> . OR
+    (43) COMANDO -> WHILE EXP_COM . DO BLOCO
 
-    DO              reduce using rule 51 (EXP_LOGICA -> PARAM_LOGICO .)
-    THEN            reduce using rule 51 (EXP_LOGICA -> PARAM_LOGICO .)
-    ID              reduce using rule 51 (EXP_LOGICA -> PARAM_LOGICO .)
-    WHILE           reduce using rule 51 (EXP_LOGICA -> PARAM_LOGICO .)
-    IF              reduce using rule 51 (EXP_LOGICA -> PARAM_LOGICO .)
-    FOR             reduce using rule 51 (EXP_LOGICA -> PARAM_LOGICO .)
-    WRITE           reduce using rule 51 (EXP_LOGICA -> PARAM_LOGICO .)
-    READ            reduce using rule 51 (EXP_LOGICA -> PARAM_LOGICO .)
-    END             reduce using rule 51 (EXP_LOGICA -> PARAM_LOGICO .)
-    ;               reduce using rule 51 (EXP_LOGICA -> PARAM_LOGICO .)
-    AND             shift and go to state 63
-    OR              shift and go to state 64
+    DO              shift and go to state 56
 
-    OP_LOGICO                      shift and go to state 62
 
 state 31
 
-    (52) PARAM_LOGICO -> PARAMETRO . OP_COMP PARAMETRO
-    (57) OP_COMP -> . >
-    (58) OP_COMP -> . <
-    (59) OP_COMP -> . =
+    (54) EXP_COM -> PARAMETRO . OP_COMP PARAMETRO
+    (55) EXP_COM -> PARAMETRO .
+    (60) OP_COMP -> . >
+    (61) OP_COMP -> . <
+    (62) OP_COMP -> . IGUAL
+    (63) OP_COMP -> . DIFERENTE
+    (64) OP_COMP -> . MAIOR_IGUAL
+    (65) OP_COMP -> . MENOR_IGUAL
 
-    >               shift and go to state 66
-    <               shift and go to state 67
-    =               shift and go to state 68
+    DO              reduce using rule 55 (EXP_COM -> PARAMETRO .)
+    THEN            reduce using rule 55 (EXP_COM -> PARAMETRO .)
+    >               shift and go to state 58
+    <               shift and go to state 59
+    IGUAL           shift and go to state 60
+    DIFERENTE       shift and go to state 61
+    MAIOR_IGUAL     shift and go to state 62
+    MENOR_IGUAL     shift and go to state 63
 
-    OP_COMP                        shift and go to state 65
+    OP_COMP                        shift and go to state 57
 
 state 32
 
-    (64) PARAMETRO -> ID .
+    (7) PARAMETRO -> ID .
 
-    >               reduce using rule 64 (PARAMETRO -> ID .)
-    <               reduce using rule 64 (PARAMETRO -> ID .)
-    =               reduce using rule 64 (PARAMETRO -> ID .)
-    +               reduce using rule 64 (PARAMETRO -> ID .)
-    -               reduce using rule 64 (PARAMETRO -> ID .)
-    *               reduce using rule 64 (PARAMETRO -> ID .)
-    /               reduce using rule 64 (PARAMETRO -> ID .)
-    ID              reduce using rule 64 (PARAMETRO -> ID .)
-    WHILE           reduce using rule 64 (PARAMETRO -> ID .)
-    IF              reduce using rule 64 (PARAMETRO -> ID .)
-    FOR             reduce using rule 64 (PARAMETRO -> ID .)
-    WRITE           reduce using rule 64 (PARAMETRO -> ID .)
-    READ            reduce using rule 64 (PARAMETRO -> ID .)
-    END             reduce using rule 64 (PARAMETRO -> ID .)
-    ;               reduce using rule 64 (PARAMETRO -> ID .)
-    AND             reduce using rule 64 (PARAMETRO -> ID .)
-    OR              reduce using rule 64 (PARAMETRO -> ID .)
-    DO              reduce using rule 64 (PARAMETRO -> ID .)
-    THEN            reduce using rule 64 (PARAMETRO -> ID .)
-    TO              reduce using rule 64 (PARAMETRO -> ID .)
+    >               reduce using rule 7 (PARAMETRO -> ID .)
+    <               reduce using rule 7 (PARAMETRO -> ID .)
+    IGUAL           reduce using rule 7 (PARAMETRO -> ID .)
+    DIFERENTE       reduce using rule 7 (PARAMETRO -> ID .)
+    MAIOR_IGUAL     reduce using rule 7 (PARAMETRO -> ID .)
+    MENOR_IGUAL     reduce using rule 7 (PARAMETRO -> ID .)
+    DO              reduce using rule 7 (PARAMETRO -> ID .)
+    THEN            reduce using rule 7 (PARAMETRO -> ID .)
+    +               reduce using rule 7 (PARAMETRO -> ID .)
+    -               reduce using rule 7 (PARAMETRO -> ID .)
+    *               reduce using rule 7 (PARAMETRO -> ID .)
+    /               reduce using rule 7 (PARAMETRO -> ID .)
+    ID              reduce using rule 7 (PARAMETRO -> ID .)
+    WHILE           reduce using rule 7 (PARAMETRO -> ID .)
+    IF              reduce using rule 7 (PARAMETRO -> ID .)
+    FOR             reduce using rule 7 (PARAMETRO -> ID .)
+    WRITE           reduce using rule 7 (PARAMETRO -> ID .)
+    READ            reduce using rule 7 (PARAMETRO -> ID .)
+    PONTOVIRGULA    reduce using rule 7 (PARAMETRO -> ID .)
+    END             reduce using rule 7 (PARAMETRO -> ID .)
+    ;               reduce using rule 7 (PARAMETRO -> ID .)
+    TO              reduce using rule 7 (PARAMETRO -> ID .)
+    )               reduce using rule 7 (PARAMETRO -> ID .)
 
 
 state 33
 
-    (65) PARAMETRO -> NUMERO .
+    (8) PARAMETRO -> PALAVRA .
 
-    >               reduce using rule 65 (PARAMETRO -> NUMERO .)
-    <               reduce using rule 65 (PARAMETRO -> NUMERO .)
-    =               reduce using rule 65 (PARAMETRO -> NUMERO .)
-    +               reduce using rule 65 (PARAMETRO -> NUMERO .)
-    -               reduce using rule 65 (PARAMETRO -> NUMERO .)
-    *               reduce using rule 65 (PARAMETRO -> NUMERO .)
-    /               reduce using rule 65 (PARAMETRO -> NUMERO .)
-    ID              reduce using rule 65 (PARAMETRO -> NUMERO .)
-    WHILE           reduce using rule 65 (PARAMETRO -> NUMERO .)
-    IF              reduce using rule 65 (PARAMETRO -> NUMERO .)
-    FOR             reduce using rule 65 (PARAMETRO -> NUMERO .)
-    WRITE           reduce using rule 65 (PARAMETRO -> NUMERO .)
-    READ            reduce using rule 65 (PARAMETRO -> NUMERO .)
-    END             reduce using rule 65 (PARAMETRO -> NUMERO .)
-    ;               reduce using rule 65 (PARAMETRO -> NUMERO .)
-    AND             reduce using rule 65 (PARAMETRO -> NUMERO .)
-    OR              reduce using rule 65 (PARAMETRO -> NUMERO .)
-    DO              reduce using rule 65 (PARAMETRO -> NUMERO .)
-    THEN            reduce using rule 65 (PARAMETRO -> NUMERO .)
-    TO              reduce using rule 65 (PARAMETRO -> NUMERO .)
+    >               reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    <               reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    IGUAL           reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    DIFERENTE       reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    MAIOR_IGUAL     reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    MENOR_IGUAL     reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    DO              reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    THEN            reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    +               reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    -               reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    *               reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    /               reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    ID              reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    WHILE           reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    IF              reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    FOR             reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    WRITE           reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    READ            reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    PONTOVIRGULA    reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    END             reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    ;               reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    TO              reduce using rule 8 (PARAMETRO -> PALAVRA .)
+    )               reduce using rule 8 (PARAMETRO -> PALAVRA .)
 
 
 state 34
 
-    (66) PARAMETRO -> FALSE .
+    (44) COMANDO -> IF EXP_COM . THEN BLOCO else_regra
 
-    >               reduce using rule 66 (PARAMETRO -> FALSE .)
-    <               reduce using rule 66 (PARAMETRO -> FALSE .)
-    =               reduce using rule 66 (PARAMETRO -> FALSE .)
-    +               reduce using rule 66 (PARAMETRO -> FALSE .)
-    -               reduce using rule 66 (PARAMETRO -> FALSE .)
-    *               reduce using rule 66 (PARAMETRO -> FALSE .)
-    /               reduce using rule 66 (PARAMETRO -> FALSE .)
-    ID              reduce using rule 66 (PARAMETRO -> FALSE .)
-    WHILE           reduce using rule 66 (PARAMETRO -> FALSE .)
-    IF              reduce using rule 66 (PARAMETRO -> FALSE .)
-    FOR             reduce using rule 66 (PARAMETRO -> FALSE .)
-    WRITE           reduce using rule 66 (PARAMETRO -> FALSE .)
-    READ            reduce using rule 66 (PARAMETRO -> FALSE .)
-    END             reduce using rule 66 (PARAMETRO -> FALSE .)
-    ;               reduce using rule 66 (PARAMETRO -> FALSE .)
-    AND             reduce using rule 66 (PARAMETRO -> FALSE .)
-    OR              reduce using rule 66 (PARAMETRO -> FALSE .)
-    DO              reduce using rule 66 (PARAMETRO -> FALSE .)
-    THEN            reduce using rule 66 (PARAMETRO -> FALSE .)
-    TO              reduce using rule 66 (PARAMETRO -> FALSE .)
+    THEN            shift and go to state 64
 
 
 state 35
 
-    (67) PARAMETRO -> TRUE .
+    (45) COMANDO -> FOR FOR_PARAMS . DO BLOCO
 
-    >               reduce using rule 67 (PARAMETRO -> TRUE .)
-    <               reduce using rule 67 (PARAMETRO -> TRUE .)
-    =               reduce using rule 67 (PARAMETRO -> TRUE .)
-    +               reduce using rule 67 (PARAMETRO -> TRUE .)
-    -               reduce using rule 67 (PARAMETRO -> TRUE .)
-    *               reduce using rule 67 (PARAMETRO -> TRUE .)
-    /               reduce using rule 67 (PARAMETRO -> TRUE .)
-    ID              reduce using rule 67 (PARAMETRO -> TRUE .)
-    WHILE           reduce using rule 67 (PARAMETRO -> TRUE .)
-    IF              reduce using rule 67 (PARAMETRO -> TRUE .)
-    FOR             reduce using rule 67 (PARAMETRO -> TRUE .)
-    WRITE           reduce using rule 67 (PARAMETRO -> TRUE .)
-    READ            reduce using rule 67 (PARAMETRO -> TRUE .)
-    END             reduce using rule 67 (PARAMETRO -> TRUE .)
-    ;               reduce using rule 67 (PARAMETRO -> TRUE .)
-    AND             reduce using rule 67 (PARAMETRO -> TRUE .)
-    OR              reduce using rule 67 (PARAMETRO -> TRUE .)
-    DO              reduce using rule 67 (PARAMETRO -> TRUE .)
-    THEN            reduce using rule 67 (PARAMETRO -> TRUE .)
-    TO              reduce using rule 67 (PARAMETRO -> TRUE .)
+    DO              shift and go to state 65
 
 
 state 36
 
-    (41) COMANDO -> IF EXP_LOGICA . THEN BLOCO alternativa_else
+    (51) FOR_PARAMS -> ID . ATRIBUICAO PARAMETRO TO PARAMETRO
 
-    THEN            shift and go to state 69
+    ATRIBUICAO      shift and go to state 66
 
 
 state 37
 
-    (42) COMANDO -> FOR FOR_PARAMS . DO BLOCO
+    (46) COMANDO -> WRITE CONST_VALOR .
 
-    DO              shift and go to state 70
+    ID              reduce using rule 46 (COMANDO -> WRITE CONST_VALOR .)
+    WHILE           reduce using rule 46 (COMANDO -> WRITE CONST_VALOR .)
+    IF              reduce using rule 46 (COMANDO -> WRITE CONST_VALOR .)
+    FOR             reduce using rule 46 (COMANDO -> WRITE CONST_VALOR .)
+    WRITE           reduce using rule 46 (COMANDO -> WRITE CONST_VALOR .)
+    READ            reduce using rule 46 (COMANDO -> WRITE CONST_VALOR .)
+    PONTOVIRGULA    reduce using rule 46 (COMANDO -> WRITE CONST_VALOR .)
+    END             reduce using rule 46 (COMANDO -> WRITE CONST_VALOR .)
 
 
 state 38
 
-    (47) FOR_PARAMS -> ID . ATRIBUICAO PARAMETRO TO PARAMETRO
+    (6) CONST_VALOR -> EXP_CONST .
 
-    ATRIBUICAO      shift and go to state 71
+    ID              reduce using rule 6 (CONST_VALOR -> EXP_CONST .)
+    WHILE           reduce using rule 6 (CONST_VALOR -> EXP_CONST .)
+    IF              reduce using rule 6 (CONST_VALOR -> EXP_CONST .)
+    FOR             reduce using rule 6 (CONST_VALOR -> EXP_CONST .)
+    WRITE           reduce using rule 6 (CONST_VALOR -> EXP_CONST .)
+    READ            reduce using rule 6 (CONST_VALOR -> EXP_CONST .)
+    PONTOVIRGULA    reduce using rule 6 (CONST_VALOR -> EXP_CONST .)
+    END             reduce using rule 6 (CONST_VALOR -> EXP_CONST .)
+    ;               reduce using rule 6 (CONST_VALOR -> EXP_CONST .)
 
 
 state 39
 
-    (43) COMANDO -> WRITE CONST_VALOR .
+    (9) EXP_CONST -> PARAMETRO . EXP_CONST_L
+    (11) EXP_CONST_L -> . OP_MAT EXP_CONST
+    (12) EXP_CONST_L -> .
+    (56) OP_MAT -> . +
+    (57) OP_MAT -> . -
+    (58) OP_MAT -> . *
+    (59) OP_MAT -> . /
 
-    ID              reduce using rule 43 (COMANDO -> WRITE CONST_VALOR .)
-    WHILE           reduce using rule 43 (COMANDO -> WRITE CONST_VALOR .)
-    IF              reduce using rule 43 (COMANDO -> WRITE CONST_VALOR .)
-    FOR             reduce using rule 43 (COMANDO -> WRITE CONST_VALOR .)
-    WRITE           reduce using rule 43 (COMANDO -> WRITE CONST_VALOR .)
-    READ            reduce using rule 43 (COMANDO -> WRITE CONST_VALOR .)
-    END             reduce using rule 43 (COMANDO -> WRITE CONST_VALOR .)
-    ;               reduce using rule 43 (COMANDO -> WRITE CONST_VALOR .)
+    ID              reduce using rule 12 (EXP_CONST_L -> .)
+    WHILE           reduce using rule 12 (EXP_CONST_L -> .)
+    IF              reduce using rule 12 (EXP_CONST_L -> .)
+    FOR             reduce using rule 12 (EXP_CONST_L -> .)
+    WRITE           reduce using rule 12 (EXP_CONST_L -> .)
+    READ            reduce using rule 12 (EXP_CONST_L -> .)
+    PONTOVIRGULA    reduce using rule 12 (EXP_CONST_L -> .)
+    END             reduce using rule 12 (EXP_CONST_L -> .)
+    ;               reduce using rule 12 (EXP_CONST_L -> .)
+    )               reduce using rule 12 (EXP_CONST_L -> .)
+    +               shift and go to state 69
+    -               shift and go to state 70
+    *               shift and go to state 71
+    /               shift and go to state 72
 
+    EXP_CONST_L                    shift and go to state 67
+    OP_MAT                         shift and go to state 68
 
 state 40
 
-    (11) CONST_VALOR -> PALAVRA .
+    (10) EXP_CONST -> ( . PARAMETRO OP_MAT EXP_CONST )
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
-    ID              reduce using rule 11 (CONST_VALOR -> PALAVRA .)
-    WHILE           reduce using rule 11 (CONST_VALOR -> PALAVRA .)
-    IF              reduce using rule 11 (CONST_VALOR -> PALAVRA .)
-    FOR             reduce using rule 11 (CONST_VALOR -> PALAVRA .)
-    WRITE           reduce using rule 11 (CONST_VALOR -> PALAVRA .)
-    READ            reduce using rule 11 (CONST_VALOR -> PALAVRA .)
-    END             reduce using rule 11 (CONST_VALOR -> PALAVRA .)
-    ;               reduce using rule 11 (CONST_VALOR -> PALAVRA .)
+    ID              shift and go to state 32
+    PALAVRA         shift and go to state 33
 
+    PARAMETRO                      shift and go to state 73
 
 state 41
 
-    (12) CONST_VALOR -> EXP_MAT .
+    (47) COMANDO -> READ ID .
 
-    ID              reduce using rule 12 (CONST_VALOR -> EXP_MAT .)
-    WHILE           reduce using rule 12 (CONST_VALOR -> EXP_MAT .)
-    IF              reduce using rule 12 (CONST_VALOR -> EXP_MAT .)
-    FOR             reduce using rule 12 (CONST_VALOR -> EXP_MAT .)
-    WRITE           reduce using rule 12 (CONST_VALOR -> EXP_MAT .)
-    READ            reduce using rule 12 (CONST_VALOR -> EXP_MAT .)
-    END             reduce using rule 12 (CONST_VALOR -> EXP_MAT .)
-    ;               reduce using rule 12 (CONST_VALOR -> EXP_MAT .)
+    ID              reduce using rule 47 (COMANDO -> READ ID .)
+    WHILE           reduce using rule 47 (COMANDO -> READ ID .)
+    IF              reduce using rule 47 (COMANDO -> READ ID .)
+    FOR             reduce using rule 47 (COMANDO -> READ ID .)
+    WRITE           reduce using rule 47 (COMANDO -> READ ID .)
+    READ            reduce using rule 47 (COMANDO -> READ ID .)
+    PONTOVIRGULA    reduce using rule 47 (COMANDO -> READ ID .)
+    END             reduce using rule 47 (COMANDO -> READ ID .)
 
 
 state 42
 
-    (53) EXP_MAT -> PARAMETRO . OP_MAT EXP_MAT
-    (54) EXP_MAT -> PARAMETRO .
-    (60) OP_MAT -> . +
-    (61) OP_MAT -> . -
-    (62) OP_MAT -> . *
-    (63) OP_MAT -> . /
+    (2) DECLARACOES -> DEF_CONST DEF_TIPOS DEF_VAR DEF_ROTINA .
 
-    ID              reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    WHILE           reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    IF              reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    FOR             reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    WRITE           reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    READ            reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    END             reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    ;               reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    +               shift and go to state 73
-    -               shift and go to state 74
-    *               shift and go to state 75
-    /               shift and go to state 76
+    BEGIN           reduce using rule 2 (DECLARACOES -> DEF_CONST DEF_TIPOS DEF_VAR DEF_ROTINA .)
 
-    OP_MAT                         shift and go to state 72
 
 state 43
 
-    (44) COMANDO -> READ ID .
+    (34) DEF_ROTINA -> ROTINA . DEF_ROTINA
+    (34) DEF_ROTINA -> . ROTINA DEF_ROTINA
+    (35) DEF_ROTINA -> .
+    (36) ROTINA -> . FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA
+    (37) ROTINA -> . PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA
 
-    ID              reduce using rule 44 (COMANDO -> READ ID .)
-    WHILE           reduce using rule 44 (COMANDO -> READ ID .)
-    IF              reduce using rule 44 (COMANDO -> READ ID .)
-    FOR             reduce using rule 44 (COMANDO -> READ ID .)
-    WRITE           reduce using rule 44 (COMANDO -> READ ID .)
-    READ            reduce using rule 44 (COMANDO -> READ ID .)
-    END             reduce using rule 44 (COMANDO -> READ ID .)
-    ;               reduce using rule 44 (COMANDO -> READ ID .)
+    BEGIN           reduce using rule 35 (DEF_ROTINA -> .)
+    FUNCTION        shift and go to state 44
+    PROCEDURE       shift and go to state 45
 
+    ROTINA                         shift and go to state 43
+    DEF_ROTINA                     shift and go to state 74
 
 state 44
 
-    (7) DECLARACOES -> DEF_CONST DEF_TIPOS DEF_VAR DEF_ROTINA .
+    (36) ROTINA -> FUNCTION . ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA
 
-    BEGIN           reduce using rule 7 (DECLARACOES -> DEF_CONST DEF_TIPOS DEF_VAR DEF_ROTINA .)
+    ID              shift and go to state 75
 
 
 state 45
 
-    (33) DEF_ROTINA -> ROTINA . DEF_ROTINA
-    (32) DEF_ROTINA -> .
-    (33) DEF_ROTINA -> . ROTINA DEF_ROTINA
-    (34) ROTINA -> . FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA
-    (35) ROTINA -> . PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA
+    (37) ROTINA -> PROCEDURE . ID PARAM_ROTINA BLOCO_ROTINA
 
-    BEGIN           reduce using rule 32 (DEF_ROTINA -> .)
-    FUNCTION        shift and go to state 46
-    PROCEDURE       shift and go to state 47
+    ID              shift and go to state 76
 
-    ROTINA                         shift and go to state 45
-    DEF_ROTINA                     shift and go to state 77
 
 state 46
 
-    (34) ROTINA -> FUNCTION . ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA
+    (23) DEF_VAR -> VARIAVEL DEF_VAR .
 
-    ID              shift and go to state 78
+    FUNCTION        reduce using rule 23 (DEF_VAR -> VARIAVEL DEF_VAR .)
+    PROCEDURE       reduce using rule 23 (DEF_VAR -> VARIAVEL DEF_VAR .)
+    BEGIN           reduce using rule 23 (DEF_VAR -> VARIAVEL DEF_VAR .)
 
 
 state 47
 
-    (35) ROTINA -> PROCEDURE . ID PARAM_ROTINA BLOCO_ROTINA
+    (25) VARIAVEL -> VAR CAMPOS . ;
 
-    ID              shift and go to state 79
+    ;               shift and go to state 77
 
 
 state 48
 
-    (24) DEF_VAR -> VARIAVEL DEF_VAR .
+    (26) CAMPOS -> CAMPO . LISTA_CAMPOS
+    (32) LISTA_CAMPOS -> . CAMPO PONTOVIRGULA LISTA_CAMPOS
+    (33) LISTA_CAMPOS -> . CAMPO
+    (27) CAMPO -> . ID LISTA_ID : TIPO_DADO
 
-    FUNCTION        reduce using rule 24 (DEF_VAR -> VARIAVEL DEF_VAR .)
-    PROCEDURE       reduce using rule 24 (DEF_VAR -> VARIAVEL DEF_VAR .)
-    BEGIN           reduce using rule 24 (DEF_VAR -> VARIAVEL DEF_VAR .)
+    ID              shift and go to state 49
 
+    CAMPO                          shift and go to state 78
+    LISTA_CAMPOS                   shift and go to state 79
 
 state 49
 
-    (25) VARIAVEL -> VAR CAMPOS . ;
+    (27) CAMPO -> ID . LISTA_ID : TIPO_DADO
+    (28) LISTA_ID -> . , ID LISTA_ID
+    (29) LISTA_ID -> .
 
-    ;               shift and go to state 80
+    ,               shift and go to state 81
+    :               reduce using rule 29 (LISTA_ID -> .)
 
+    LISTA_ID                       shift and go to state 80
 
 state 50
-
-    (26) CAMPOS -> CAMPO . LISTA_CAMPOS
-    (27) LISTA_CAMPOS -> .
-    (28) LISTA_CAMPOS -> . ; CAMPO LISTA_CAMPOS
-
-  ! shift/reduce conflict for ; resolved as shift
-    END             reduce using rule 27 (LISTA_CAMPOS -> .)
-    )               reduce using rule 27 (LISTA_CAMPOS -> .)
-    ;               shift and go to state 82
-
-  ! ;               [ reduce using rule 27 (LISTA_CAMPOS -> .) ]
-
-    LISTA_CAMPOS                   shift and go to state 81
-
-state 51
-
-    (29) CAMPO -> ID . LISTA_ID : TIPO_DADO
-    (30) LISTA_ID -> .
-    (31) LISTA_ID -> . , ID LISTA_ID
-
-    :               reduce using rule 30 (LISTA_ID -> .)
-    ,               shift and go to state 84
-
-    LISTA_ID                       shift and go to state 83
-
-state 52
 
     (15) TIPO -> TYPE ID = . TIPO_DADO ;
     (16) TIPO_DADO -> . INTEGER
@@ -917,42 +837,35 @@ state 52
     (21) TIPO_DADO -> . RECORD CAMPOS END
     (22) TIPO_DADO -> . ID
 
-    INTEGER         shift and go to state 87
-    REAL            shift and go to state 88
-    CHAR            shift and go to state 89
-    BOOLEAN         shift and go to state 90
-    ARRAY           shift and go to state 91
-    RECORD          shift and go to state 92
-    ID              shift and go to state 85
+    INTEGER         shift and go to state 84
+    REAL            shift and go to state 85
+    CHAR            shift and go to state 86
+    BOOLEAN         shift and go to state 87
+    ARRAY           shift and go to state 88
+    RECORD          shift and go to state 89
+    ID              shift and go to state 82
 
-    TIPO_DADO                      shift and go to state 86
+    TIPO_DADO                      shift and go to state 83
 
-state 53
+state 51
 
-    (10) CONSTANTE -> CONST ID = CONST_VALOR . ;
+    (5) CONSTANTE -> CONST ID = CONST_VALOR . ;
 
-    ;               shift and go to state 93
-
-
-state 54
-
-    (3) LISTA_COM -> COMANDO LISTA_COM_RESTO .
-
-    END             reduce using rule 3 (LISTA_COM -> COMANDO LISTA_COM_RESTO .)
+    ;               shift and go to state 90
 
 
-state 55
+state 52
 
-    (4) LISTA_COM_RESTO -> ; . COMANDO LISTA_COM_RESTO
-    (5) LISTA_COM_RESTO -> ; .
-    (39) COMANDO -> . ID ATRIBUICAO EXP
-    (40) COMANDO -> . WHILE EXP_LOGICA DO BLOCO
-    (41) COMANDO -> . IF EXP_LOGICA THEN BLOCO alternativa_else
-    (42) COMANDO -> . FOR FOR_PARAMS DO BLOCO
-    (43) COMANDO -> . WRITE CONST_VALOR
-    (44) COMANDO -> . READ ID
+    (30) LISTA_COM -> COMANDO PONTOVIRGULA . LISTA_COM
+    (30) LISTA_COM -> . COMANDO PONTOVIRGULA LISTA_COM
+    (31) LISTA_COM -> . COMANDO
+    (42) COMANDO -> . ID atribuicao_regra
+    (43) COMANDO -> . WHILE EXP_COM DO BLOCO
+    (44) COMANDO -> . IF EXP_COM THEN BLOCO else_regra
+    (45) COMANDO -> . FOR FOR_PARAMS DO BLOCO
+    (46) COMANDO -> . WRITE CONST_VALOR
+    (47) COMANDO -> . READ ID
 
-    END             reduce using rule 5 (LISTA_COM_RESTO -> ; .)
     ID              shift and go to state 14
     WHILE           shift and go to state 15
     IF              shift and go to state 16
@@ -960,317 +873,276 @@ state 55
     WRITE           shift and go to state 18
     READ            shift and go to state 19
 
-    COMANDO                        shift and go to state 94
+    COMANDO                        shift and go to state 26
+    LISTA_COM                      shift and go to state 91
+
+state 53
+
+    (41) BLOCO -> BEGIN COMANDO LISTA_COM END .
+
+    $end            reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    ID              reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    WHILE           reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    IF              reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    FOR             reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    WRITE           reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    READ            reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    PONTOVIRGULA    reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    END             reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    ELSE            reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    FUNCTION        reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    PROCEDURE       reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    BEGIN           reduce using rule 41 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+
+
+state 54
+
+    (48) atribuicao_regra -> ATRIBUICAO EXP .
+
+    ID              reduce using rule 48 (atribuicao_regra -> ATRIBUICAO EXP .)
+    WHILE           reduce using rule 48 (atribuicao_regra -> ATRIBUICAO EXP .)
+    IF              reduce using rule 48 (atribuicao_regra -> ATRIBUICAO EXP .)
+    FOR             reduce using rule 48 (atribuicao_regra -> ATRIBUICAO EXP .)
+    WRITE           reduce using rule 48 (atribuicao_regra -> ATRIBUICAO EXP .)
+    READ            reduce using rule 48 (atribuicao_regra -> ATRIBUICAO EXP .)
+    PONTOVIRGULA    reduce using rule 48 (atribuicao_regra -> ATRIBUICAO EXP .)
+    END             reduce using rule 48 (atribuicao_regra -> ATRIBUICAO EXP .)
+
+
+state 55
+
+    (52) EXP -> PARAMETRO . OP_MAT EXP
+    (53) EXP -> PARAMETRO .
+    (56) OP_MAT -> . +
+    (57) OP_MAT -> . -
+    (58) OP_MAT -> . *
+    (59) OP_MAT -> . /
+
+    ID              reduce using rule 53 (EXP -> PARAMETRO .)
+    WHILE           reduce using rule 53 (EXP -> PARAMETRO .)
+    IF              reduce using rule 53 (EXP -> PARAMETRO .)
+    FOR             reduce using rule 53 (EXP -> PARAMETRO .)
+    WRITE           reduce using rule 53 (EXP -> PARAMETRO .)
+    READ            reduce using rule 53 (EXP -> PARAMETRO .)
+    PONTOVIRGULA    reduce using rule 53 (EXP -> PARAMETRO .)
+    END             reduce using rule 53 (EXP -> PARAMETRO .)
+    +               shift and go to state 69
+    -               shift and go to state 70
+    *               shift and go to state 71
+    /               shift and go to state 72
+
+    OP_MAT                         shift and go to state 92
 
 state 56
 
-    (6) BLOCO -> BEGIN COMANDO LISTA_COM END .
+    (43) COMANDO -> WHILE EXP_COM DO . BLOCO
+    (41) BLOCO -> . BEGIN COMANDO LISTA_COM END
 
-    $end            reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    ID              reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    WHILE           reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    IF              reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    FOR             reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    WRITE           reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    READ            reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    END             reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    ;               reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    ELSE            reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    FUNCTION        reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    PROCEDURE       reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
-    BEGIN           reduce using rule 6 (BLOCO -> BEGIN COMANDO LISTA_COM END .)
+    BEGIN           shift and go to state 7
 
+    BLOCO                          shift and go to state 93
 
 state 57
 
-    (39) COMANDO -> ID ATRIBUICAO EXP .
+    (54) EXP_COM -> PARAMETRO OP_COMP . PARAMETRO
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
-    ID              reduce using rule 39 (COMANDO -> ID ATRIBUICAO EXP .)
-    WHILE           reduce using rule 39 (COMANDO -> ID ATRIBUICAO EXP .)
-    IF              reduce using rule 39 (COMANDO -> ID ATRIBUICAO EXP .)
-    FOR             reduce using rule 39 (COMANDO -> ID ATRIBUICAO EXP .)
-    WRITE           reduce using rule 39 (COMANDO -> ID ATRIBUICAO EXP .)
-    READ            reduce using rule 39 (COMANDO -> ID ATRIBUICAO EXP .)
-    END             reduce using rule 39 (COMANDO -> ID ATRIBUICAO EXP .)
-    ;               reduce using rule 39 (COMANDO -> ID ATRIBUICAO EXP .)
+    ID              shift and go to state 32
+    PALAVRA         shift and go to state 33
 
+    PARAMETRO                      shift and go to state 94
 
 state 58
 
-    (48) EXP -> EXP_MAT .
+    (60) OP_COMP -> > .
 
-    ID              reduce using rule 48 (EXP -> EXP_MAT .)
-    WHILE           reduce using rule 48 (EXP -> EXP_MAT .)
-    IF              reduce using rule 48 (EXP -> EXP_MAT .)
-    FOR             reduce using rule 48 (EXP -> EXP_MAT .)
-    WRITE           reduce using rule 48 (EXP -> EXP_MAT .)
-    READ            reduce using rule 48 (EXP -> EXP_MAT .)
-    END             reduce using rule 48 (EXP -> EXP_MAT .)
-    ;               reduce using rule 48 (EXP -> EXP_MAT .)
+    ID              reduce using rule 60 (OP_COMP -> > .)
+    PALAVRA         reduce using rule 60 (OP_COMP -> > .)
 
 
 state 59
 
-    (49) EXP -> EXP_LOGICA .
+    (61) OP_COMP -> < .
 
-    ID              reduce using rule 49 (EXP -> EXP_LOGICA .)
-    WHILE           reduce using rule 49 (EXP -> EXP_LOGICA .)
-    IF              reduce using rule 49 (EXP -> EXP_LOGICA .)
-    FOR             reduce using rule 49 (EXP -> EXP_LOGICA .)
-    WRITE           reduce using rule 49 (EXP -> EXP_LOGICA .)
-    READ            reduce using rule 49 (EXP -> EXP_LOGICA .)
-    END             reduce using rule 49 (EXP -> EXP_LOGICA .)
-    ;               reduce using rule 49 (EXP -> EXP_LOGICA .)
+    ID              reduce using rule 61 (OP_COMP -> < .)
+    PALAVRA         reduce using rule 61 (OP_COMP -> < .)
 
 
 state 60
 
-    (53) EXP_MAT -> PARAMETRO . OP_MAT EXP_MAT
-    (54) EXP_MAT -> PARAMETRO .
-    (52) PARAM_LOGICO -> PARAMETRO . OP_COMP PARAMETRO
-    (60) OP_MAT -> . +
-    (61) OP_MAT -> . -
-    (62) OP_MAT -> . *
-    (63) OP_MAT -> . /
-    (57) OP_COMP -> . >
-    (58) OP_COMP -> . <
-    (59) OP_COMP -> . =
+    (62) OP_COMP -> IGUAL .
 
-    ID              reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    WHILE           reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    IF              reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    FOR             reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    WRITE           reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    READ            reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    END             reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    ;               reduce using rule 54 (EXP_MAT -> PARAMETRO .)
-    +               shift and go to state 73
-    -               shift and go to state 74
-    *               shift and go to state 75
-    /               shift and go to state 76
-    >               shift and go to state 66
-    <               shift and go to state 67
-    =               shift and go to state 68
+    ID              reduce using rule 62 (OP_COMP -> IGUAL .)
+    PALAVRA         reduce using rule 62 (OP_COMP -> IGUAL .)
 
-    OP_MAT                         shift and go to state 72
-    OP_COMP                        shift and go to state 65
 
 state 61
 
-    (40) COMANDO -> WHILE EXP_LOGICA DO . BLOCO
-    (6) BLOCO -> . BEGIN COMANDO LISTA_COM END
+    (63) OP_COMP -> DIFERENTE .
+
+    ID              reduce using rule 63 (OP_COMP -> DIFERENTE .)
+    PALAVRA         reduce using rule 63 (OP_COMP -> DIFERENTE .)
+
+
+state 62
+
+    (64) OP_COMP -> MAIOR_IGUAL .
+
+    ID              reduce using rule 64 (OP_COMP -> MAIOR_IGUAL .)
+    PALAVRA         reduce using rule 64 (OP_COMP -> MAIOR_IGUAL .)
+
+
+state 63
+
+    (65) OP_COMP -> MENOR_IGUAL .
+
+    ID              reduce using rule 65 (OP_COMP -> MENOR_IGUAL .)
+    PALAVRA         reduce using rule 65 (OP_COMP -> MENOR_IGUAL .)
+
+
+state 64
+
+    (44) COMANDO -> IF EXP_COM THEN . BLOCO else_regra
+    (41) BLOCO -> . BEGIN COMANDO LISTA_COM END
 
     BEGIN           shift and go to state 7
 
     BLOCO                          shift and go to state 95
 
-state 62
-
-    (50) EXP_LOGICA -> PARAM_LOGICO OP_LOGICO . EXP_LOGICA
-    (50) EXP_LOGICA -> . PARAM_LOGICO OP_LOGICO EXP_LOGICA
-    (51) EXP_LOGICA -> . PARAM_LOGICO
-    (52) PARAM_LOGICO -> . PARAMETRO OP_COMP PARAMETRO
-    (64) PARAMETRO -> . ID
-    (65) PARAMETRO -> . NUMERO
-    (66) PARAMETRO -> . FALSE
-    (67) PARAMETRO -> . TRUE
-
-    ID              shift and go to state 32
-    NUMERO          shift and go to state 33
-    FALSE           shift and go to state 34
-    TRUE            shift and go to state 35
-
-    PARAM_LOGICO                   shift and go to state 30
-    EXP_LOGICA                     shift and go to state 96
-    PARAMETRO                      shift and go to state 31
-
-state 63
-
-    (55) OP_LOGICO -> AND .
-
-    ID              reduce using rule 55 (OP_LOGICO -> AND .)
-    NUMERO          reduce using rule 55 (OP_LOGICO -> AND .)
-    FALSE           reduce using rule 55 (OP_LOGICO -> AND .)
-    TRUE            reduce using rule 55 (OP_LOGICO -> AND .)
-
-
-state 64
-
-    (56) OP_LOGICO -> OR .
-
-    ID              reduce using rule 56 (OP_LOGICO -> OR .)
-    NUMERO          reduce using rule 56 (OP_LOGICO -> OR .)
-    FALSE           reduce using rule 56 (OP_LOGICO -> OR .)
-    TRUE            reduce using rule 56 (OP_LOGICO -> OR .)
-
-
 state 65
 
-    (52) PARAM_LOGICO -> PARAMETRO OP_COMP . PARAMETRO
-    (64) PARAMETRO -> . ID
-    (65) PARAMETRO -> . NUMERO
-    (66) PARAMETRO -> . FALSE
-    (67) PARAMETRO -> . TRUE
+    (45) COMANDO -> FOR FOR_PARAMS DO . BLOCO
+    (41) BLOCO -> . BEGIN COMANDO LISTA_COM END
 
-    ID              shift and go to state 32
-    NUMERO          shift and go to state 33
-    FALSE           shift and go to state 34
-    TRUE            shift and go to state 35
+    BEGIN           shift and go to state 7
 
-    PARAMETRO                      shift and go to state 97
+    BLOCO                          shift and go to state 96
 
 state 66
 
-    (57) OP_COMP -> > .
+    (51) FOR_PARAMS -> ID ATRIBUICAO . PARAMETRO TO PARAMETRO
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
-    ID              reduce using rule 57 (OP_COMP -> > .)
-    NUMERO          reduce using rule 57 (OP_COMP -> > .)
-    FALSE           reduce using rule 57 (OP_COMP -> > .)
-    TRUE            reduce using rule 57 (OP_COMP -> > .)
+    ID              shift and go to state 32
+    PALAVRA         shift and go to state 33
 
+    PARAMETRO                      shift and go to state 97
 
 state 67
 
-    (58) OP_COMP -> < .
+    (9) EXP_CONST -> PARAMETRO EXP_CONST_L .
 
-    ID              reduce using rule 58 (OP_COMP -> < .)
-    NUMERO          reduce using rule 58 (OP_COMP -> < .)
-    FALSE           reduce using rule 58 (OP_COMP -> < .)
-    TRUE            reduce using rule 58 (OP_COMP -> < .)
+    ID              reduce using rule 9 (EXP_CONST -> PARAMETRO EXP_CONST_L .)
+    WHILE           reduce using rule 9 (EXP_CONST -> PARAMETRO EXP_CONST_L .)
+    IF              reduce using rule 9 (EXP_CONST -> PARAMETRO EXP_CONST_L .)
+    FOR             reduce using rule 9 (EXP_CONST -> PARAMETRO EXP_CONST_L .)
+    WRITE           reduce using rule 9 (EXP_CONST -> PARAMETRO EXP_CONST_L .)
+    READ            reduce using rule 9 (EXP_CONST -> PARAMETRO EXP_CONST_L .)
+    PONTOVIRGULA    reduce using rule 9 (EXP_CONST -> PARAMETRO EXP_CONST_L .)
+    END             reduce using rule 9 (EXP_CONST -> PARAMETRO EXP_CONST_L .)
+    ;               reduce using rule 9 (EXP_CONST -> PARAMETRO EXP_CONST_L .)
+    )               reduce using rule 9 (EXP_CONST -> PARAMETRO EXP_CONST_L .)
 
 
 state 68
 
-    (59) OP_COMP -> = .
+    (11) EXP_CONST_L -> OP_MAT . EXP_CONST
+    (9) EXP_CONST -> . PARAMETRO EXP_CONST_L
+    (10) EXP_CONST -> . ( PARAMETRO OP_MAT EXP_CONST )
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
-    ID              reduce using rule 59 (OP_COMP -> = .)
-    NUMERO          reduce using rule 59 (OP_COMP -> = .)
-    FALSE           reduce using rule 59 (OP_COMP -> = .)
-    TRUE            reduce using rule 59 (OP_COMP -> = .)
+    (               shift and go to state 40
+    ID              shift and go to state 32
+    PALAVRA         shift and go to state 33
 
+    EXP_CONST                      shift and go to state 98
+    PARAMETRO                      shift and go to state 39
 
 state 69
 
-    (41) COMANDO -> IF EXP_LOGICA THEN . BLOCO alternativa_else
-    (6) BLOCO -> . BEGIN COMANDO LISTA_COM END
+    (56) OP_MAT -> + .
 
-    BEGIN           shift and go to state 7
+    (               reduce using rule 56 (OP_MAT -> + .)
+    ID              reduce using rule 56 (OP_MAT -> + .)
+    PALAVRA         reduce using rule 56 (OP_MAT -> + .)
 
-    BLOCO                          shift and go to state 98
 
 state 70
 
-    (42) COMANDO -> FOR FOR_PARAMS DO . BLOCO
-    (6) BLOCO -> . BEGIN COMANDO LISTA_COM END
+    (57) OP_MAT -> - .
 
-    BEGIN           shift and go to state 7
+    (               reduce using rule 57 (OP_MAT -> - .)
+    ID              reduce using rule 57 (OP_MAT -> - .)
+    PALAVRA         reduce using rule 57 (OP_MAT -> - .)
 
-    BLOCO                          shift and go to state 99
 
 state 71
 
-    (47) FOR_PARAMS -> ID ATRIBUICAO . PARAMETRO TO PARAMETRO
-    (64) PARAMETRO -> . ID
-    (65) PARAMETRO -> . NUMERO
-    (66) PARAMETRO -> . FALSE
-    (67) PARAMETRO -> . TRUE
+    (58) OP_MAT -> * .
 
-    ID              shift and go to state 32
-    NUMERO          shift and go to state 33
-    FALSE           shift and go to state 34
-    TRUE            shift and go to state 35
+    (               reduce using rule 58 (OP_MAT -> * .)
+    ID              reduce using rule 58 (OP_MAT -> * .)
+    PALAVRA         reduce using rule 58 (OP_MAT -> * .)
 
-    PARAMETRO                      shift and go to state 100
 
 state 72
 
-    (53) EXP_MAT -> PARAMETRO OP_MAT . EXP_MAT
-    (53) EXP_MAT -> . PARAMETRO OP_MAT EXP_MAT
-    (54) EXP_MAT -> . PARAMETRO
-    (64) PARAMETRO -> . ID
-    (65) PARAMETRO -> . NUMERO
-    (66) PARAMETRO -> . FALSE
-    (67) PARAMETRO -> . TRUE
+    (59) OP_MAT -> / .
 
-    ID              shift and go to state 32
-    NUMERO          shift and go to state 33
-    FALSE           shift and go to state 34
-    TRUE            shift and go to state 35
+    (               reduce using rule 59 (OP_MAT -> / .)
+    ID              reduce using rule 59 (OP_MAT -> / .)
+    PALAVRA         reduce using rule 59 (OP_MAT -> / .)
 
-    PARAMETRO                      shift and go to state 42
-    EXP_MAT                        shift and go to state 101
 
 state 73
 
-    (60) OP_MAT -> + .
+    (10) EXP_CONST -> ( PARAMETRO . OP_MAT EXP_CONST )
+    (56) OP_MAT -> . +
+    (57) OP_MAT -> . -
+    (58) OP_MAT -> . *
+    (59) OP_MAT -> . /
 
-    ID              reduce using rule 60 (OP_MAT -> + .)
-    NUMERO          reduce using rule 60 (OP_MAT -> + .)
-    FALSE           reduce using rule 60 (OP_MAT -> + .)
-    TRUE            reduce using rule 60 (OP_MAT -> + .)
+    +               shift and go to state 69
+    -               shift and go to state 70
+    *               shift and go to state 71
+    /               shift and go to state 72
 
+    OP_MAT                         shift and go to state 99
 
 state 74
 
-    (61) OP_MAT -> - .
+    (34) DEF_ROTINA -> ROTINA DEF_ROTINA .
 
-    ID              reduce using rule 61 (OP_MAT -> - .)
-    NUMERO          reduce using rule 61 (OP_MAT -> - .)
-    FALSE           reduce using rule 61 (OP_MAT -> - .)
-    TRUE            reduce using rule 61 (OP_MAT -> - .)
+    BEGIN           reduce using rule 34 (DEF_ROTINA -> ROTINA DEF_ROTINA .)
 
 
 state 75
 
-    (62) OP_MAT -> * .
+    (36) ROTINA -> FUNCTION ID . PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA
+    (38) PARAM_ROTINA -> . ( CAMPOS )
+    (39) PARAM_ROTINA -> .
 
-    ID              reduce using rule 62 (OP_MAT -> * .)
-    NUMERO          reduce using rule 62 (OP_MAT -> * .)
-    FALSE           reduce using rule 62 (OP_MAT -> * .)
-    TRUE            reduce using rule 62 (OP_MAT -> * .)
+    (               shift and go to state 101
+    :               reduce using rule 39 (PARAM_ROTINA -> .)
 
+    PARAM_ROTINA                   shift and go to state 100
 
 state 76
 
-    (63) OP_MAT -> / .
+    (37) ROTINA -> PROCEDURE ID . PARAM_ROTINA BLOCO_ROTINA
+    (38) PARAM_ROTINA -> . ( CAMPOS )
+    (39) PARAM_ROTINA -> .
 
-    ID              reduce using rule 63 (OP_MAT -> / .)
-    NUMERO          reduce using rule 63 (OP_MAT -> / .)
-    FALSE           reduce using rule 63 (OP_MAT -> / .)
-    TRUE            reduce using rule 63 (OP_MAT -> / .)
-
-
-state 77
-
-    (33) DEF_ROTINA -> ROTINA DEF_ROTINA .
-
-    BEGIN           reduce using rule 33 (DEF_ROTINA -> ROTINA DEF_ROTINA .)
-
-
-state 78
-
-    (34) ROTINA -> FUNCTION ID . PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA
-    (36) PARAM_ROTINA -> .
-    (37) PARAM_ROTINA -> . ( CAMPOS )
-
-    :               reduce using rule 36 (PARAM_ROTINA -> .)
-    (               shift and go to state 103
+    (               shift and go to state 101
+    VAR             reduce using rule 39 (PARAM_ROTINA -> .)
+    BEGIN           reduce using rule 39 (PARAM_ROTINA -> .)
 
     PARAM_ROTINA                   shift and go to state 102
 
-state 79
-
-    (35) ROTINA -> PROCEDURE ID . PARAM_ROTINA BLOCO_ROTINA
-    (36) PARAM_ROTINA -> .
-    (37) PARAM_ROTINA -> . ( CAMPOS )
-
-    VAR             reduce using rule 36 (PARAM_ROTINA -> .)
-    BEGIN           reduce using rule 36 (PARAM_ROTINA -> .)
-    (               shift and go to state 103
-
-    PARAM_ROTINA                   shift and go to state 104
-
-state 80
+state 77
 
     (25) VARIAVEL -> VAR CAMPOS ; .
 
@@ -1280,7 +1152,18 @@ state 80
     BEGIN           reduce using rule 25 (VARIAVEL -> VAR CAMPOS ; .)
 
 
-state 81
+state 78
+
+    (32) LISTA_CAMPOS -> CAMPO . PONTOVIRGULA LISTA_CAMPOS
+    (33) LISTA_CAMPOS -> CAMPO .
+
+    PONTOVIRGULA    shift and go to state 103
+    ;               reduce using rule 33 (LISTA_CAMPOS -> CAMPO .)
+    END             reduce using rule 33 (LISTA_CAMPOS -> CAMPO .)
+    )               reduce using rule 33 (LISTA_CAMPOS -> CAMPO .)
+
+
+state 79
 
     (26) CAMPOS -> CAMPO LISTA_CAMPOS .
 
@@ -1289,283 +1172,283 @@ state 81
     )               reduce using rule 26 (CAMPOS -> CAMPO LISTA_CAMPOS .)
 
 
+state 80
+
+    (27) CAMPO -> ID LISTA_ID . : TIPO_DADO
+
+    :               shift and go to state 104
+
+
+state 81
+
+    (28) LISTA_ID -> , . ID LISTA_ID
+
+    ID              shift and go to state 105
+
+
 state 82
-
-    (28) LISTA_CAMPOS -> ; . CAMPO LISTA_CAMPOS
-    (29) CAMPO -> . ID LISTA_ID : TIPO_DADO
-
-    ID              shift and go to state 51
-
-    CAMPO                          shift and go to state 105
-
-state 83
-
-    (29) CAMPO -> ID LISTA_ID . : TIPO_DADO
-
-    :               shift and go to state 106
-
-
-state 84
-
-    (31) LISTA_ID -> , . ID LISTA_ID
-
-    ID              shift and go to state 107
-
-
-state 85
 
     (22) TIPO_DADO -> ID .
 
     ;               reduce using rule 22 (TIPO_DADO -> ID .)
+    ID              reduce using rule 22 (TIPO_DADO -> ID .)
+    PONTOVIRGULA    reduce using rule 22 (TIPO_DADO -> ID .)
     END             reduce using rule 22 (TIPO_DADO -> ID .)
     )               reduce using rule 22 (TIPO_DADO -> ID .)
     VAR             reduce using rule 22 (TIPO_DADO -> ID .)
     BEGIN           reduce using rule 22 (TIPO_DADO -> ID .)
 
 
-state 86
+state 83
 
     (15) TIPO -> TYPE ID = TIPO_DADO . ;
 
-    ;               shift and go to state 108
+    ;               shift and go to state 106
 
 
-state 87
+state 84
 
     (16) TIPO_DADO -> INTEGER .
 
     ;               reduce using rule 16 (TIPO_DADO -> INTEGER .)
+    ID              reduce using rule 16 (TIPO_DADO -> INTEGER .)
+    PONTOVIRGULA    reduce using rule 16 (TIPO_DADO -> INTEGER .)
     END             reduce using rule 16 (TIPO_DADO -> INTEGER .)
     )               reduce using rule 16 (TIPO_DADO -> INTEGER .)
     VAR             reduce using rule 16 (TIPO_DADO -> INTEGER .)
     BEGIN           reduce using rule 16 (TIPO_DADO -> INTEGER .)
 
 
-state 88
+state 85
 
     (17) TIPO_DADO -> REAL .
 
     ;               reduce using rule 17 (TIPO_DADO -> REAL .)
+    ID              reduce using rule 17 (TIPO_DADO -> REAL .)
+    PONTOVIRGULA    reduce using rule 17 (TIPO_DADO -> REAL .)
     END             reduce using rule 17 (TIPO_DADO -> REAL .)
     )               reduce using rule 17 (TIPO_DADO -> REAL .)
     VAR             reduce using rule 17 (TIPO_DADO -> REAL .)
     BEGIN           reduce using rule 17 (TIPO_DADO -> REAL .)
 
 
-state 89
+state 86
 
     (18) TIPO_DADO -> CHAR .
 
     ;               reduce using rule 18 (TIPO_DADO -> CHAR .)
+    ID              reduce using rule 18 (TIPO_DADO -> CHAR .)
+    PONTOVIRGULA    reduce using rule 18 (TIPO_DADO -> CHAR .)
     END             reduce using rule 18 (TIPO_DADO -> CHAR .)
     )               reduce using rule 18 (TIPO_DADO -> CHAR .)
     VAR             reduce using rule 18 (TIPO_DADO -> CHAR .)
     BEGIN           reduce using rule 18 (TIPO_DADO -> CHAR .)
 
 
-state 90
+state 87
 
     (19) TIPO_DADO -> BOOLEAN .
 
     ;               reduce using rule 19 (TIPO_DADO -> BOOLEAN .)
+    ID              reduce using rule 19 (TIPO_DADO -> BOOLEAN .)
+    PONTOVIRGULA    reduce using rule 19 (TIPO_DADO -> BOOLEAN .)
     END             reduce using rule 19 (TIPO_DADO -> BOOLEAN .)
     )               reduce using rule 19 (TIPO_DADO -> BOOLEAN .)
     VAR             reduce using rule 19 (TIPO_DADO -> BOOLEAN .)
     BEGIN           reduce using rule 19 (TIPO_DADO -> BOOLEAN .)
 
 
-state 91
+state 88
 
     (20) TIPO_DADO -> ARRAY . [ NUMERO ] OF TIPO_DADO
 
-    [               shift and go to state 109
+    [               shift and go to state 107
+
+
+state 89
+
+    (21) TIPO_DADO -> RECORD . CAMPOS END
+    (26) CAMPOS -> . CAMPO LISTA_CAMPOS
+    (27) CAMPO -> . ID LISTA_ID : TIPO_DADO
+
+    ID              shift and go to state 49
+
+    CAMPOS                         shift and go to state 108
+    CAMPO                          shift and go to state 48
+
+state 90
+
+    (5) CONSTANTE -> CONST ID = CONST_VALOR ; .
+
+    CONST           reduce using rule 5 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
+    TYPE            reduce using rule 5 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
+    VAR             reduce using rule 5 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
+    FUNCTION        reduce using rule 5 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
+    PROCEDURE       reduce using rule 5 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
+    BEGIN           reduce using rule 5 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
+
+
+state 91
+
+    (30) LISTA_COM -> COMANDO PONTOVIRGULA LISTA_COM .
+
+    END             reduce using rule 30 (LISTA_COM -> COMANDO PONTOVIRGULA LISTA_COM .)
 
 
 state 92
 
-    (21) TIPO_DADO -> RECORD . CAMPOS END
-    (26) CAMPOS -> . CAMPO LISTA_CAMPOS
-    (29) CAMPO -> . ID LISTA_ID : TIPO_DADO
+    (52) EXP -> PARAMETRO OP_MAT . EXP
+    (52) EXP -> . PARAMETRO OP_MAT EXP
+    (53) EXP -> . PARAMETRO
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
-    ID              shift and go to state 51
+    ID              shift and go to state 32
+    PALAVRA         shift and go to state 33
 
-    CAMPOS                         shift and go to state 110
-    CAMPO                          shift and go to state 50
+    PARAMETRO                      shift and go to state 55
+    EXP                            shift and go to state 109
 
 state 93
 
-    (10) CONSTANTE -> CONST ID = CONST_VALOR ; .
+    (43) COMANDO -> WHILE EXP_COM DO BLOCO .
 
-    CONST           reduce using rule 10 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
-    TYPE            reduce using rule 10 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
-    VAR             reduce using rule 10 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
-    FUNCTION        reduce using rule 10 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
-    PROCEDURE       reduce using rule 10 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
-    BEGIN           reduce using rule 10 (CONSTANTE -> CONST ID = CONST_VALOR ; .)
+    ID              reduce using rule 43 (COMANDO -> WHILE EXP_COM DO BLOCO .)
+    WHILE           reduce using rule 43 (COMANDO -> WHILE EXP_COM DO BLOCO .)
+    IF              reduce using rule 43 (COMANDO -> WHILE EXP_COM DO BLOCO .)
+    FOR             reduce using rule 43 (COMANDO -> WHILE EXP_COM DO BLOCO .)
+    WRITE           reduce using rule 43 (COMANDO -> WHILE EXP_COM DO BLOCO .)
+    READ            reduce using rule 43 (COMANDO -> WHILE EXP_COM DO BLOCO .)
+    PONTOVIRGULA    reduce using rule 43 (COMANDO -> WHILE EXP_COM DO BLOCO .)
+    END             reduce using rule 43 (COMANDO -> WHILE EXP_COM DO BLOCO .)
 
 
 state 94
 
-    (4) LISTA_COM_RESTO -> ; COMANDO . LISTA_COM_RESTO
-    (4) LISTA_COM_RESTO -> . ; COMANDO LISTA_COM_RESTO
-    (5) LISTA_COM_RESTO -> . ;
+    (54) EXP_COM -> PARAMETRO OP_COMP PARAMETRO .
 
-    ;               shift and go to state 55
+    DO              reduce using rule 54 (EXP_COM -> PARAMETRO OP_COMP PARAMETRO .)
+    THEN            reduce using rule 54 (EXP_COM -> PARAMETRO OP_COMP PARAMETRO .)
 
-    LISTA_COM_RESTO                shift and go to state 111
 
 state 95
 
-    (40) COMANDO -> WHILE EXP_LOGICA DO BLOCO .
+    (44) COMANDO -> IF EXP_COM THEN BLOCO . else_regra
+    (49) else_regra -> . ELSE BLOCO
+    (50) else_regra -> .
 
-    ID              reduce using rule 40 (COMANDO -> WHILE EXP_LOGICA DO BLOCO .)
-    WHILE           reduce using rule 40 (COMANDO -> WHILE EXP_LOGICA DO BLOCO .)
-    IF              reduce using rule 40 (COMANDO -> WHILE EXP_LOGICA DO BLOCO .)
-    FOR             reduce using rule 40 (COMANDO -> WHILE EXP_LOGICA DO BLOCO .)
-    WRITE           reduce using rule 40 (COMANDO -> WHILE EXP_LOGICA DO BLOCO .)
-    READ            reduce using rule 40 (COMANDO -> WHILE EXP_LOGICA DO BLOCO .)
-    END             reduce using rule 40 (COMANDO -> WHILE EXP_LOGICA DO BLOCO .)
-    ;               reduce using rule 40 (COMANDO -> WHILE EXP_LOGICA DO BLOCO .)
+    ELSE            shift and go to state 111
+    ID              reduce using rule 50 (else_regra -> .)
+    WHILE           reduce using rule 50 (else_regra -> .)
+    IF              reduce using rule 50 (else_regra -> .)
+    FOR             reduce using rule 50 (else_regra -> .)
+    WRITE           reduce using rule 50 (else_regra -> .)
+    READ            reduce using rule 50 (else_regra -> .)
+    PONTOVIRGULA    reduce using rule 50 (else_regra -> .)
+    END             reduce using rule 50 (else_regra -> .)
 
+    else_regra                     shift and go to state 110
 
 state 96
 
-    (50) EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .
+    (45) COMANDO -> FOR FOR_PARAMS DO BLOCO .
 
-    DO              reduce using rule 50 (EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .)
-    THEN            reduce using rule 50 (EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .)
-    ID              reduce using rule 50 (EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .)
-    WHILE           reduce using rule 50 (EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .)
-    IF              reduce using rule 50 (EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .)
-    FOR             reduce using rule 50 (EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .)
-    WRITE           reduce using rule 50 (EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .)
-    READ            reduce using rule 50 (EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .)
-    END             reduce using rule 50 (EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .)
-    ;               reduce using rule 50 (EXP_LOGICA -> PARAM_LOGICO OP_LOGICO EXP_LOGICA .)
+    ID              reduce using rule 45 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
+    WHILE           reduce using rule 45 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
+    IF              reduce using rule 45 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
+    FOR             reduce using rule 45 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
+    WRITE           reduce using rule 45 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
+    READ            reduce using rule 45 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
+    PONTOVIRGULA    reduce using rule 45 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
+    END             reduce using rule 45 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
 
 
 state 97
 
-    (52) PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .
+    (51) FOR_PARAMS -> ID ATRIBUICAO PARAMETRO . TO PARAMETRO
 
-    AND             reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    OR              reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    DO              reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    THEN            reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    ID              reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    WHILE           reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    IF              reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    FOR             reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    WRITE           reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    READ            reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    END             reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
-    ;               reduce using rule 52 (PARAM_LOGICO -> PARAMETRO OP_COMP PARAMETRO .)
+    TO              shift and go to state 112
 
 
 state 98
 
-    (41) COMANDO -> IF EXP_LOGICA THEN BLOCO . alternativa_else
-    (45) alternativa_else -> . ELSE BLOCO
-    (46) alternativa_else -> .
+    (11) EXP_CONST_L -> OP_MAT EXP_CONST .
 
-    ELSE            shift and go to state 113
-    ID              reduce using rule 46 (alternativa_else -> .)
-    WHILE           reduce using rule 46 (alternativa_else -> .)
-    IF              reduce using rule 46 (alternativa_else -> .)
-    FOR             reduce using rule 46 (alternativa_else -> .)
-    WRITE           reduce using rule 46 (alternativa_else -> .)
-    READ            reduce using rule 46 (alternativa_else -> .)
-    END             reduce using rule 46 (alternativa_else -> .)
-    ;               reduce using rule 46 (alternativa_else -> .)
+    ID              reduce using rule 11 (EXP_CONST_L -> OP_MAT EXP_CONST .)
+    WHILE           reduce using rule 11 (EXP_CONST_L -> OP_MAT EXP_CONST .)
+    IF              reduce using rule 11 (EXP_CONST_L -> OP_MAT EXP_CONST .)
+    FOR             reduce using rule 11 (EXP_CONST_L -> OP_MAT EXP_CONST .)
+    WRITE           reduce using rule 11 (EXP_CONST_L -> OP_MAT EXP_CONST .)
+    READ            reduce using rule 11 (EXP_CONST_L -> OP_MAT EXP_CONST .)
+    PONTOVIRGULA    reduce using rule 11 (EXP_CONST_L -> OP_MAT EXP_CONST .)
+    END             reduce using rule 11 (EXP_CONST_L -> OP_MAT EXP_CONST .)
+    ;               reduce using rule 11 (EXP_CONST_L -> OP_MAT EXP_CONST .)
+    )               reduce using rule 11 (EXP_CONST_L -> OP_MAT EXP_CONST .)
 
-    alternativa_else               shift and go to state 112
 
 state 99
 
-    (42) COMANDO -> FOR FOR_PARAMS DO BLOCO .
+    (10) EXP_CONST -> ( PARAMETRO OP_MAT . EXP_CONST )
+    (9) EXP_CONST -> . PARAMETRO EXP_CONST_L
+    (10) EXP_CONST -> . ( PARAMETRO OP_MAT EXP_CONST )
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
 
-    ID              reduce using rule 42 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
-    WHILE           reduce using rule 42 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
-    IF              reduce using rule 42 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
-    FOR             reduce using rule 42 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
-    WRITE           reduce using rule 42 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
-    READ            reduce using rule 42 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
-    END             reduce using rule 42 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
-    ;               reduce using rule 42 (COMANDO -> FOR FOR_PARAMS DO BLOCO .)
+    (               shift and go to state 40
+    ID              shift and go to state 32
+    PALAVRA         shift and go to state 33
 
+    PARAMETRO                      shift and go to state 39
+    EXP_CONST                      shift and go to state 113
 
 state 100
 
-    (47) FOR_PARAMS -> ID ATRIBUICAO PARAMETRO . TO PARAMETRO
+    (36) ROTINA -> FUNCTION ID PARAM_ROTINA . : TIPO_DADO BLOCO_ROTINA
 
-    TO              shift and go to state 114
+    :               shift and go to state 114
 
 
 state 101
 
-    (53) EXP_MAT -> PARAMETRO OP_MAT EXP_MAT .
+    (38) PARAM_ROTINA -> ( . CAMPOS )
+    (26) CAMPOS -> . CAMPO LISTA_CAMPOS
+    (27) CAMPO -> . ID LISTA_ID : TIPO_DADO
 
-    ID              reduce using rule 53 (EXP_MAT -> PARAMETRO OP_MAT EXP_MAT .)
-    WHILE           reduce using rule 53 (EXP_MAT -> PARAMETRO OP_MAT EXP_MAT .)
-    IF              reduce using rule 53 (EXP_MAT -> PARAMETRO OP_MAT EXP_MAT .)
-    FOR             reduce using rule 53 (EXP_MAT -> PARAMETRO OP_MAT EXP_MAT .)
-    WRITE           reduce using rule 53 (EXP_MAT -> PARAMETRO OP_MAT EXP_MAT .)
-    READ            reduce using rule 53 (EXP_MAT -> PARAMETRO OP_MAT EXP_MAT .)
-    END             reduce using rule 53 (EXP_MAT -> PARAMETRO OP_MAT EXP_MAT .)
-    ;               reduce using rule 53 (EXP_MAT -> PARAMETRO OP_MAT EXP_MAT .)
+    ID              shift and go to state 49
 
+    CAMPOS                         shift and go to state 115
+    CAMPO                          shift and go to state 48
 
 state 102
 
-    (34) ROTINA -> FUNCTION ID PARAM_ROTINA . : TIPO_DADO BLOCO_ROTINA
+    (37) ROTINA -> PROCEDURE ID PARAM_ROTINA . BLOCO_ROTINA
+    (40) BLOCO_ROTINA -> . DEF_VAR BLOCO
+    (23) DEF_VAR -> . VARIAVEL DEF_VAR
+    (24) DEF_VAR -> .
+    (25) VARIAVEL -> . VAR CAMPOS ;
 
-    :               shift and go to state 115
+    BEGIN           reduce using rule 24 (DEF_VAR -> .)
+    VAR             shift and go to state 22
 
+    BLOCO_ROTINA                   shift and go to state 116
+    DEF_VAR                        shift and go to state 117
+    VARIAVEL                       shift and go to state 21
 
 state 103
 
-    (37) PARAM_ROTINA -> ( . CAMPOS )
-    (26) CAMPOS -> . CAMPO LISTA_CAMPOS
-    (29) CAMPO -> . ID LISTA_ID : TIPO_DADO
+    (32) LISTA_CAMPOS -> CAMPO PONTOVIRGULA . LISTA_CAMPOS
+    (32) LISTA_CAMPOS -> . CAMPO PONTOVIRGULA LISTA_CAMPOS
+    (33) LISTA_CAMPOS -> . CAMPO
+    (27) CAMPO -> . ID LISTA_ID : TIPO_DADO
 
-    ID              shift and go to state 51
+    ID              shift and go to state 49
 
-    CAMPOS                         shift and go to state 116
-    CAMPO                          shift and go to state 50
+    CAMPO                          shift and go to state 78
+    LISTA_CAMPOS                   shift and go to state 118
 
 state 104
 
-    (35) ROTINA -> PROCEDURE ID PARAM_ROTINA . BLOCO_ROTINA
-    (38) BLOCO_ROTINA -> . DEF_VAR BLOCO
-    (23) DEF_VAR -> .
-    (24) DEF_VAR -> . VARIAVEL DEF_VAR
-    (25) VARIAVEL -> . VAR CAMPOS ;
-
-    BEGIN           reduce using rule 23 (DEF_VAR -> .)
-    VAR             shift and go to state 22
-
-    BLOCO_ROTINA                   shift and go to state 117
-    DEF_VAR                        shift and go to state 118
-    VARIAVEL                       shift and go to state 21
-
-state 105
-
-    (28) LISTA_CAMPOS -> ; CAMPO . LISTA_CAMPOS
-    (27) LISTA_CAMPOS -> .
-    (28) LISTA_CAMPOS -> . ; CAMPO LISTA_CAMPOS
-
-  ! shift/reduce conflict for ; resolved as shift
-    END             reduce using rule 27 (LISTA_CAMPOS -> .)
-    )               reduce using rule 27 (LISTA_CAMPOS -> .)
-    ;               shift and go to state 82
-
-  ! ;               [ reduce using rule 27 (LISTA_CAMPOS -> .) ]
-
-    LISTA_CAMPOS                   shift and go to state 119
-
-state 106
-
-    (29) CAMPO -> ID LISTA_ID : . TIPO_DADO
+    (27) CAMPO -> ID LISTA_ID : . TIPO_DADO
     (16) TIPO_DADO -> . INTEGER
     (17) TIPO_DADO -> . REAL
     (18) TIPO_DADO -> . CHAR
@@ -1574,28 +1457,28 @@ state 106
     (21) TIPO_DADO -> . RECORD CAMPOS END
     (22) TIPO_DADO -> . ID
 
-    INTEGER         shift and go to state 87
-    REAL            shift and go to state 88
-    CHAR            shift and go to state 89
-    BOOLEAN         shift and go to state 90
-    ARRAY           shift and go to state 91
-    RECORD          shift and go to state 92
-    ID              shift and go to state 85
+    INTEGER         shift and go to state 84
+    REAL            shift and go to state 85
+    CHAR            shift and go to state 86
+    BOOLEAN         shift and go to state 87
+    ARRAY           shift and go to state 88
+    RECORD          shift and go to state 89
+    ID              shift and go to state 82
 
-    TIPO_DADO                      shift and go to state 120
+    TIPO_DADO                      shift and go to state 119
 
-state 107
+state 105
 
-    (31) LISTA_ID -> , ID . LISTA_ID
-    (30) LISTA_ID -> .
-    (31) LISTA_ID -> . , ID LISTA_ID
+    (28) LISTA_ID -> , ID . LISTA_ID
+    (28) LISTA_ID -> . , ID LISTA_ID
+    (29) LISTA_ID -> .
 
-    :               reduce using rule 30 (LISTA_ID -> .)
-    ,               shift and go to state 84
+    ,               shift and go to state 81
+    :               reduce using rule 29 (LISTA_ID -> .)
 
-    LISTA_ID                       shift and go to state 121
+    LISTA_ID                       shift and go to state 120
 
-state 108
+state 106
 
     (15) TIPO -> TYPE ID = TIPO_DADO ; .
 
@@ -1606,68 +1489,78 @@ state 108
     BEGIN           reduce using rule 15 (TIPO -> TYPE ID = TIPO_DADO ; .)
 
 
-state 109
+state 107
 
     (20) TIPO_DADO -> ARRAY [ . NUMERO ] OF TIPO_DADO
 
-    NUMERO          shift and go to state 122
+    NUMERO          shift and go to state 121
+
+
+state 108
+
+    (21) TIPO_DADO -> RECORD CAMPOS . END
+
+    END             shift and go to state 122
+
+
+state 109
+
+    (52) EXP -> PARAMETRO OP_MAT EXP .
+
+    ID              reduce using rule 52 (EXP -> PARAMETRO OP_MAT EXP .)
+    WHILE           reduce using rule 52 (EXP -> PARAMETRO OP_MAT EXP .)
+    IF              reduce using rule 52 (EXP -> PARAMETRO OP_MAT EXP .)
+    FOR             reduce using rule 52 (EXP -> PARAMETRO OP_MAT EXP .)
+    WRITE           reduce using rule 52 (EXP -> PARAMETRO OP_MAT EXP .)
+    READ            reduce using rule 52 (EXP -> PARAMETRO OP_MAT EXP .)
+    PONTOVIRGULA    reduce using rule 52 (EXP -> PARAMETRO OP_MAT EXP .)
+    END             reduce using rule 52 (EXP -> PARAMETRO OP_MAT EXP .)
 
 
 state 110
 
-    (21) TIPO_DADO -> RECORD CAMPOS . END
+    (44) COMANDO -> IF EXP_COM THEN BLOCO else_regra .
 
-    END             shift and go to state 123
+    ID              reduce using rule 44 (COMANDO -> IF EXP_COM THEN BLOCO else_regra .)
+    WHILE           reduce using rule 44 (COMANDO -> IF EXP_COM THEN BLOCO else_regra .)
+    IF              reduce using rule 44 (COMANDO -> IF EXP_COM THEN BLOCO else_regra .)
+    FOR             reduce using rule 44 (COMANDO -> IF EXP_COM THEN BLOCO else_regra .)
+    WRITE           reduce using rule 44 (COMANDO -> IF EXP_COM THEN BLOCO else_regra .)
+    READ            reduce using rule 44 (COMANDO -> IF EXP_COM THEN BLOCO else_regra .)
+    PONTOVIRGULA    reduce using rule 44 (COMANDO -> IF EXP_COM THEN BLOCO else_regra .)
+    END             reduce using rule 44 (COMANDO -> IF EXP_COM THEN BLOCO else_regra .)
 
 
 state 111
 
-    (4) LISTA_COM_RESTO -> ; COMANDO LISTA_COM_RESTO .
-
-    END             reduce using rule 4 (LISTA_COM_RESTO -> ; COMANDO LISTA_COM_RESTO .)
-
-
-state 112
-
-    (41) COMANDO -> IF EXP_LOGICA THEN BLOCO alternativa_else .
-
-    ID              reduce using rule 41 (COMANDO -> IF EXP_LOGICA THEN BLOCO alternativa_else .)
-    WHILE           reduce using rule 41 (COMANDO -> IF EXP_LOGICA THEN BLOCO alternativa_else .)
-    IF              reduce using rule 41 (COMANDO -> IF EXP_LOGICA THEN BLOCO alternativa_else .)
-    FOR             reduce using rule 41 (COMANDO -> IF EXP_LOGICA THEN BLOCO alternativa_else .)
-    WRITE           reduce using rule 41 (COMANDO -> IF EXP_LOGICA THEN BLOCO alternativa_else .)
-    READ            reduce using rule 41 (COMANDO -> IF EXP_LOGICA THEN BLOCO alternativa_else .)
-    END             reduce using rule 41 (COMANDO -> IF EXP_LOGICA THEN BLOCO alternativa_else .)
-    ;               reduce using rule 41 (COMANDO -> IF EXP_LOGICA THEN BLOCO alternativa_else .)
-
-
-state 113
-
-    (45) alternativa_else -> ELSE . BLOCO
-    (6) BLOCO -> . BEGIN COMANDO LISTA_COM END
+    (49) else_regra -> ELSE . BLOCO
+    (41) BLOCO -> . BEGIN COMANDO LISTA_COM END
 
     BEGIN           shift and go to state 7
 
-    BLOCO                          shift and go to state 124
+    BLOCO                          shift and go to state 123
+
+state 112
+
+    (51) FOR_PARAMS -> ID ATRIBUICAO PARAMETRO TO . PARAMETRO
+    (7) PARAMETRO -> . ID
+    (8) PARAMETRO -> . PALAVRA
+
+    ID              shift and go to state 32
+    PALAVRA         shift and go to state 33
+
+    PARAMETRO                      shift and go to state 124
+
+state 113
+
+    (10) EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST . )
+
+    )               shift and go to state 125
+
 
 state 114
 
-    (47) FOR_PARAMS -> ID ATRIBUICAO PARAMETRO TO . PARAMETRO
-    (64) PARAMETRO -> . ID
-    (65) PARAMETRO -> . NUMERO
-    (66) PARAMETRO -> . FALSE
-    (67) PARAMETRO -> . TRUE
-
-    ID              shift and go to state 32
-    NUMERO          shift and go to state 33
-    FALSE           shift and go to state 34
-    TRUE            shift and go to state 35
-
-    PARAMETRO                      shift and go to state 125
-
-state 115
-
-    (34) ROTINA -> FUNCTION ID PARAM_ROTINA : . TIPO_DADO BLOCO_ROTINA
+    (36) ROTINA -> FUNCTION ID PARAM_ROTINA : . TIPO_DADO BLOCO_ROTINA
     (16) TIPO_DADO -> . INTEGER
     (17) TIPO_DADO -> . REAL
     (18) TIPO_DADO -> . CHAR
@@ -1676,136 +1569,156 @@ state 115
     (21) TIPO_DADO -> . RECORD CAMPOS END
     (22) TIPO_DADO -> . ID
 
-    INTEGER         shift and go to state 87
-    REAL            shift and go to state 88
-    CHAR            shift and go to state 89
-    BOOLEAN         shift and go to state 90
-    ARRAY           shift and go to state 91
-    RECORD          shift and go to state 92
-    ID              shift and go to state 85
+    INTEGER         shift and go to state 84
+    REAL            shift and go to state 85
+    CHAR            shift and go to state 86
+    BOOLEAN         shift and go to state 87
+    ARRAY           shift and go to state 88
+    RECORD          shift and go to state 89
+    ID              shift and go to state 82
 
     TIPO_DADO                      shift and go to state 126
 
-state 116
+state 115
 
-    (37) PARAM_ROTINA -> ( CAMPOS . )
+    (38) PARAM_ROTINA -> ( CAMPOS . )
 
     )               shift and go to state 127
 
 
+state 116
+
+    (37) ROTINA -> PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA .
+
+    FUNCTION        reduce using rule 37 (ROTINA -> PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA .)
+    PROCEDURE       reduce using rule 37 (ROTINA -> PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA .)
+    BEGIN           reduce using rule 37 (ROTINA -> PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA .)
+
+
 state 117
 
-    (35) ROTINA -> PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA .
-
-    FUNCTION        reduce using rule 35 (ROTINA -> PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA .)
-    PROCEDURE       reduce using rule 35 (ROTINA -> PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA .)
-    BEGIN           reduce using rule 35 (ROTINA -> PROCEDURE ID PARAM_ROTINA BLOCO_ROTINA .)
-
-
-state 118
-
-    (38) BLOCO_ROTINA -> DEF_VAR . BLOCO
-    (6) BLOCO -> . BEGIN COMANDO LISTA_COM END
+    (40) BLOCO_ROTINA -> DEF_VAR . BLOCO
+    (41) BLOCO -> . BEGIN COMANDO LISTA_COM END
 
     BEGIN           shift and go to state 7
 
     BLOCO                          shift and go to state 128
 
+state 118
+
+    (32) LISTA_CAMPOS -> CAMPO PONTOVIRGULA LISTA_CAMPOS .
+
+    ;               reduce using rule 32 (LISTA_CAMPOS -> CAMPO PONTOVIRGULA LISTA_CAMPOS .)
+    END             reduce using rule 32 (LISTA_CAMPOS -> CAMPO PONTOVIRGULA LISTA_CAMPOS .)
+    )               reduce using rule 32 (LISTA_CAMPOS -> CAMPO PONTOVIRGULA LISTA_CAMPOS .)
+
+
 state 119
 
-    (28) LISTA_CAMPOS -> ; CAMPO LISTA_CAMPOS .
+    (27) CAMPO -> ID LISTA_ID : TIPO_DADO .
 
-    ;               reduce using rule 28 (LISTA_CAMPOS -> ; CAMPO LISTA_CAMPOS .)
-    END             reduce using rule 28 (LISTA_CAMPOS -> ; CAMPO LISTA_CAMPOS .)
-    )               reduce using rule 28 (LISTA_CAMPOS -> ; CAMPO LISTA_CAMPOS .)
+    ID              reduce using rule 27 (CAMPO -> ID LISTA_ID : TIPO_DADO .)
+    PONTOVIRGULA    reduce using rule 27 (CAMPO -> ID LISTA_ID : TIPO_DADO .)
+    ;               reduce using rule 27 (CAMPO -> ID LISTA_ID : TIPO_DADO .)
+    END             reduce using rule 27 (CAMPO -> ID LISTA_ID : TIPO_DADO .)
+    )               reduce using rule 27 (CAMPO -> ID LISTA_ID : TIPO_DADO .)
 
 
 state 120
 
-    (29) CAMPO -> ID LISTA_ID : TIPO_DADO .
+    (28) LISTA_ID -> , ID LISTA_ID .
 
-    ;               reduce using rule 29 (CAMPO -> ID LISTA_ID : TIPO_DADO .)
-    END             reduce using rule 29 (CAMPO -> ID LISTA_ID : TIPO_DADO .)
-    )               reduce using rule 29 (CAMPO -> ID LISTA_ID : TIPO_DADO .)
+    :               reduce using rule 28 (LISTA_ID -> , ID LISTA_ID .)
 
 
 state 121
-
-    (31) LISTA_ID -> , ID LISTA_ID .
-
-    :               reduce using rule 31 (LISTA_ID -> , ID LISTA_ID .)
-
-
-state 122
 
     (20) TIPO_DADO -> ARRAY [ NUMERO . ] OF TIPO_DADO
 
     ]               shift and go to state 129
 
 
-state 123
+state 122
 
     (21) TIPO_DADO -> RECORD CAMPOS END .
 
     ;               reduce using rule 21 (TIPO_DADO -> RECORD CAMPOS END .)
+    ID              reduce using rule 21 (TIPO_DADO -> RECORD CAMPOS END .)
+    PONTOVIRGULA    reduce using rule 21 (TIPO_DADO -> RECORD CAMPOS END .)
     END             reduce using rule 21 (TIPO_DADO -> RECORD CAMPOS END .)
     )               reduce using rule 21 (TIPO_DADO -> RECORD CAMPOS END .)
     VAR             reduce using rule 21 (TIPO_DADO -> RECORD CAMPOS END .)
     BEGIN           reduce using rule 21 (TIPO_DADO -> RECORD CAMPOS END .)
 
 
+state 123
+
+    (49) else_regra -> ELSE BLOCO .
+
+    ID              reduce using rule 49 (else_regra -> ELSE BLOCO .)
+    WHILE           reduce using rule 49 (else_regra -> ELSE BLOCO .)
+    IF              reduce using rule 49 (else_regra -> ELSE BLOCO .)
+    FOR             reduce using rule 49 (else_regra -> ELSE BLOCO .)
+    WRITE           reduce using rule 49 (else_regra -> ELSE BLOCO .)
+    READ            reduce using rule 49 (else_regra -> ELSE BLOCO .)
+    PONTOVIRGULA    reduce using rule 49 (else_regra -> ELSE BLOCO .)
+    END             reduce using rule 49 (else_regra -> ELSE BLOCO .)
+
+
 state 124
 
-    (45) alternativa_else -> ELSE BLOCO .
+    (51) FOR_PARAMS -> ID ATRIBUICAO PARAMETRO TO PARAMETRO .
 
-    ID              reduce using rule 45 (alternativa_else -> ELSE BLOCO .)
-    WHILE           reduce using rule 45 (alternativa_else -> ELSE BLOCO .)
-    IF              reduce using rule 45 (alternativa_else -> ELSE BLOCO .)
-    FOR             reduce using rule 45 (alternativa_else -> ELSE BLOCO .)
-    WRITE           reduce using rule 45 (alternativa_else -> ELSE BLOCO .)
-    READ            reduce using rule 45 (alternativa_else -> ELSE BLOCO .)
-    END             reduce using rule 45 (alternativa_else -> ELSE BLOCO .)
-    ;               reduce using rule 45 (alternativa_else -> ELSE BLOCO .)
+    DO              reduce using rule 51 (FOR_PARAMS -> ID ATRIBUICAO PARAMETRO TO PARAMETRO .)
 
 
 state 125
 
-    (47) FOR_PARAMS -> ID ATRIBUICAO PARAMETRO TO PARAMETRO .
+    (10) EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .
 
-    DO              reduce using rule 47 (FOR_PARAMS -> ID ATRIBUICAO PARAMETRO TO PARAMETRO .)
+    ID              reduce using rule 10 (EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .)
+    WHILE           reduce using rule 10 (EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .)
+    IF              reduce using rule 10 (EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .)
+    FOR             reduce using rule 10 (EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .)
+    WRITE           reduce using rule 10 (EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .)
+    READ            reduce using rule 10 (EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .)
+    PONTOVIRGULA    reduce using rule 10 (EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .)
+    END             reduce using rule 10 (EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .)
+    ;               reduce using rule 10 (EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .)
+    )               reduce using rule 10 (EXP_CONST -> ( PARAMETRO OP_MAT EXP_CONST ) .)
 
 
 state 126
 
-    (34) ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO . BLOCO_ROTINA
-    (38) BLOCO_ROTINA -> . DEF_VAR BLOCO
-    (23) DEF_VAR -> .
-    (24) DEF_VAR -> . VARIAVEL DEF_VAR
+    (36) ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO . BLOCO_ROTINA
+    (40) BLOCO_ROTINA -> . DEF_VAR BLOCO
+    (23) DEF_VAR -> . VARIAVEL DEF_VAR
+    (24) DEF_VAR -> .
     (25) VARIAVEL -> . VAR CAMPOS ;
 
-    BEGIN           reduce using rule 23 (DEF_VAR -> .)
+    BEGIN           reduce using rule 24 (DEF_VAR -> .)
     VAR             shift and go to state 22
 
     BLOCO_ROTINA                   shift and go to state 130
-    DEF_VAR                        shift and go to state 118
+    DEF_VAR                        shift and go to state 117
     VARIAVEL                       shift and go to state 21
 
 state 127
 
-    (37) PARAM_ROTINA -> ( CAMPOS ) .
+    (38) PARAM_ROTINA -> ( CAMPOS ) .
 
-    :               reduce using rule 37 (PARAM_ROTINA -> ( CAMPOS ) .)
-    VAR             reduce using rule 37 (PARAM_ROTINA -> ( CAMPOS ) .)
-    BEGIN           reduce using rule 37 (PARAM_ROTINA -> ( CAMPOS ) .)
+    :               reduce using rule 38 (PARAM_ROTINA -> ( CAMPOS ) .)
+    VAR             reduce using rule 38 (PARAM_ROTINA -> ( CAMPOS ) .)
+    BEGIN           reduce using rule 38 (PARAM_ROTINA -> ( CAMPOS ) .)
 
 
 state 128
 
-    (38) BLOCO_ROTINA -> DEF_VAR BLOCO .
+    (40) BLOCO_ROTINA -> DEF_VAR BLOCO .
 
-    FUNCTION        reduce using rule 38 (BLOCO_ROTINA -> DEF_VAR BLOCO .)
-    PROCEDURE       reduce using rule 38 (BLOCO_ROTINA -> DEF_VAR BLOCO .)
-    BEGIN           reduce using rule 38 (BLOCO_ROTINA -> DEF_VAR BLOCO .)
+    FUNCTION        reduce using rule 40 (BLOCO_ROTINA -> DEF_VAR BLOCO .)
+    PROCEDURE       reduce using rule 40 (BLOCO_ROTINA -> DEF_VAR BLOCO .)
+    BEGIN           reduce using rule 40 (BLOCO_ROTINA -> DEF_VAR BLOCO .)
 
 
 state 129
@@ -1817,11 +1730,11 @@ state 129
 
 state 130
 
-    (34) ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA .
+    (36) ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA .
 
-    FUNCTION        reduce using rule 34 (ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA .)
-    PROCEDURE       reduce using rule 34 (ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA .)
-    BEGIN           reduce using rule 34 (ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA .)
+    FUNCTION        reduce using rule 36 (ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA .)
+    PROCEDURE       reduce using rule 36 (ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA .)
+    BEGIN           reduce using rule 36 (ROTINA -> FUNCTION ID PARAM_ROTINA : TIPO_DADO BLOCO_ROTINA .)
 
 
 state 131
@@ -1835,13 +1748,13 @@ state 131
     (21) TIPO_DADO -> . RECORD CAMPOS END
     (22) TIPO_DADO -> . ID
 
-    INTEGER         shift and go to state 87
-    REAL            shift and go to state 88
-    CHAR            shift and go to state 89
-    BOOLEAN         shift and go to state 90
-    ARRAY           shift and go to state 91
-    RECORD          shift and go to state 92
-    ID              shift and go to state 85
+    INTEGER         shift and go to state 84
+    REAL            shift and go to state 85
+    CHAR            shift and go to state 86
+    BOOLEAN         shift and go to state 87
+    ARRAY           shift and go to state 88
+    RECORD          shift and go to state 89
+    ID              shift and go to state 82
 
     TIPO_DADO                      shift and go to state 132
 
@@ -1850,13 +1763,10 @@ state 132
     (20) TIPO_DADO -> ARRAY [ NUMERO ] OF TIPO_DADO .
 
     ;               reduce using rule 20 (TIPO_DADO -> ARRAY [ NUMERO ] OF TIPO_DADO .)
+    ID              reduce using rule 20 (TIPO_DADO -> ARRAY [ NUMERO ] OF TIPO_DADO .)
+    PONTOVIRGULA    reduce using rule 20 (TIPO_DADO -> ARRAY [ NUMERO ] OF TIPO_DADO .)
     END             reduce using rule 20 (TIPO_DADO -> ARRAY [ NUMERO ] OF TIPO_DADO .)
     )               reduce using rule 20 (TIPO_DADO -> ARRAY [ NUMERO ] OF TIPO_DADO .)
     VAR             reduce using rule 20 (TIPO_DADO -> ARRAY [ NUMERO ] OF TIPO_DADO .)
     BEGIN           reduce using rule 20 (TIPO_DADO -> ARRAY [ NUMERO ] OF TIPO_DADO .)
 
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for ; in state 50 resolved as shift
-WARNING: shift/reduce conflict for ; in state 105 resolved as shift

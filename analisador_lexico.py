@@ -36,8 +36,10 @@ tokens = [
     'ID',           # Identificadores
     'NUMERO',       # Números (inteiros ou reais)
     'PALAVRA',      # Strings
-    'ATRIBUICAO',   # :=
-    'COMPARACAO',   # ==, <=, >=, !=
+    'ATRIBUICAO',   # :=   
+    'DIFERENTE',    # !=
+    'MAIOR_IGUAL',  # >=
+    'MENOR_IGUAL',  # <=
     'MAIS',         # +
     'MENOS',        # -
     'VEZES',        # *
@@ -60,7 +62,6 @@ t_MAIS = r'\+'
 t_MENOS = r'-'
 t_VEZES = r'\*'
 t_DIVIDE = r'/'
-t_IGUAL = r'='
 t_MENOR = r'<'
 t_MAIOR = r'>'
 t_PONTO = r'\.'
@@ -71,16 +72,13 @@ t_ABREPAR = r'\('
 t_FECHAPAR = r'\)'
 t_ABRECOL = r'\['
 t_FECHACOL = r'\]'
+t_IGUAL = r'=='
+t_ATRIBUICAO = r':='
+t_DIFERENTE = r'!='
+t_MAIOR_IGUAL = r'>='
+t_MENOR_IGUAL = r'<='
 
 # Expressões regulares com ações
-def t_ATRIBUICAO(t):
-    r':='
-    return t
-
-def t_COMPARACAO(t):
-    r'==|<=|>=|!='
-    return t
-
 def t_PALAVRA(t):
     r'\"[^\"]*\"'
     return t
@@ -113,9 +111,6 @@ def t_error(t):
 # Constrói o lexer
 lexer = lex.lex()
 
-# Construir o analisador léxico
-lexer = lex.lex()
-
 # Função para analisar um arquivo e salvar a saída em um arquivo de texto
 def analyze_file(filename):
     try:
@@ -126,6 +121,7 @@ def analyze_file(filename):
         with open("saida_lexico.txt", "w") as output_file:
             for tok in lexer:
                 output_file.write(f"{tok.type}({tok.value}) na linha {tok.lineno}\n")
+        print("Análise léxica concluída com sucesso! Resultados salvos em 'saida_lexico.txt'.")
         print("Análise léxica concluída com sucesso! Resultados salvos em 'saida_lexico.txt'.")
     except FileNotFoundError:
         print(f"Erro: Arquivo '{filename}' não encontrado!")
