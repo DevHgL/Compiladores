@@ -24,7 +24,7 @@ var i : integer;
 begin
 	i := 1;
 	result := a;
-	if b = 0 then
+	if b == 0 then
 		result := 1
 	else
 	while i < b do

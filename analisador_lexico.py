@@ -1,87 +1,67 @@
+###########################################################################################
+#                                                                                         #      
+#   Author: Hugo Leonardo Melo                                                            #                 
+#                                                                                         #              
+#   Trabalho do Analisador Sintático                                                      #              
+#                                                                                         #              
+###########################################################################################
 import ply.lex as lex
+import sys
 
-# Lista de palavras reservadas
-reserved = {
+# Define uma classe para armazenar os tokens
+class Token():
+    def __init__(self, token):
+        self.tipo = tok.type
+        self.valor = tok.value
+        self.linha = tok.lineno
+analisados = list()
+
+# Palavras reservadas
+reservados = {
+    'const': 'CONST',
     'begin': 'BEGIN',
     'end': 'END',
-    'const': 'CONST',
     'type': 'TYPE',
     'var': 'VAR',
-    'function': 'FUNCTION',
-    'procedure': 'PROCEDURE',
-    'if': 'IF',
-    'then': 'THEN',
-    'else': 'ELSE',
-    'while': 'WHILE',
-    'do': 'DO',
-    'for': 'FOR',
-    'to': 'TO',
-    'read': 'READ',
-    'write': 'WRITE',
-    'array': 'ARRAY',
-    'of': 'OF',
-    'record': 'RECORD',
-    'true': 'TRUE',
-    'false': 'FALSE',
     'integer': 'INTEGER',
     'real': 'REAL',
     'char': 'CHAR',
     'boolean': 'BOOLEAN',
+    'array': 'ARRAY',
+    'of': 'OF',
+    'record': 'RECORD',
+    'function': 'FUNCTION',
+    'procedure': 'PROCEDURE',
+    'while': 'WHILE',
+    'do': 'DO',
+    'if': 'IF',
+    'then': 'THEN',
+    'for': 'FOR',
+    'write': 'WRITE',
+    'read': 'READ',
+    'to': 'TO',
+    'else': 'ELSE',
+    'false': 'FALSE',
+    'true': 'TRUE',
     'and': 'AND',
-    'or': 'OR'
+    'or': 'OR',
 }
 
-# Lista de todos os tokens
+# Tokens literais, possuem como nome o mesmo simbolo que os define
+literals = ['+','-','*','/','=',',',';',':','.','[',']','(',')']
+
+# Definicao dos tokens + uniao das palavras reservadas
 tokens = [
-    'ID',           # Identificadores
-    'NUMERO',       # Números (inteiros ou reais)
-    'PALAVRA',      # Strings
-    'ATRIBUICAO',   # :=   
-    'DIFERENTE',    # !=
-    'MAIOR_IGUAL',  # >=
-    'MENOR_IGUAL',  # <=
-    'MAIS',         # +
-    'MENOS',        # -
-    'VEZES',        # *
-    'DIVIDE',       # /
-    'MENOR',        # <
-    'MAIOR',        # >
-    'PONTO',        # .
-    'VIRGULA',      # ,
-    'DOISPONTOS',   # :
-    'PONTOVIRGULA', # ;
-    'ABREPAR',      # (
-    'FECHAPAR',     # )
-    'ABRECOL',      # [
-    'FECHACOL',     # ]
-    'IGUAL'         # =
-] + list(reserved.values())
+    'ID',
+    'NUMERO',
+    'PALAVRA',
+    'ATRIBUICAO_SIMBOLO',
+    'COMPARACAO'
+] + list(reservados.values())
 
-# Expressões regulares para tokens simples
-t_MAIS = r'\+'
-t_MENOS = r'-'
-t_VEZES = r'\*'
-t_DIVIDE = r'/'
-t_MENOR = r'<'
-t_MAIOR = r'>'
-t_PONTO = r'\.'
-t_VIRGULA = r','
-t_DOISPONTOS = r':'
-t_PONTOVIRGULA = r';'
-t_ABREPAR = r'\('
-t_FECHAPAR = r'\)'
-t_ABRECOL = r'\['
-t_FECHACOL = r'\]'
-t_IGUAL = r'=='
-t_ATRIBUICAO = r':='
-t_DIFERENTE = r'!='
-t_MAIOR_IGUAL = r'>='
-t_MENOR_IGUAL = r'<='
-
-# Expressões regulares com ações
-def t_PALAVRA(t):
-    r'\"[^\"]*\"'
-    return t
+# Expressoes regulares dos tokens simples
+t_ATRIBUICAO_SIMBOLO = ':='
+t_COMPARACAO = r'<=|>=|==|!=|<|>'
 
 def t_NUMERO(t):
     r'\d+(\.\d+)?'
@@ -89,41 +69,42 @@ def t_NUMERO(t):
     return t
 
 def t_ID(t):
-    r'[a-zA-Z][a-zA-Z0-9_]*'
-    # Verifica se é uma palavra reservada
-    t.type = reserved.get(t.value.lower(), 'ID')
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    t.type = reservados.get(t.value,'ID')
+    t.value = str(t.value)
     return t
 
-# Caracteres ignorados
-t_ignore = ' \t'  # Espaços e tabs
-t_ignore_COMMENT = r'\{[^}]*\}'  # Comentários entre chaves
+def t_PALAVRA(t):
+    r'"[A-Za-z0-9\s]*"'
+    t.value = str(t.value)
+    return t
 
-# Nova linha
+# Regra para determinar posicao da linha do codigo
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-# Tratamento de erros
+# Caracteres ignorados pelo analisador lexico, espacos e tabulacoes
+t_ignore  = ' \t'
+
+# Tratamento de erro quando um caracter nao e identificado pelo analisador
 def t_error(t):
-    print(f"Caractere ilegal '{t.value[0]}' na linha {t.lexer.lineno}")
+    print(f"Caracter {t.value[0]} nao identificado.")
+    # Pula o elemento para que identifique outros possiveis erros na mesma analise
     t.lexer.skip(1)
 
-# Constrói o lexer
+# Compila as regras definidas para o lexer
 lexer = lex.lex()
 
-# Função para analisar um arquivo e salvar a saída em um arquivo de texto
-def analyze_file(filename):
-    try:
-        with open(filename, 'r') as file:
-            data = file.read()
-        lexer.input(data)
-        
-        with open("saida_lexico.txt", "w") as output_file:
-            for tok in lexer:
-                output_file.write(f"{tok.type}({tok.value}) na linha {tok.lineno}\n")
-        print("Análise léxica concluída com sucesso! Resultados salvos em 'saida_lexico.txt'.")
-        print("Análise léxica concluída com sucesso! Resultados salvos em 'saida_lexico.txt'.")
-    except FileNotFoundError:
-        print(f"Erro: Arquivo '{filename}' não encontrado!")
-    except Exception as e:
-        print(f"Erro ao analisar o arquivo: {e}")
+# Abre e entrega o arquivo a ser analisado
+file_name = sys.argv[1]
+data = open(file_name, 'r').read()
+lexer.input(data)
+
+# Analisa os tokens do arquivo
+while True:
+    tok = lexer.token()
+    if not tok: 
+        break
+    analisados.append(tok)
+    # print(tok)
