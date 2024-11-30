@@ -2,7 +2,7 @@
 #                                                                                         #      
 #   Author: Hugo Leonardo Melo                                                            #                 
 #                                                                                         #              
-#   Trabalho do Analisador Sintático                                                      #              
+#   Trabalho do Analisador Léxico                                                     #              
 #                                                                                         #              
 ###########################################################################################
 import ply.lex as lex
