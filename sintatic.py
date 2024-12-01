@@ -319,14 +319,49 @@ def p_error(p):
 # Parser construction
 parser = yacc.yacc()
 
+def print_tree(tree, file, indent=0):
+    """Função recursiva que imprime a árvore sintática em um arquivo .txt."""
+    if tree is None:
+        return
+
+    # Criar a indentação de acordo com a profundidade
+    indent_str = '  ' * indent
+
+    # Se a árvore for uma tupla, imprimimos o tipo de nó (primeiro elemento) e recursivamente
+    if isinstance(tree, tuple):
+        file.write(f"{indent_str}{tree[0]}\n")
+        for subtree in tree[1:]:
+            print_tree(subtree, file, indent + 1)
+    # Se a árvore for uma lista, assumimos que seja uma lista de IDs, então imprimimos cada elemento
+    elif isinstance(tree, list):
+        for item in tree:
+            print_tree(item, file, indent)
+    # Se for um valor simples, apenas imprimimos o valor
+    else:
+        file.write(f"{indent_str}{tree}\n")
+
+
+def save_syntax_tree_to_file(tree, filename="output.txt"):
+    """Função principal que salva a árvore sintática em um arquivo .txt."""
+    try:
+        with open(filename, 'w') as file:
+            print_tree(tree, file)
+        print(f"Árvore sintática salva com sucesso em {filename}.")
+    except Exception as e:
+        print(f"Erro ao salvar a árvore sintática: {e}")
+
+
 try:
     with open(sys.argv[1], 'r') as file:
         data = file.read()
     lexer.lineno = 1
     result = parser.parse(data)
+    save_syntax_tree_to_file(result)
     for i in result:
         print(i)
 except FileNotFoundError:
     print(f"Error: File '{sys.argv[1]}' not found!")
 except Exception as e:
     print(f"Error while parsing file: {e}")
+    
+    
