@@ -2,7 +2,7 @@
 #                                                                                         #      
 #   Author: Hugo Leonardo Melo                                                            #                 
 #                                                                                         #              
-#   Trabalho do Analisador Léxico                                                     #              
+#   Trabalho do Analisador Léxico                                                         #              
 #                                                                                         #              
 ###########################################################################################
 import ply.lex as lex
@@ -53,17 +53,18 @@ literals = ['+','-','*','/','=',',',';',':','.','[',']','(',')']
 # Definicao dos tokens + uniao das palavras reservadas
 tokens = [
     'ID',
-    'NUMERO',
-    'PALAVRA',
-    'ATRIBUICAO_SIMBOLO',
-    'COMPARACAO'
+    'NUMBER',
+    'STRING',
+    'ASSIGNMENT',
+    'COMPARATOR'
 ] + list(reservados.values())
 
 # Expressoes regulares dos tokens simples
-t_ATRIBUICAO_SIMBOLO = ':='
-t_COMPARACAO = r'<=|>=|==|!=|<|>'
 
-def t_NUMERO(t):
+t_ASSIGNMENT = r':='
+t_COMPARATOR = r'<=|>=|==|!=|<|>'
+
+def t_NUMBER(t):
     r'\d+(\.\d+)?'
     t.value = float(t.value) if '.' in t.value else int(t.value)
     return t
@@ -74,7 +75,7 @@ def t_ID(t):
     t.value = str(t.value)
     return t
 
-def t_PALAVRA(t):
+def t_STRING(t):
     r'"[A-Za-z0-9\s]*"'
     t.value = str(t.value)
     return t
@@ -107,4 +108,4 @@ while True:
     if not tok: 
         break
     lista_analisados.append(tok)
-    # print(tok)
+    print(tok)
