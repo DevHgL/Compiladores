@@ -97,6 +97,16 @@ def t_error(t):
 # Compila as regras definidas para o lexer
 lexer = lex.lex()
 
+
+def run_lexical_analysis(data):
+    lexer.input(data)
+    while True:
+        token = lexer.token()
+        if not token:
+            break
+        print(token)
+
+
 # Abre e entrega o arquivo a ser analisado
 file_name = sys.argv[1]
 data = open(file_name, 'r').read()

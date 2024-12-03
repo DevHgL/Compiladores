@@ -341,7 +341,7 @@ def print_tree(tree, file, indent=0):
         file.write(f"{indent_str}{tree}\n")
 
 
-def save_syntax_tree_to_file(tree, filename="output.txt"):
+def save_syntax_tree_to_file(tree, filename="Syntactic-Output.txt"):
     """Função principal que salva a árvore sintática em um arquivo .txt."""
     try:
         with open(filename, 'w') as file:
