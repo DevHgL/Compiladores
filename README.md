@@ -1,8 +1,11 @@
 # Trabalho de Compiladores
 
 ## Analisador Sintático
+
 Como Funciona?
+
 Estrutura: 
+
 graph TD
     PROGRAM[Program] --> DECLARATIONS
     PROGRAM --> BLOCK
