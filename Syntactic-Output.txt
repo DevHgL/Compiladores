@@ -5,22 +5,15 @@ program
     var_def
       variable
         field
-          A
-          data_type
-            integer
-      var_def
+          A /n          data_type
+            integer /n      var_def
     routine_def
   block
     command_assign
-      A
-      assign
+      A /n      assign
         exp
           parameter
-            literal
-            10
-          math_op
-            +
-            exp
+            literal /n            10 /n          math_op
+            + /n            exp
               parameter
-                literal
-                20
+                literal /n                20 /n

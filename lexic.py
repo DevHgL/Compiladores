@@ -62,7 +62,7 @@ tokens = [
 # Expressoes regulares dos tokens simples
 
 t_ASSIGNMENT = r':='
-t_COMPARATOR = r'<=|>=|==|!=|<|>'
+t_COMPARATOR = r' <= | >= | == |!=| < | > '
 
 def t_NUMBER(t):
     r'\d+(\.\d+)?'
@@ -118,4 +118,4 @@ while True:
     if not tok: 
         break
     lista_analisados.append(tok)
-    print(tok)
+    # print(tok)

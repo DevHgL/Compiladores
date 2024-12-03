@@ -338,7 +338,7 @@ def print_tree(tree, file, indent=0):
             print_tree(item, file, indent)
     # Se for um valor simples, apenas imprimimos o valor
     else:
-        file.write(f"{indent_str}{tree}\n")
+        file.write(f"{indent_str}{tree} /n")
 
 
 def save_syntax_tree_to_file(tree, filename="Syntactic-Output.txt"):
