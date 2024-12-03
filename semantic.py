@@ -47,7 +47,6 @@ class SemanticAnalyzer:
         if isinstance(node, tuple):
             print(f"Tipo do nó: {node[0]} - Conteúdo: {node}")
             node_type = node[0]
-            print(f"Analisando nó: {node_type} na linha {line}")
             if node_type == 'program':
                 self.handle_program(node)
             elif node_type == 'declarations':
@@ -67,66 +66,81 @@ class SemanticAnalyzer:
                 self.analyze(child, line)
 
     def handle_program(self, node):
-        # Processa o nó de programa dinamicamente
-        program_type = node[0]
-        content = node[1:]  # Todo o resto do nó
-        print(f"Analisando programa: {program_type}")
-        for element in content:
-            self.analyze(element)
+        if len(node) < 3:
+            raise Exception(f"Erro: Estrutura inesperada do nó do programa: {node}")
+        _, declarations, block = node
+        print("Analisando programa.")
+        self.analyze(declarations)
+        self.analyze(block)
 
     def handle_declarations(self, node):
-        declarations_type = node[0]
-        content = node[1:]  # Captura o restante dinamicamente
-        print(f"Analisando declarações: {declarations_type}")
-        for element in content:
-            self.analyze(element)
+        if len(node) < 5:
+            raise Exception(f"Erro: Estrutura inesperada do nó de declarações: {node}")
+        _, const_def, type_def, var_def, routine_def = node
+        print("Analisando declarações.")
+        if const_def and const_def[1] is not None:
+            self.analyze(const_def)
+        if type_def and type_def[1] is not None:
+            self.analyze(type_def)
+        if var_def:  # Processa as declarações de variáveis
+            self.analyze(var_def)
+        if routine_def and routine_def[1] is not None:
+            self.analyze(routine_def)
+
 
     def handle_block(self, node):
-        block_type = node[0]
-        content = node[1:]  # Captura os elementos do bloco dinamicamente
+        if len(node) < 2:
+            raise Exception(f"Erro: Estrutura inesperada do nó do bloco: {node}")
+        block_type, *commands = node
         print(f"Analisando bloco: {block_type}")
-        for element in content:
-            self.analyze(element)
+        for command in commands:
+            if command:
+                self.analyze(command)
 
     def handle_variable(self, node, line):
         if len(node) < 2:
             raise Exception(f"Erro na linha {line}: Estrutura inesperada na declaração de variável: {node}")
-        variable_type = node[0]
-        content = node[1:]
-        print(f"Analisando variável: {variable_type}")
-        for field in content:
-            self.symbol_table.add_symbol(field[0], field[1], "variable", line)
+        _, fields = node
+        print(f"Analisando variáveis: {fields}")
+        # Itera sobre os campos das variáveis
+        for field in fields:
+            if isinstance(field, tuple) and field[0] == 'field':
+                names, var_type = field[1], field[2]
+                for name in names:
+                    self.symbol_table.add_symbol(name, var_type[1], "variable", line)
+            else:
+                raise Exception(f"Erro na linha {line}: Estrutura de campo inválida: {field}")
+
+            print(f"Tabela de símbolos atual: {self.symbol_table.scopes}")
+
 
     def handle_constant(self, node, line):
         if len(node) < 3:
             raise Exception(f"Erro na linha {line}: Estrutura inesperada na declaração de constante: {node}")
-        constant_type = node[0]
-        name = node[1]
-        value = node[2]
+        _, name, value = node
         print(f"Analisando constante: {name} = {value}")
         self.symbol_table.add_symbol(name, type(value).__name__, "constant", line)
 
     def handle_assignment(self, node, line):
-        if len(node) < 3:
+        if len(node) < 4:
             raise Exception(f"Erro na linha {line}: Estrutura inesperada na atribuição: {node}")
-        assignment_type = node[0]
-        var = node[1]
-        expr = node[2]
+        _, var, _, expr = node
         print(f"Analisando atribuição: {var} := {expr} na linha {line}")
-        var_info = self.symbol_table.lookup(var, line)
+        try:
+            var_info = self.symbol_table.lookup(var, line)
+        except Exception:
+            raise Exception(f"Erro na linha {line}: Identificador '{var}' não foi declarado.")
         if var_info['kind'] != 'variable':
             raise Exception(f"Erro na linha {line}: '{var}' não é uma variável.")
         expr_type = self.get_expression_type(expr, line)
         if var_info['type'] != expr_type:
             raise Exception(f"Erro na linha {line}: Tipos incompatíveis. '{var}' é do tipo '{var_info['type']}' e não pode receber '{expr_type}'.")
 
+
     def handle_procedure(self, node, line):
         if len(node) < 4:
             raise Exception(f"Erro na linha {line}: Estrutura inesperada no procedimento: {node}")
-        procedure_type = node[0]
-        name = node[1]
-        params = node[2]
-        block = node[3]
+        _, name, params, block = node
         print(f"Analisando procedimento: {name}")
         self.symbol_table.add_symbol(name, "procedure", "procedure", line)
         self.symbol_table.enter_scope(line)
@@ -136,19 +150,23 @@ class SemanticAnalyzer:
 
     def get_expression_type(self, expr, line):
         if isinstance(expr, tuple):
-            if expr[0] in ('math_op', 'logic_op'):
-                left_type = self.get_expression_type(expr[1], line)
-                right_type = self.get_expression_type(expr[2], line)
+            if expr[0] == 'binary_op':
+                left_type = self.get_expression_type(expr[2], line)
+                right_type = self.get_expression_type(expr[3], line)
                 if left_type != right_type:
-                    raise Exception(f"Erro na linha {line}: Tipos incompatíveis na operação. '{left_type}' e '{right_type}' não podem ser combinados.")
+                    raise Exception(f"Erro na linha {line}: Tipos incompatíveis na operação '{expr[1]}'.")
                 return left_type
+            elif expr[0] == 'parameter':
+                param_info = self.symbol_table.lookup(expr[1], line)
+                return param_info['type']
+            elif expr[0] == 'value':
+                return self.get_expression_type(expr[1], line)
         elif isinstance(expr, (int, float)):
             return "integer" if isinstance(expr, int) else "real"
         elif isinstance(expr, str):
             return "char" if len(expr) == 1 else "string"
         else:
-            var_info = self.symbol_table.lookup(expr, line)
-            return var_info['type']
+            raise Exception(f"Erro na linha {line}: Estrutura de expressão desconhecida: {expr}")
 
 def main():
     try:
