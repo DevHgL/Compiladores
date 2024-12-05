@@ -1,13 +1,5 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    AND
-    COMPARATOR
-    ELSE
-    OR
-    TO
-
 Grammar
 
 Rule 0     S' -> PROGRAM
@@ -27,111 +19,2510 @@ Rule 13    CONST_VALUE -> STRING
 Rule 14    CONST_VALUE -> CONST_EXP
 Rule 15    TYPE_DECLARATION -> TYPE ID = DATA_TYPE ;
 Rule 16    VARIABLE -> VAR FIELD ;
-Rule 17    FIELDS -> FIELD FIELD_LIST
-Rule 18    FIELD -> ID ID_LIST : DATA_TYPE
-Rule 19    FIELD_LIST -> ; FIELD FIELD_LIST
-Rule 20    FIELD_LIST -> <empty>
-Rule 21    DATA_TYPE -> INTEGER
-Rule 22    DATA_TYPE -> REAL
-Rule 23    DATA_TYPE -> CHAR
-Rule 24    DATA_TYPE -> BOOLEAN
-Rule 25    DATA_TYPE -> ARRAY [ NUMBER ] OF DATA_TYPE
-Rule 26    DATA_TYPE -> RECORD FIELDS END
-Rule 27    DATA_TYPE -> ID
-Rule 28    ROUTINE -> FUNCTION ID ROUTINE_PARAM : DATA_TYPE ROUTINE_BLOCK
-Rule 29    ROUTINE -> PROCEDURE ID ROUTINE_PARAM ROUTINE_BLOCK
-Rule 30    ROUTINE_PARAM -> ( FIELDS )
-Rule 31    ROUTINE_PARAM -> <empty>
-Rule 32    ROUTINE_BLOCK -> VAR_DEF BLOCK
-Rule 33    COMMAND_LIST -> ; COMMAND COMMAND_LIST
-Rule 34    COMMAND_LIST -> <empty>
-Rule 35    COMMAND -> ID ASSIGN_EXPRESSION
-Rule 36    COMMAND -> WHILE COM_EXP DO BLOCK
-Rule 37    COMMAND -> IF COM_EXP THEN BLOCK ELSE_ALTERNATIVE
-Rule 38    COMMAND -> FOR FOR_COMMAND DO BLOCK
-Rule 39    COMMAND -> WRITE CONST_VALUE
-Rule 40    COMMAND -> READ ID
-Rule 41    ASSIGN_EXPRESSION -> ASSIGNMENT EXP
-Rule 42    COM_EXP -> PARAMETER COMP_OP PARAMETER
-Rule 43    COM_EXP -> ( COM_EXP )
-Rule 44    COM_EXP -> PARAMETER
-Rule 45    PARAMETER -> ID
-Rule 46    PARAMETER -> NUMBER
-Rule 47    PARAMETER -> TRUE
-Rule 48    PARAMETER -> FALSE
+Rule 17    ID_LIST -> , ID ID_LIST
+Rule 18    ID_LIST -> <empty>
+Rule 19    FIELDS -> FIELD FIELD_LIST
+Rule 20    FIELD -> ID ID_LIST : DATA_TYPE
+Rule 21    FIELD_LIST -> ; FIELD FIELD_LIST
+Rule 22    FIELD_LIST -> <empty>
+Rule 23    DATA_TYPE -> INTEGER
+Rule 24    DATA_TYPE -> REAL
+Rule 25    DATA_TYPE -> CHAR
+Rule 26    DATA_TYPE -> BOOLEAN
+Rule 27    DATA_TYPE -> ARRAY [ NUMBER ] OF DATA_TYPE
+Rule 28    DATA_TYPE -> RECORD FIELDS END
+Rule 29    DATA_TYPE -> ID
+Rule 30    ROUTINE -> FUNCTION ID ROUTINE_PARAM : DATA_TYPE ROUTINE_BLOCK
+Rule 31    ROUTINE -> PROCEDURE ID ROUTINE_PARAM ROUTINE_BLOCK
+Rule 32    ROUTINE_PARAM -> ( FIELDS )
+Rule 33    ROUTINE_PARAM -> <empty>
+Rule 34    ROUTINE_BLOCK -> VAR_DEF BLOCK
+Rule 35    COMMAND_LIST -> ; COMMAND COMMAND_LIST
+Rule 36    COMMAND_LIST -> <empty>
+Rule 37    COMMAND_BLOCK -> BLOCK
+Rule 38    COMMAND_BLOCK -> COMMAND
+Rule 39    COMMAND -> ID NAME ASSIGN_EXPRESSION
+Rule 40    COMMAND -> WHILE COM_EXP DO COMMAND_BLOCK
+Rule 41    COMMAND -> IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE
+Rule 42    COMMAND -> FOR FOR_COMMAND DO COMMAND_BLOCK
+Rule 43    COMMAND -> WRITE CONST_VALUE
+Rule 44    COMMAND -> READ ID NAME
+Rule 45    ASSIGN_EXPRESSION -> ASSIGNMENT EXP
+Rule 46    FOR_COMMAND -> ID ASSIGNMENT_STMT TO PARAMETER
+Rule 47    ELSE_ALTERNATIVE -> ELSE COMMAND_BLOCK
+Rule 48    ELSE_ALTERNATIVE -> <empty>
+Rule 49    ASSIGNMENT_STMT -> ASSIGNMENT EXP
+Rule 50    PARAM_LIST -> PARAMETER , PARAM_LIST
+Rule 51    PARAM_LIST -> PARAMETER
+Rule 52    PARAM_LIST -> <empty>
+Rule 53    EXP -> PARAMETER
+Rule 54    EXP -> EXP + EXP
+Rule 55    EXP -> EXP - EXP
+Rule 56    EXP -> ( EXP )
+Rule 57    EXP -> EXP * EXP
+Rule 58    EXP -> EXP / EXP
+Rule 59    EXP_L1 -> MATH_OP EXP
+Rule 60    EXP_L1 -> LOGIC_PARAM LOGIC_EXP
+Rule 61    EXP_L1 -> <empty>
+Rule 62    LOGIC_EXP -> LOGIC_OP EXP
+Rule 63    LOGIC_EXP -> <empty>
+Rule 64    LOGIC_PARAM -> COMP_OP PARAMETER
+Rule 65    LOGIC_PARAM -> <empty>
+Rule 66    EXP_L2 -> MATH_OP EXP )
+Rule 67    EXP_L2 -> LOGIC_PARAM LOGIC_OP EXP )
+Rule 68    CONST_EXP -> PARAMETER CONST_EXP_L
+Rule 69    CONST_EXP -> ( PARAMETER MATH_OP CONST_EXP )
+Rule 70    CONST_EXP_L -> MATH_OP CONST_EXP
+Rule 71    CONST_EXP_L -> <empty>
+Rule 72    COM_EXP -> PARAMETER LOGIC_PARAM COM_EXP_L
+Rule 73    COM_EXP -> ( PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP )
+Rule 74    COM_EXP_L -> LOGIC_OP COM_EXP
+Rule 75    COM_EXP_L -> <empty>
+Rule 76    PARAMETER -> ID NAME
+Rule 77    PARAMETER -> NUMBER
+Rule 78    PARAMETER -> FALSE
+Rule 79    PARAMETER -> TRUE
+Rule 80    LOGIC_OP -> AND
+Rule 81    LOGIC_OP -> OR
+Rule 82    COMP_OP -> >
+Rule 83    COMP_OP -> <
+Rule 84    COMP_OP -> COMPARATOR
+Rule 85    MATH_OP -> +
+Rule 86    MATH_OP -> -
+Rule 87    MATH_OP -> *
+Rule 88    MATH_OP -> /
+Rule 89    NAME -> . ID NAME
+Rule 90    NAME -> [ PARAMETER ]
+Rule 91    NAME -> ( PARAM_LIST )
+Rule 92    NAME -> <empty>
 
 Terminals, with rules where they appear
 
-(                    : 30 43
-)                    : 30 43
-:                    : 18 28
-;                    : 12 15 16 19 33
+(                    : 32 56 69 73 91
+)                    : 32 56 66 67 69 73 91
+*                    : 57 87
++                    : 54 85
+,                    : 17 50
+-                    : 55 86
+.                    : 89
+/                    : 58 88
+:                    : 20 30
+;                    : 12 15 16 21 35
+<                    : 83
 =                    : 12 15
-AND                  : 
-ARRAY                : 25
-ASSIGNMENT           : 41
+>                    : 82
+AND                  : 80
+ARRAY                : 27
+ASSIGNMENT           : 45 49
 BEGIN                : 2
-BOOLEAN              : 24
-CHAR                 : 23
-COMPARATOR           : 
+BOOLEAN              : 26
+CHAR                 : 25
+COMPARATOR           : 84
 CONST                : 12
-DO                   : 36 38
-ELSE                 : 
-END                  : 2 26
-FALSE                : 48
-FOR                  : 38
-FUNCTION             : 28
-ID                   : 12 15 18 27 28 29 35 40 45
-IF                   : 37
-INTEGER              : 21
-NUMBER               : 25 46
-OF                   : 25
-OR                   : 
-PROCEDURE            : 29
-READ                 : 40
-REAL                 : 22
-RECORD               : 26
+DO                   : 40 42
+ELSE                 : 47
+END                  : 2 28
+FALSE                : 78
+FOR                  : 42
+FUNCTION             : 30
+ID                   : 12 15 17 20 29 30 31 39 44 46 76 89
+IF                   : 41
+INTEGER              : 23
+NUMBER               : 27 77
+OF                   : 27
+OR                   : 81
+PROCEDURE            : 31
+READ                 : 44
+REAL                 : 24
+RECORD               : 28
 STRING               : 13
-THEN                 : 37
-TO                   : 
-TRUE                 : 47
+THEN                 : 41
+TO                   : 46
+TRUE                 : 79
 TYPE                 : 15
 VAR                  : 16
-WHILE                : 36
-WRITE                : 39
-[                    : 25
-]                    : 25
+WHILE                : 40
+WRITE                : 43
+[                    : 27 90
+]                    : 27 90
 error                : 
 
 Nonterminals, with rules where they appear
 
-ASSIGN_EXPRESSION    : 35
-BLOCK                : 1 32 36 37 38
-COMMAND              : 2 33
-COMMAND_LIST         : 2 33
-COMP_OP              : 42
-COM_EXP              : 36 37 43
+ASSIGNMENT_STMT      : 46
+ASSIGN_EXPRESSION    : 39
+BLOCK                : 1 34 37
+COMMAND              : 2 35 38
+COMMAND_BLOCK        : 40 41 42 47
+COMMAND_LIST         : 2 35
+COMP_OP              : 64
+COM_EXP              : 40 41 73 74
+COM_EXP_L            : 72
 CONSTANT             : 4
 CONST_DEF            : 3 4
-CONST_EXP            : 14
-CONST_VALUE          : 12 39
-DATA_TYPE            : 15 18 25 28
+CONST_EXP            : 14 69 70
+CONST_EXP_L          : 68
+CONST_VALUE          : 12 43
+DATA_TYPE            : 15 20 27 30
 DECLARATIONS         : 1
-ELSE_ALTERNATIVE     : 37
-EXP                  : 41
-FIELD                : 16 17 19
-FIELDS               : 26 30
-FIELD_LIST           : 17 19
-FOR_COMMAND          : 38
-ID_LIST              : 18
-PARAMETER            : 42 42 44
+ELSE_ALTERNATIVE     : 41
+EXP                  : 45 49 54 54 55 55 56 57 57 58 58 59 62 66 67
+EXP_L1               : 
+EXP_L2               : 
+FIELD                : 16 19 21
+FIELDS               : 28 32
+FIELD_LIST           : 19 21
+FOR_COMMAND          : 42
+ID_LIST              : 17 20
+LOGIC_EXP            : 60
+LOGIC_OP             : 62 67 73 74
+LOGIC_PARAM          : 60 67 72 73
+MATH_OP              : 59 66 69 70
+NAME                 : 39 44 76 89
+PARAMETER            : 46 50 51 53 64 68 69 72 73 90
+PARAM_LIST           : 50 91
 PROGRAM              : 0
 ROUTINE              : 10
-ROUTINE_BLOCK        : 28 29
+ROUTINE_BLOCK        : 30 31
 ROUTINE_DEF          : 3 10
-ROUTINE_PARAM        : 28 29
+ROUTINE_PARAM        : 30 31
 TYPE_DECLARATION     : 6
 TYPE_DEF             : 3 6
 VARIABLE             : 8
-VAR_DEF              : 3 8 32
+VAR_DEF              : 3 8 34
 
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . PROGRAM
+    (1) PROGRAM -> . DECLARATIONS BLOCK
+    (3) DECLARATIONS -> . CONST_DEF TYPE_DEF VAR_DEF ROUTINE_DEF
+    (4) CONST_DEF -> . CONSTANT CONST_DEF
+    (5) CONST_DEF -> .
+    (12) CONSTANT -> . CONST ID = CONST_VALUE ;
+
+    TYPE            reduce using rule 5 (CONST_DEF -> .)
+    VAR             reduce using rule 5 (CONST_DEF -> .)
+    FUNCTION        reduce using rule 5 (CONST_DEF -> .)
+    PROCEDURE       reduce using rule 5 (CONST_DEF -> .)
+    BEGIN           reduce using rule 5 (CONST_DEF -> .)
+    CONST           shift and go to state 5
+
+    PROGRAM                        shift and go to state 1
+    DECLARATIONS                   shift and go to state 2
+    CONST_DEF                      shift and go to state 3
+    CONSTANT                       shift and go to state 4
+
+state 1
+
+    (0) S' -> PROGRAM .
+
+
+
+state 2
+
+    (1) PROGRAM -> DECLARATIONS . BLOCK
+    (2) BLOCK -> . BEGIN COMMAND COMMAND_LIST END
+
+    BEGIN           shift and go to state 7
+
+    BLOCK                          shift and go to state 6
+
+state 3
+
+    (3) DECLARATIONS -> CONST_DEF . TYPE_DEF VAR_DEF ROUTINE_DEF
+    (6) TYPE_DEF -> . TYPE_DECLARATION TYPE_DEF
+    (7) TYPE_DEF -> .
+    (15) TYPE_DECLARATION -> . TYPE ID = DATA_TYPE ;
+
+    VAR             reduce using rule 7 (TYPE_DEF -> .)
+    FUNCTION        reduce using rule 7 (TYPE_DEF -> .)
+    PROCEDURE       reduce using rule 7 (TYPE_DEF -> .)
+    BEGIN           reduce using rule 7 (TYPE_DEF -> .)
+    TYPE            shift and go to state 10
+
+    TYPE_DEF                       shift and go to state 8
+    TYPE_DECLARATION               shift and go to state 9
+
+state 4
+
+    (4) CONST_DEF -> CONSTANT . CONST_DEF
+    (4) CONST_DEF -> . CONSTANT CONST_DEF
+    (5) CONST_DEF -> .
+    (12) CONSTANT -> . CONST ID = CONST_VALUE ;
+
+    TYPE            reduce using rule 5 (CONST_DEF -> .)
+    VAR             reduce using rule 5 (CONST_DEF -> .)
+    FUNCTION        reduce using rule 5 (CONST_DEF -> .)
+    PROCEDURE       reduce using rule 5 (CONST_DEF -> .)
+    BEGIN           reduce using rule 5 (CONST_DEF -> .)
+    CONST           shift and go to state 5
+
+    CONSTANT                       shift and go to state 4
+    CONST_DEF                      shift and go to state 11
+
+state 5
+
+    (12) CONSTANT -> CONST . ID = CONST_VALUE ;
+
+    ID              shift and go to state 12
+
+
+state 6
+
+    (1) PROGRAM -> DECLARATIONS BLOCK .
+
+    $end            reduce using rule 1 (PROGRAM -> DECLARATIONS BLOCK .)
+
+
+state 7
+
+    (2) BLOCK -> BEGIN . COMMAND COMMAND_LIST END
+    (39) COMMAND -> . ID NAME ASSIGN_EXPRESSION
+    (40) COMMAND -> . WHILE COM_EXP DO COMMAND_BLOCK
+    (41) COMMAND -> . IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE
+    (42) COMMAND -> . FOR FOR_COMMAND DO COMMAND_BLOCK
+    (43) COMMAND -> . WRITE CONST_VALUE
+    (44) COMMAND -> . READ ID NAME
+
+    ID              shift and go to state 14
+    WHILE           shift and go to state 15
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WRITE           shift and go to state 18
+    READ            shift and go to state 19
+
+    COMMAND                        shift and go to state 13
+
+state 8
+
+    (3) DECLARATIONS -> CONST_DEF TYPE_DEF . VAR_DEF ROUTINE_DEF
+    (8) VAR_DEF -> . VARIABLE VAR_DEF
+    (9) VAR_DEF -> .
+    (16) VARIABLE -> . VAR FIELD ;
+
+    FUNCTION        reduce using rule 9 (VAR_DEF -> .)
+    PROCEDURE       reduce using rule 9 (VAR_DEF -> .)
+    BEGIN           reduce using rule 9 (VAR_DEF -> .)
+    VAR             shift and go to state 22
+
+    VAR_DEF                        shift and go to state 20
+    VARIABLE                       shift and go to state 21
+
+state 9
+
+    (6) TYPE_DEF -> TYPE_DECLARATION . TYPE_DEF
+    (6) TYPE_DEF -> . TYPE_DECLARATION TYPE_DEF
+    (7) TYPE_DEF -> .
+    (15) TYPE_DECLARATION -> . TYPE ID = DATA_TYPE ;
+
+    VAR             reduce using rule 7 (TYPE_DEF -> .)
+    FUNCTION        reduce using rule 7 (TYPE_DEF -> .)
+    PROCEDURE       reduce using rule 7 (TYPE_DEF -> .)
+    BEGIN           reduce using rule 7 (TYPE_DEF -> .)
+    TYPE            shift and go to state 10
+
+    TYPE_DECLARATION               shift and go to state 9
+    TYPE_DEF                       shift and go to state 23
+
+state 10
+
+    (15) TYPE_DECLARATION -> TYPE . ID = DATA_TYPE ;
+
+    ID              shift and go to state 24
+
+
+state 11
+
+    (4) CONST_DEF -> CONSTANT CONST_DEF .
+
+    TYPE            reduce using rule 4 (CONST_DEF -> CONSTANT CONST_DEF .)
+    VAR             reduce using rule 4 (CONST_DEF -> CONSTANT CONST_DEF .)
+    FUNCTION        reduce using rule 4 (CONST_DEF -> CONSTANT CONST_DEF .)
+    PROCEDURE       reduce using rule 4 (CONST_DEF -> CONSTANT CONST_DEF .)
+    BEGIN           reduce using rule 4 (CONST_DEF -> CONSTANT CONST_DEF .)
+
+
+state 12
+
+    (12) CONSTANT -> CONST ID . = CONST_VALUE ;
+
+    =               shift and go to state 25
+
+
+state 13
+
+    (2) BLOCK -> BEGIN COMMAND . COMMAND_LIST END
+    (35) COMMAND_LIST -> . ; COMMAND COMMAND_LIST
+    (36) COMMAND_LIST -> .
+
+    ;               shift and go to state 27
+    END             reduce using rule 36 (COMMAND_LIST -> .)
+
+    COMMAND_LIST                   shift and go to state 26
+
+state 14
+
+    (39) COMMAND -> ID . NAME ASSIGN_EXPRESSION
+    (89) NAME -> . . ID NAME
+    (90) NAME -> . [ PARAMETER ]
+    (91) NAME -> . ( PARAM_LIST )
+    (92) NAME -> .
+
+    .               shift and go to state 29
+    [               shift and go to state 30
+    (               shift and go to state 31
+    ASSIGNMENT      reduce using rule 92 (NAME -> .)
+
+    NAME                           shift and go to state 28
+
+state 15
+
+    (40) COMMAND -> WHILE . COM_EXP DO COMMAND_BLOCK
+    (72) COM_EXP -> . PARAMETER LOGIC_PARAM COM_EXP_L
+    (73) COM_EXP -> . ( PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP )
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 34
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    COM_EXP                        shift and go to state 32
+    PARAMETER                      shift and go to state 33
+
+state 16
+
+    (41) COMMAND -> IF . COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE
+    (72) COM_EXP -> . PARAMETER LOGIC_PARAM COM_EXP_L
+    (73) COM_EXP -> . ( PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP )
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 34
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    COM_EXP                        shift and go to state 39
+    PARAMETER                      shift and go to state 33
+
+state 17
+
+    (42) COMMAND -> FOR . FOR_COMMAND DO COMMAND_BLOCK
+    (46) FOR_COMMAND -> . ID ASSIGNMENT_STMT TO PARAMETER
+
+    ID              shift and go to state 41
+
+    FOR_COMMAND                    shift and go to state 40
+
+state 18
+
+    (43) COMMAND -> WRITE . CONST_VALUE
+    (13) CONST_VALUE -> . STRING
+    (14) CONST_VALUE -> . CONST_EXP
+    (68) CONST_EXP -> . PARAMETER CONST_EXP_L
+    (69) CONST_EXP -> . ( PARAMETER MATH_OP CONST_EXP )
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    STRING          shift and go to state 43
+    (               shift and go to state 46
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    CONST_VALUE                    shift and go to state 42
+    CONST_EXP                      shift and go to state 44
+    PARAMETER                      shift and go to state 45
+
+state 19
+
+    (44) COMMAND -> READ . ID NAME
+
+    ID              shift and go to state 47
+
+
+state 20
+
+    (3) DECLARATIONS -> CONST_DEF TYPE_DEF VAR_DEF . ROUTINE_DEF
+    (10) ROUTINE_DEF -> . ROUTINE ROUTINE_DEF
+    (11) ROUTINE_DEF -> .
+    (30) ROUTINE -> . FUNCTION ID ROUTINE_PARAM : DATA_TYPE ROUTINE_BLOCK
+    (31) ROUTINE -> . PROCEDURE ID ROUTINE_PARAM ROUTINE_BLOCK
+
+    BEGIN           reduce using rule 11 (ROUTINE_DEF -> .)
+    FUNCTION        shift and go to state 50
+    PROCEDURE       shift and go to state 51
+
+    ROUTINE_DEF                    shift and go to state 48
+    ROUTINE                        shift and go to state 49
+
+state 21
+
+    (8) VAR_DEF -> VARIABLE . VAR_DEF
+    (8) VAR_DEF -> . VARIABLE VAR_DEF
+    (9) VAR_DEF -> .
+    (16) VARIABLE -> . VAR FIELD ;
+
+    FUNCTION        reduce using rule 9 (VAR_DEF -> .)
+    PROCEDURE       reduce using rule 9 (VAR_DEF -> .)
+    BEGIN           reduce using rule 9 (VAR_DEF -> .)
+    VAR             shift and go to state 22
+
+    VARIABLE                       shift and go to state 21
+    VAR_DEF                        shift and go to state 52
+
+state 22
+
+    (16) VARIABLE -> VAR . FIELD ;
+    (20) FIELD -> . ID ID_LIST : DATA_TYPE
+
+    ID              shift and go to state 54
+
+    FIELD                          shift and go to state 53
+
+state 23
+
+    (6) TYPE_DEF -> TYPE_DECLARATION TYPE_DEF .
+
+    VAR             reduce using rule 6 (TYPE_DEF -> TYPE_DECLARATION TYPE_DEF .)
+    FUNCTION        reduce using rule 6 (TYPE_DEF -> TYPE_DECLARATION TYPE_DEF .)
+    PROCEDURE       reduce using rule 6 (TYPE_DEF -> TYPE_DECLARATION TYPE_DEF .)
+    BEGIN           reduce using rule 6 (TYPE_DEF -> TYPE_DECLARATION TYPE_DEF .)
+
+
+state 24
+
+    (15) TYPE_DECLARATION -> TYPE ID . = DATA_TYPE ;
+
+    =               shift and go to state 55
+
+
+state 25
+
+    (12) CONSTANT -> CONST ID = . CONST_VALUE ;
+    (13) CONST_VALUE -> . STRING
+    (14) CONST_VALUE -> . CONST_EXP
+    (68) CONST_EXP -> . PARAMETER CONST_EXP_L
+    (69) CONST_EXP -> . ( PARAMETER MATH_OP CONST_EXP )
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    STRING          shift and go to state 43
+    (               shift and go to state 46
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    CONST_VALUE                    shift and go to state 56
+    CONST_EXP                      shift and go to state 44
+    PARAMETER                      shift and go to state 45
+
+state 26
+
+    (2) BLOCK -> BEGIN COMMAND COMMAND_LIST . END
+
+    END             shift and go to state 57
+
+
+state 27
+
+    (35) COMMAND_LIST -> ; . COMMAND COMMAND_LIST
+    (39) COMMAND -> . ID NAME ASSIGN_EXPRESSION
+    (40) COMMAND -> . WHILE COM_EXP DO COMMAND_BLOCK
+    (41) COMMAND -> . IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE
+    (42) COMMAND -> . FOR FOR_COMMAND DO COMMAND_BLOCK
+    (43) COMMAND -> . WRITE CONST_VALUE
+    (44) COMMAND -> . READ ID NAME
+
+    ID              shift and go to state 14
+    WHILE           shift and go to state 15
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WRITE           shift and go to state 18
+    READ            shift and go to state 19
+
+    COMMAND                        shift and go to state 58
+
+state 28
+
+    (39) COMMAND -> ID NAME . ASSIGN_EXPRESSION
+    (45) ASSIGN_EXPRESSION -> . ASSIGNMENT EXP
+
+    ASSIGNMENT      shift and go to state 60
+
+    ASSIGN_EXPRESSION              shift and go to state 59
+
+state 29
+
+    (89) NAME -> . . ID NAME
+
+    ID              shift and go to state 61
+
+
+state 30
+
+    (90) NAME -> [ . PARAMETER ]
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    PARAMETER                      shift and go to state 62
+
+state 31
+
+    (91) NAME -> ( . PARAM_LIST )
+    (50) PARAM_LIST -> . PARAMETER , PARAM_LIST
+    (51) PARAM_LIST -> . PARAMETER
+    (52) PARAM_LIST -> .
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    )               reduce using rule 52 (PARAM_LIST -> .)
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    PARAM_LIST                     shift and go to state 63
+    PARAMETER                      shift and go to state 64
+
+state 32
+
+    (40) COMMAND -> WHILE COM_EXP . DO COMMAND_BLOCK
+
+    DO              shift and go to state 65
+
+
+state 33
+
+    (72) COM_EXP -> PARAMETER . LOGIC_PARAM COM_EXP_L
+    (64) LOGIC_PARAM -> . COMP_OP PARAMETER
+    (65) LOGIC_PARAM -> .
+    (82) COMP_OP -> . >
+    (83) COMP_OP -> . <
+    (84) COMP_OP -> . COMPARATOR
+
+    AND             reduce using rule 65 (LOGIC_PARAM -> .)
+    OR              reduce using rule 65 (LOGIC_PARAM -> .)
+    DO              reduce using rule 65 (LOGIC_PARAM -> .)
+    THEN            reduce using rule 65 (LOGIC_PARAM -> .)
+    )               reduce using rule 65 (LOGIC_PARAM -> .)
+    >               shift and go to state 68
+    <               shift and go to state 69
+    COMPARATOR      shift and go to state 70
+
+    LOGIC_PARAM                    shift and go to state 66
+    COMP_OP                        shift and go to state 67
+
+state 34
+
+    (73) COM_EXP -> ( . PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP )
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    PARAMETER                      shift and go to state 71
+
+state 35
+
+    (76) PARAMETER -> ID . NAME
+    (89) NAME -> . . ID NAME
+    (90) NAME -> . [ PARAMETER ]
+    (91) NAME -> . ( PARAM_LIST )
+    (92) NAME -> .
+
+    .               shift and go to state 29
+    [               shift and go to state 30
+    (               shift and go to state 31
+    >               reduce using rule 92 (NAME -> .)
+    <               reduce using rule 92 (NAME -> .)
+    COMPARATOR      reduce using rule 92 (NAME -> .)
+    AND             reduce using rule 92 (NAME -> .)
+    OR              reduce using rule 92 (NAME -> .)
+    DO              reduce using rule 92 (NAME -> .)
+    THEN            reduce using rule 92 (NAME -> .)
+    +               reduce using rule 92 (NAME -> .)
+    -               reduce using rule 92 (NAME -> .)
+    *               reduce using rule 92 (NAME -> .)
+    /               reduce using rule 92 (NAME -> .)
+    ;               reduce using rule 92 (NAME -> .)
+    END             reduce using rule 92 (NAME -> .)
+    ELSE            reduce using rule 92 (NAME -> .)
+    ]               reduce using rule 92 (NAME -> .)
+    ,               reduce using rule 92 (NAME -> .)
+    )               reduce using rule 92 (NAME -> .)
+    TO              reduce using rule 92 (NAME -> .)
+
+    NAME                           shift and go to state 72
+
+state 36
+
+    (77) PARAMETER -> NUMBER .
+
+    >               reduce using rule 77 (PARAMETER -> NUMBER .)
+    <               reduce using rule 77 (PARAMETER -> NUMBER .)
+    COMPARATOR      reduce using rule 77 (PARAMETER -> NUMBER .)
+    AND             reduce using rule 77 (PARAMETER -> NUMBER .)
+    OR              reduce using rule 77 (PARAMETER -> NUMBER .)
+    DO              reduce using rule 77 (PARAMETER -> NUMBER .)
+    THEN            reduce using rule 77 (PARAMETER -> NUMBER .)
+    +               reduce using rule 77 (PARAMETER -> NUMBER .)
+    -               reduce using rule 77 (PARAMETER -> NUMBER .)
+    *               reduce using rule 77 (PARAMETER -> NUMBER .)
+    /               reduce using rule 77 (PARAMETER -> NUMBER .)
+    ;               reduce using rule 77 (PARAMETER -> NUMBER .)
+    END             reduce using rule 77 (PARAMETER -> NUMBER .)
+    ELSE            reduce using rule 77 (PARAMETER -> NUMBER .)
+    ]               reduce using rule 77 (PARAMETER -> NUMBER .)
+    ,               reduce using rule 77 (PARAMETER -> NUMBER .)
+    )               reduce using rule 77 (PARAMETER -> NUMBER .)
+    TO              reduce using rule 77 (PARAMETER -> NUMBER .)
+
+
+state 37
+
+    (78) PARAMETER -> FALSE .
+
+    >               reduce using rule 78 (PARAMETER -> FALSE .)
+    <               reduce using rule 78 (PARAMETER -> FALSE .)
+    COMPARATOR      reduce using rule 78 (PARAMETER -> FALSE .)
+    AND             reduce using rule 78 (PARAMETER -> FALSE .)
+    OR              reduce using rule 78 (PARAMETER -> FALSE .)
+    DO              reduce using rule 78 (PARAMETER -> FALSE .)
+    THEN            reduce using rule 78 (PARAMETER -> FALSE .)
+    +               reduce using rule 78 (PARAMETER -> FALSE .)
+    -               reduce using rule 78 (PARAMETER -> FALSE .)
+    *               reduce using rule 78 (PARAMETER -> FALSE .)
+    /               reduce using rule 78 (PARAMETER -> FALSE .)
+    ;               reduce using rule 78 (PARAMETER -> FALSE .)
+    END             reduce using rule 78 (PARAMETER -> FALSE .)
+    ELSE            reduce using rule 78 (PARAMETER -> FALSE .)
+    ]               reduce using rule 78 (PARAMETER -> FALSE .)
+    ,               reduce using rule 78 (PARAMETER -> FALSE .)
+    )               reduce using rule 78 (PARAMETER -> FALSE .)
+    TO              reduce using rule 78 (PARAMETER -> FALSE .)
+
+
+state 38
+
+    (79) PARAMETER -> TRUE .
+
+    >               reduce using rule 79 (PARAMETER -> TRUE .)
+    <               reduce using rule 79 (PARAMETER -> TRUE .)
+    COMPARATOR      reduce using rule 79 (PARAMETER -> TRUE .)
+    AND             reduce using rule 79 (PARAMETER -> TRUE .)
+    OR              reduce using rule 79 (PARAMETER -> TRUE .)
+    DO              reduce using rule 79 (PARAMETER -> TRUE .)
+    THEN            reduce using rule 79 (PARAMETER -> TRUE .)
+    +               reduce using rule 79 (PARAMETER -> TRUE .)
+    -               reduce using rule 79 (PARAMETER -> TRUE .)
+    *               reduce using rule 79 (PARAMETER -> TRUE .)
+    /               reduce using rule 79 (PARAMETER -> TRUE .)
+    ;               reduce using rule 79 (PARAMETER -> TRUE .)
+    END             reduce using rule 79 (PARAMETER -> TRUE .)
+    ELSE            reduce using rule 79 (PARAMETER -> TRUE .)
+    ]               reduce using rule 79 (PARAMETER -> TRUE .)
+    ,               reduce using rule 79 (PARAMETER -> TRUE .)
+    )               reduce using rule 79 (PARAMETER -> TRUE .)
+    TO              reduce using rule 79 (PARAMETER -> TRUE .)
+
+
+state 39
+
+    (41) COMMAND -> IF COM_EXP . THEN COMMAND_BLOCK ELSE_ALTERNATIVE
+
+    THEN            shift and go to state 73
+
+
+state 40
+
+    (42) COMMAND -> FOR FOR_COMMAND . DO COMMAND_BLOCK
+
+    DO              shift and go to state 74
+
+
+state 41
+
+    (46) FOR_COMMAND -> ID . ASSIGNMENT_STMT TO PARAMETER
+    (49) ASSIGNMENT_STMT -> . ASSIGNMENT EXP
+
+    ASSIGNMENT      shift and go to state 76
+
+    ASSIGNMENT_STMT                shift and go to state 75
+
+state 42
+
+    (43) COMMAND -> WRITE CONST_VALUE .
+
+    ;               reduce using rule 43 (COMMAND -> WRITE CONST_VALUE .)
+    END             reduce using rule 43 (COMMAND -> WRITE CONST_VALUE .)
+    ELSE            reduce using rule 43 (COMMAND -> WRITE CONST_VALUE .)
+
+
+state 43
+
+    (13) CONST_VALUE -> STRING .
+
+    ;               reduce using rule 13 (CONST_VALUE -> STRING .)
+    END             reduce using rule 13 (CONST_VALUE -> STRING .)
+    ELSE            reduce using rule 13 (CONST_VALUE -> STRING .)
+
+
+state 44
+
+    (14) CONST_VALUE -> CONST_EXP .
+
+    ;               reduce using rule 14 (CONST_VALUE -> CONST_EXP .)
+    END             reduce using rule 14 (CONST_VALUE -> CONST_EXP .)
+    ELSE            reduce using rule 14 (CONST_VALUE -> CONST_EXP .)
+
+
+state 45
+
+    (68) CONST_EXP -> PARAMETER . CONST_EXP_L
+    (70) CONST_EXP_L -> . MATH_OP CONST_EXP
+    (71) CONST_EXP_L -> .
+    (85) MATH_OP -> . +
+    (86) MATH_OP -> . -
+    (87) MATH_OP -> . *
+    (88) MATH_OP -> . /
+
+    ;               reduce using rule 71 (CONST_EXP_L -> .)
+    END             reduce using rule 71 (CONST_EXP_L -> .)
+    ELSE            reduce using rule 71 (CONST_EXP_L -> .)
+    )               reduce using rule 71 (CONST_EXP_L -> .)
+    +               shift and go to state 79
+    -               shift and go to state 80
+    *               shift and go to state 81
+    /               shift and go to state 82
+
+    CONST_EXP_L                    shift and go to state 77
+    MATH_OP                        shift and go to state 78
+
+state 46
+
+    (69) CONST_EXP -> ( . PARAMETER MATH_OP CONST_EXP )
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    PARAMETER                      shift and go to state 83
+
+state 47
+
+    (44) COMMAND -> READ ID . NAME
+    (89) NAME -> . . ID NAME
+    (90) NAME -> . [ PARAMETER ]
+    (91) NAME -> . ( PARAM_LIST )
+    (92) NAME -> .
+
+    .               shift and go to state 29
+    [               shift and go to state 30
+    (               shift and go to state 31
+    ;               reduce using rule 92 (NAME -> .)
+    END             reduce using rule 92 (NAME -> .)
+    ELSE            reduce using rule 92 (NAME -> .)
+
+    NAME                           shift and go to state 84
+
+state 48
+
+    (3) DECLARATIONS -> CONST_DEF TYPE_DEF VAR_DEF ROUTINE_DEF .
+
+    BEGIN           reduce using rule 3 (DECLARATIONS -> CONST_DEF TYPE_DEF VAR_DEF ROUTINE_DEF .)
+
+
+state 49
+
+    (10) ROUTINE_DEF -> ROUTINE . ROUTINE_DEF
+    (10) ROUTINE_DEF -> . ROUTINE ROUTINE_DEF
+    (11) ROUTINE_DEF -> .
+    (30) ROUTINE -> . FUNCTION ID ROUTINE_PARAM : DATA_TYPE ROUTINE_BLOCK
+    (31) ROUTINE -> . PROCEDURE ID ROUTINE_PARAM ROUTINE_BLOCK
+
+    BEGIN           reduce using rule 11 (ROUTINE_DEF -> .)
+    FUNCTION        shift and go to state 50
+    PROCEDURE       shift and go to state 51
+
+    ROUTINE                        shift and go to state 49
+    ROUTINE_DEF                    shift and go to state 85
+
+state 50
+
+    (30) ROUTINE -> FUNCTION . ID ROUTINE_PARAM : DATA_TYPE ROUTINE_BLOCK
+
+    ID              shift and go to state 86
+
+
+state 51
+
+    (31) ROUTINE -> PROCEDURE . ID ROUTINE_PARAM ROUTINE_BLOCK
+
+    ID              shift and go to state 87
+
+
+state 52
+
+    (8) VAR_DEF -> VARIABLE VAR_DEF .
+
+    FUNCTION        reduce using rule 8 (VAR_DEF -> VARIABLE VAR_DEF .)
+    PROCEDURE       reduce using rule 8 (VAR_DEF -> VARIABLE VAR_DEF .)
+    BEGIN           reduce using rule 8 (VAR_DEF -> VARIABLE VAR_DEF .)
+
+
+state 53
+
+    (16) VARIABLE -> VAR FIELD . ;
+
+    ;               shift and go to state 88
+
+
+state 54
+
+    (20) FIELD -> ID . ID_LIST : DATA_TYPE
+    (17) ID_LIST -> . , ID ID_LIST
+    (18) ID_LIST -> .
+
+    ,               shift and go to state 90
+    :               reduce using rule 18 (ID_LIST -> .)
+
+    ID_LIST                        shift and go to state 89
+
+state 55
+
+    (15) TYPE_DECLARATION -> TYPE ID = . DATA_TYPE ;
+    (23) DATA_TYPE -> . INTEGER
+    (24) DATA_TYPE -> . REAL
+    (25) DATA_TYPE -> . CHAR
+    (26) DATA_TYPE -> . BOOLEAN
+    (27) DATA_TYPE -> . ARRAY [ NUMBER ] OF DATA_TYPE
+    (28) DATA_TYPE -> . RECORD FIELDS END
+    (29) DATA_TYPE -> . ID
+
+    INTEGER         shift and go to state 93
+    REAL            shift and go to state 94
+    CHAR            shift and go to state 95
+    BOOLEAN         shift and go to state 96
+    ARRAY           shift and go to state 97
+    RECORD          shift and go to state 98
+    ID              shift and go to state 91
+
+    DATA_TYPE                      shift and go to state 92
+
+state 56
+
+    (12) CONSTANT -> CONST ID = CONST_VALUE . ;
+
+    ;               shift and go to state 99
+
+
+state 57
+
+    (2) BLOCK -> BEGIN COMMAND COMMAND_LIST END .
+
+    $end            reduce using rule 2 (BLOCK -> BEGIN COMMAND COMMAND_LIST END .)
+    ;               reduce using rule 2 (BLOCK -> BEGIN COMMAND COMMAND_LIST END .)
+    END             reduce using rule 2 (BLOCK -> BEGIN COMMAND COMMAND_LIST END .)
+    ELSE            reduce using rule 2 (BLOCK -> BEGIN COMMAND COMMAND_LIST END .)
+    FUNCTION        reduce using rule 2 (BLOCK -> BEGIN COMMAND COMMAND_LIST END .)
+    PROCEDURE       reduce using rule 2 (BLOCK -> BEGIN COMMAND COMMAND_LIST END .)
+    BEGIN           reduce using rule 2 (BLOCK -> BEGIN COMMAND COMMAND_LIST END .)
+
+
+state 58
+
+    (35) COMMAND_LIST -> ; COMMAND . COMMAND_LIST
+    (35) COMMAND_LIST -> . ; COMMAND COMMAND_LIST
+    (36) COMMAND_LIST -> .
+
+    ;               shift and go to state 27
+    END             reduce using rule 36 (COMMAND_LIST -> .)
+
+    COMMAND_LIST                   shift and go to state 100
+
+state 59
+
+    (39) COMMAND -> ID NAME ASSIGN_EXPRESSION .
+
+    ;               reduce using rule 39 (COMMAND -> ID NAME ASSIGN_EXPRESSION .)
+    END             reduce using rule 39 (COMMAND -> ID NAME ASSIGN_EXPRESSION .)
+    ELSE            reduce using rule 39 (COMMAND -> ID NAME ASSIGN_EXPRESSION .)
+
+
+state 60
+
+    (45) ASSIGN_EXPRESSION -> ASSIGNMENT . EXP
+    (53) EXP -> . PARAMETER
+    (54) EXP -> . EXP + EXP
+    (55) EXP -> . EXP - EXP
+    (56) EXP -> . ( EXP )
+    (57) EXP -> . EXP * EXP
+    (58) EXP -> . EXP / EXP
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 103
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    EXP                            shift and go to state 101
+    PARAMETER                      shift and go to state 102
+
+state 61
+
+    (89) NAME -> . ID . NAME
+    (89) NAME -> . . ID NAME
+    (90) NAME -> . [ PARAMETER ]
+    (91) NAME -> . ( PARAM_LIST )
+    (92) NAME -> .
+
+    .               shift and go to state 29
+    [               shift and go to state 30
+    (               shift and go to state 31
+    ASSIGNMENT      reduce using rule 92 (NAME -> .)
+    >               reduce using rule 92 (NAME -> .)
+    <               reduce using rule 92 (NAME -> .)
+    COMPARATOR      reduce using rule 92 (NAME -> .)
+    AND             reduce using rule 92 (NAME -> .)
+    OR              reduce using rule 92 (NAME -> .)
+    DO              reduce using rule 92 (NAME -> .)
+    THEN            reduce using rule 92 (NAME -> .)
+    +               reduce using rule 92 (NAME -> .)
+    -               reduce using rule 92 (NAME -> .)
+    *               reduce using rule 92 (NAME -> .)
+    /               reduce using rule 92 (NAME -> .)
+    ;               reduce using rule 92 (NAME -> .)
+    END             reduce using rule 92 (NAME -> .)
+    ELSE            reduce using rule 92 (NAME -> .)
+    ]               reduce using rule 92 (NAME -> .)
+    ,               reduce using rule 92 (NAME -> .)
+    )               reduce using rule 92 (NAME -> .)
+    TO              reduce using rule 92 (NAME -> .)
+
+    NAME                           shift and go to state 104
+
+state 62
+
+    (90) NAME -> [ PARAMETER . ]
+
+    ]               shift and go to state 105
+
+
+state 63
+
+    (91) NAME -> ( PARAM_LIST . )
+
+    )               shift and go to state 106
+
+
+state 64
+
+    (50) PARAM_LIST -> PARAMETER . , PARAM_LIST
+    (51) PARAM_LIST -> PARAMETER .
+
+    ,               shift and go to state 107
+    )               reduce using rule 51 (PARAM_LIST -> PARAMETER .)
+
+
+state 65
+
+    (40) COMMAND -> WHILE COM_EXP DO . COMMAND_BLOCK
+    (37) COMMAND_BLOCK -> . BLOCK
+    (38) COMMAND_BLOCK -> . COMMAND
+    (2) BLOCK -> . BEGIN COMMAND COMMAND_LIST END
+    (39) COMMAND -> . ID NAME ASSIGN_EXPRESSION
+    (40) COMMAND -> . WHILE COM_EXP DO COMMAND_BLOCK
+    (41) COMMAND -> . IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE
+    (42) COMMAND -> . FOR FOR_COMMAND DO COMMAND_BLOCK
+    (43) COMMAND -> . WRITE CONST_VALUE
+    (44) COMMAND -> . READ ID NAME
+
+    BEGIN           shift and go to state 7
+    ID              shift and go to state 14
+    WHILE           shift and go to state 15
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WRITE           shift and go to state 18
+    READ            shift and go to state 19
+
+    COMMAND_BLOCK                  shift and go to state 108
+    BLOCK                          shift and go to state 109
+    COMMAND                        shift and go to state 110
+
+state 66
+
+    (72) COM_EXP -> PARAMETER LOGIC_PARAM . COM_EXP_L
+    (74) COM_EXP_L -> . LOGIC_OP COM_EXP
+    (75) COM_EXP_L -> .
+    (80) LOGIC_OP -> . AND
+    (81) LOGIC_OP -> . OR
+
+    DO              reduce using rule 75 (COM_EXP_L -> .)
+    THEN            reduce using rule 75 (COM_EXP_L -> .)
+    )               reduce using rule 75 (COM_EXP_L -> .)
+    AND             shift and go to state 113
+    OR              shift and go to state 114
+
+    COM_EXP_L                      shift and go to state 111
+    LOGIC_OP                       shift and go to state 112
+
+state 67
+
+    (64) LOGIC_PARAM -> COMP_OP . PARAMETER
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    PARAMETER                      shift and go to state 115
+
+state 68
+
+    (82) COMP_OP -> > .
+
+    ID              reduce using rule 82 (COMP_OP -> > .)
+    NUMBER          reduce using rule 82 (COMP_OP -> > .)
+    FALSE           reduce using rule 82 (COMP_OP -> > .)
+    TRUE            reduce using rule 82 (COMP_OP -> > .)
+
+
+state 69
+
+    (83) COMP_OP -> < .
+
+    ID              reduce using rule 83 (COMP_OP -> < .)
+    NUMBER          reduce using rule 83 (COMP_OP -> < .)
+    FALSE           reduce using rule 83 (COMP_OP -> < .)
+    TRUE            reduce using rule 83 (COMP_OP -> < .)
+
+
+state 70
+
+    (84) COMP_OP -> COMPARATOR .
+
+    ID              reduce using rule 84 (COMP_OP -> COMPARATOR .)
+    NUMBER          reduce using rule 84 (COMP_OP -> COMPARATOR .)
+    FALSE           reduce using rule 84 (COMP_OP -> COMPARATOR .)
+    TRUE            reduce using rule 84 (COMP_OP -> COMPARATOR .)
+
+
+state 71
+
+    (73) COM_EXP -> ( PARAMETER . LOGIC_PARAM LOGIC_OP COM_EXP )
+    (64) LOGIC_PARAM -> . COMP_OP PARAMETER
+    (65) LOGIC_PARAM -> .
+    (82) COMP_OP -> . >
+    (83) COMP_OP -> . <
+    (84) COMP_OP -> . COMPARATOR
+
+    AND             reduce using rule 65 (LOGIC_PARAM -> .)
+    OR              reduce using rule 65 (LOGIC_PARAM -> .)
+    >               shift and go to state 68
+    <               shift and go to state 69
+    COMPARATOR      shift and go to state 70
+
+    LOGIC_PARAM                    shift and go to state 116
+    COMP_OP                        shift and go to state 67
+
+state 72
+
+    (76) PARAMETER -> ID NAME .
+
+    >               reduce using rule 76 (PARAMETER -> ID NAME .)
+    <               reduce using rule 76 (PARAMETER -> ID NAME .)
+    COMPARATOR      reduce using rule 76 (PARAMETER -> ID NAME .)
+    AND             reduce using rule 76 (PARAMETER -> ID NAME .)
+    OR              reduce using rule 76 (PARAMETER -> ID NAME .)
+    DO              reduce using rule 76 (PARAMETER -> ID NAME .)
+    THEN            reduce using rule 76 (PARAMETER -> ID NAME .)
+    +               reduce using rule 76 (PARAMETER -> ID NAME .)
+    -               reduce using rule 76 (PARAMETER -> ID NAME .)
+    *               reduce using rule 76 (PARAMETER -> ID NAME .)
+    /               reduce using rule 76 (PARAMETER -> ID NAME .)
+    ;               reduce using rule 76 (PARAMETER -> ID NAME .)
+    END             reduce using rule 76 (PARAMETER -> ID NAME .)
+    ELSE            reduce using rule 76 (PARAMETER -> ID NAME .)
+    ]               reduce using rule 76 (PARAMETER -> ID NAME .)
+    ,               reduce using rule 76 (PARAMETER -> ID NAME .)
+    )               reduce using rule 76 (PARAMETER -> ID NAME .)
+    TO              reduce using rule 76 (PARAMETER -> ID NAME .)
+
+
+state 73
+
+    (41) COMMAND -> IF COM_EXP THEN . COMMAND_BLOCK ELSE_ALTERNATIVE
+    (37) COMMAND_BLOCK -> . BLOCK
+    (38) COMMAND_BLOCK -> . COMMAND
+    (2) BLOCK -> . BEGIN COMMAND COMMAND_LIST END
+    (39) COMMAND -> . ID NAME ASSIGN_EXPRESSION
+    (40) COMMAND -> . WHILE COM_EXP DO COMMAND_BLOCK
+    (41) COMMAND -> . IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE
+    (42) COMMAND -> . FOR FOR_COMMAND DO COMMAND_BLOCK
+    (43) COMMAND -> . WRITE CONST_VALUE
+    (44) COMMAND -> . READ ID NAME
+
+    BEGIN           shift and go to state 7
+    ID              shift and go to state 14
+    WHILE           shift and go to state 15
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WRITE           shift and go to state 18
+    READ            shift and go to state 19
+
+    COMMAND_BLOCK                  shift and go to state 117
+    BLOCK                          shift and go to state 109
+    COMMAND                        shift and go to state 110
+
+state 74
+
+    (42) COMMAND -> FOR FOR_COMMAND DO . COMMAND_BLOCK
+    (37) COMMAND_BLOCK -> . BLOCK
+    (38) COMMAND_BLOCK -> . COMMAND
+    (2) BLOCK -> . BEGIN COMMAND COMMAND_LIST END
+    (39) COMMAND -> . ID NAME ASSIGN_EXPRESSION
+    (40) COMMAND -> . WHILE COM_EXP DO COMMAND_BLOCK
+    (41) COMMAND -> . IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE
+    (42) COMMAND -> . FOR FOR_COMMAND DO COMMAND_BLOCK
+    (43) COMMAND -> . WRITE CONST_VALUE
+    (44) COMMAND -> . READ ID NAME
+
+    BEGIN           shift and go to state 7
+    ID              shift and go to state 14
+    WHILE           shift and go to state 15
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WRITE           shift and go to state 18
+    READ            shift and go to state 19
+
+    COMMAND_BLOCK                  shift and go to state 118
+    BLOCK                          shift and go to state 109
+    COMMAND                        shift and go to state 110
+
+state 75
+
+    (46) FOR_COMMAND -> ID ASSIGNMENT_STMT . TO PARAMETER
+
+    TO              shift and go to state 119
+
+
+state 76
+
+    (49) ASSIGNMENT_STMT -> ASSIGNMENT . EXP
+    (53) EXP -> . PARAMETER
+    (54) EXP -> . EXP + EXP
+    (55) EXP -> . EXP - EXP
+    (56) EXP -> . ( EXP )
+    (57) EXP -> . EXP * EXP
+    (58) EXP -> . EXP / EXP
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 103
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    EXP                            shift and go to state 120
+    PARAMETER                      shift and go to state 102
+
+state 77
+
+    (68) CONST_EXP -> PARAMETER CONST_EXP_L .
+
+    ;               reduce using rule 68 (CONST_EXP -> PARAMETER CONST_EXP_L .)
+    END             reduce using rule 68 (CONST_EXP -> PARAMETER CONST_EXP_L .)
+    ELSE            reduce using rule 68 (CONST_EXP -> PARAMETER CONST_EXP_L .)
+    )               reduce using rule 68 (CONST_EXP -> PARAMETER CONST_EXP_L .)
+
+
+state 78
+
+    (70) CONST_EXP_L -> MATH_OP . CONST_EXP
+    (68) CONST_EXP -> . PARAMETER CONST_EXP_L
+    (69) CONST_EXP -> . ( PARAMETER MATH_OP CONST_EXP )
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 46
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    CONST_EXP                      shift and go to state 121
+    PARAMETER                      shift and go to state 45
+
+state 79
+
+    (85) MATH_OP -> + .
+
+    (               reduce using rule 85 (MATH_OP -> + .)
+    ID              reduce using rule 85 (MATH_OP -> + .)
+    NUMBER          reduce using rule 85 (MATH_OP -> + .)
+    FALSE           reduce using rule 85 (MATH_OP -> + .)
+    TRUE            reduce using rule 85 (MATH_OP -> + .)
+
+
+state 80
+
+    (86) MATH_OP -> - .
+
+    (               reduce using rule 86 (MATH_OP -> - .)
+    ID              reduce using rule 86 (MATH_OP -> - .)
+    NUMBER          reduce using rule 86 (MATH_OP -> - .)
+    FALSE           reduce using rule 86 (MATH_OP -> - .)
+    TRUE            reduce using rule 86 (MATH_OP -> - .)
+
+
+state 81
+
+    (87) MATH_OP -> * .
+
+    (               reduce using rule 87 (MATH_OP -> * .)
+    ID              reduce using rule 87 (MATH_OP -> * .)
+    NUMBER          reduce using rule 87 (MATH_OP -> * .)
+    FALSE           reduce using rule 87 (MATH_OP -> * .)
+    TRUE            reduce using rule 87 (MATH_OP -> * .)
+
+
+state 82
+
+    (88) MATH_OP -> / .
+
+    (               reduce using rule 88 (MATH_OP -> / .)
+    ID              reduce using rule 88 (MATH_OP -> / .)
+    NUMBER          reduce using rule 88 (MATH_OP -> / .)
+    FALSE           reduce using rule 88 (MATH_OP -> / .)
+    TRUE            reduce using rule 88 (MATH_OP -> / .)
+
+
+state 83
+
+    (69) CONST_EXP -> ( PARAMETER . MATH_OP CONST_EXP )
+    (85) MATH_OP -> . +
+    (86) MATH_OP -> . -
+    (87) MATH_OP -> . *
+    (88) MATH_OP -> . /
+
+    +               shift and go to state 79
+    -               shift and go to state 80
+    *               shift and go to state 81
+    /               shift and go to state 82
+
+    MATH_OP                        shift and go to state 122
+
+state 84
+
+    (44) COMMAND -> READ ID NAME .
+
+    ;               reduce using rule 44 (COMMAND -> READ ID NAME .)
+    END             reduce using rule 44 (COMMAND -> READ ID NAME .)
+    ELSE            reduce using rule 44 (COMMAND -> READ ID NAME .)
+
+
+state 85
+
+    (10) ROUTINE_DEF -> ROUTINE ROUTINE_DEF .
+
+    BEGIN           reduce using rule 10 (ROUTINE_DEF -> ROUTINE ROUTINE_DEF .)
+
+
+state 86
+
+    (30) ROUTINE -> FUNCTION ID . ROUTINE_PARAM : DATA_TYPE ROUTINE_BLOCK
+    (32) ROUTINE_PARAM -> . ( FIELDS )
+    (33) ROUTINE_PARAM -> .
+
+    (               shift and go to state 124
+    :               reduce using rule 33 (ROUTINE_PARAM -> .)
+
+    ROUTINE_PARAM                  shift and go to state 123
+
+state 87
+
+    (31) ROUTINE -> PROCEDURE ID . ROUTINE_PARAM ROUTINE_BLOCK
+    (32) ROUTINE_PARAM -> . ( FIELDS )
+    (33) ROUTINE_PARAM -> .
+
+    (               shift and go to state 124
+    VAR             reduce using rule 33 (ROUTINE_PARAM -> .)
+    BEGIN           reduce using rule 33 (ROUTINE_PARAM -> .)
+
+    ROUTINE_PARAM                  shift and go to state 125
+
+state 88
+
+    (16) VARIABLE -> VAR FIELD ; .
+
+    VAR             reduce using rule 16 (VARIABLE -> VAR FIELD ; .)
+    FUNCTION        reduce using rule 16 (VARIABLE -> VAR FIELD ; .)
+    PROCEDURE       reduce using rule 16 (VARIABLE -> VAR FIELD ; .)
+    BEGIN           reduce using rule 16 (VARIABLE -> VAR FIELD ; .)
+
+
+state 89
+
+    (20) FIELD -> ID ID_LIST . : DATA_TYPE
+
+    :               shift and go to state 126
+
+
+state 90
+
+    (17) ID_LIST -> , . ID ID_LIST
+
+    ID              shift and go to state 127
+
+
+state 91
+
+    (29) DATA_TYPE -> ID .
+
+    ;               reduce using rule 29 (DATA_TYPE -> ID .)
+    END             reduce using rule 29 (DATA_TYPE -> ID .)
+    )               reduce using rule 29 (DATA_TYPE -> ID .)
+    VAR             reduce using rule 29 (DATA_TYPE -> ID .)
+    BEGIN           reduce using rule 29 (DATA_TYPE -> ID .)
+
+
+state 92
+
+    (15) TYPE_DECLARATION -> TYPE ID = DATA_TYPE . ;
+
+    ;               shift and go to state 128
+
+
+state 93
+
+    (23) DATA_TYPE -> INTEGER .
+
+    ;               reduce using rule 23 (DATA_TYPE -> INTEGER .)
+    END             reduce using rule 23 (DATA_TYPE -> INTEGER .)
+    )               reduce using rule 23 (DATA_TYPE -> INTEGER .)
+    VAR             reduce using rule 23 (DATA_TYPE -> INTEGER .)
+    BEGIN           reduce using rule 23 (DATA_TYPE -> INTEGER .)
+
+
+state 94
+
+    (24) DATA_TYPE -> REAL .
+
+    ;               reduce using rule 24 (DATA_TYPE -> REAL .)
+    END             reduce using rule 24 (DATA_TYPE -> REAL .)
+    )               reduce using rule 24 (DATA_TYPE -> REAL .)
+    VAR             reduce using rule 24 (DATA_TYPE -> REAL .)
+    BEGIN           reduce using rule 24 (DATA_TYPE -> REAL .)
+
+
+state 95
+
+    (25) DATA_TYPE -> CHAR .
+
+    ;               reduce using rule 25 (DATA_TYPE -> CHAR .)
+    END             reduce using rule 25 (DATA_TYPE -> CHAR .)
+    )               reduce using rule 25 (DATA_TYPE -> CHAR .)
+    VAR             reduce using rule 25 (DATA_TYPE -> CHAR .)
+    BEGIN           reduce using rule 25 (DATA_TYPE -> CHAR .)
+
+
+state 96
+
+    (26) DATA_TYPE -> BOOLEAN .
+
+    ;               reduce using rule 26 (DATA_TYPE -> BOOLEAN .)
+    END             reduce using rule 26 (DATA_TYPE -> BOOLEAN .)
+    )               reduce using rule 26 (DATA_TYPE -> BOOLEAN .)
+    VAR             reduce using rule 26 (DATA_TYPE -> BOOLEAN .)
+    BEGIN           reduce using rule 26 (DATA_TYPE -> BOOLEAN .)
+
+
+state 97
+
+    (27) DATA_TYPE -> ARRAY . [ NUMBER ] OF DATA_TYPE
+
+    [               shift and go to state 129
+
+
+state 98
+
+    (28) DATA_TYPE -> RECORD . FIELDS END
+    (19) FIELDS -> . FIELD FIELD_LIST
+    (20) FIELD -> . ID ID_LIST : DATA_TYPE
+
+    ID              shift and go to state 54
+
+    FIELDS                         shift and go to state 130
+    FIELD                          shift and go to state 131
+
+state 99
+
+    (12) CONSTANT -> CONST ID = CONST_VALUE ; .
+
+    CONST           reduce using rule 12 (CONSTANT -> CONST ID = CONST_VALUE ; .)
+    TYPE            reduce using rule 12 (CONSTANT -> CONST ID = CONST_VALUE ; .)
+    VAR             reduce using rule 12 (CONSTANT -> CONST ID = CONST_VALUE ; .)
+    FUNCTION        reduce using rule 12 (CONSTANT -> CONST ID = CONST_VALUE ; .)
+    PROCEDURE       reduce using rule 12 (CONSTANT -> CONST ID = CONST_VALUE ; .)
+    BEGIN           reduce using rule 12 (CONSTANT -> CONST ID = CONST_VALUE ; .)
+
+
+state 100
+
+    (35) COMMAND_LIST -> ; COMMAND COMMAND_LIST .
+
+    END             reduce using rule 35 (COMMAND_LIST -> ; COMMAND COMMAND_LIST .)
+
+
+state 101
+
+    (45) ASSIGN_EXPRESSION -> ASSIGNMENT EXP .
+    (54) EXP -> EXP . + EXP
+    (55) EXP -> EXP . - EXP
+    (57) EXP -> EXP . * EXP
+    (58) EXP -> EXP . / EXP
+
+    ;               reduce using rule 45 (ASSIGN_EXPRESSION -> ASSIGNMENT EXP .)
+    END             reduce using rule 45 (ASSIGN_EXPRESSION -> ASSIGNMENT EXP .)
+    ELSE            reduce using rule 45 (ASSIGN_EXPRESSION -> ASSIGNMENT EXP .)
+    +               shift and go to state 132
+    -               shift and go to state 133
+    *               shift and go to state 134
+    /               shift and go to state 135
+
+
+state 102
+
+    (53) EXP -> PARAMETER .
+
+    +               reduce using rule 53 (EXP -> PARAMETER .)
+    -               reduce using rule 53 (EXP -> PARAMETER .)
+    *               reduce using rule 53 (EXP -> PARAMETER .)
+    /               reduce using rule 53 (EXP -> PARAMETER .)
+    ;               reduce using rule 53 (EXP -> PARAMETER .)
+    END             reduce using rule 53 (EXP -> PARAMETER .)
+    ELSE            reduce using rule 53 (EXP -> PARAMETER .)
+    TO              reduce using rule 53 (EXP -> PARAMETER .)
+    )               reduce using rule 53 (EXP -> PARAMETER .)
+
+
+state 103
+
+    (56) EXP -> ( . EXP )
+    (53) EXP -> . PARAMETER
+    (54) EXP -> . EXP + EXP
+    (55) EXP -> . EXP - EXP
+    (56) EXP -> . ( EXP )
+    (57) EXP -> . EXP * EXP
+    (58) EXP -> . EXP / EXP
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 103
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    EXP                            shift and go to state 136
+    PARAMETER                      shift and go to state 102
+
+state 104
+
+    (89) NAME -> . ID NAME .
+
+    ASSIGNMENT      reduce using rule 89 (NAME -> . ID NAME .)
+    >               reduce using rule 89 (NAME -> . ID NAME .)
+    <               reduce using rule 89 (NAME -> . ID NAME .)
+    COMPARATOR      reduce using rule 89 (NAME -> . ID NAME .)
+    AND             reduce using rule 89 (NAME -> . ID NAME .)
+    OR              reduce using rule 89 (NAME -> . ID NAME .)
+    DO              reduce using rule 89 (NAME -> . ID NAME .)
+    THEN            reduce using rule 89 (NAME -> . ID NAME .)
+    +               reduce using rule 89 (NAME -> . ID NAME .)
+    -               reduce using rule 89 (NAME -> . ID NAME .)
+    *               reduce using rule 89 (NAME -> . ID NAME .)
+    /               reduce using rule 89 (NAME -> . ID NAME .)
+    ;               reduce using rule 89 (NAME -> . ID NAME .)
+    END             reduce using rule 89 (NAME -> . ID NAME .)
+    ELSE            reduce using rule 89 (NAME -> . ID NAME .)
+    ]               reduce using rule 89 (NAME -> . ID NAME .)
+    ,               reduce using rule 89 (NAME -> . ID NAME .)
+    )               reduce using rule 89 (NAME -> . ID NAME .)
+    TO              reduce using rule 89 (NAME -> . ID NAME .)
+
+
+state 105
+
+    (90) NAME -> [ PARAMETER ] .
+
+    ASSIGNMENT      reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    >               reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    <               reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    COMPARATOR      reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    AND             reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    OR              reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    DO              reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    THEN            reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    +               reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    -               reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    *               reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    /               reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    ;               reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    END             reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    ELSE            reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    ]               reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    ,               reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    )               reduce using rule 90 (NAME -> [ PARAMETER ] .)
+    TO              reduce using rule 90 (NAME -> [ PARAMETER ] .)
+
+
+state 106
+
+    (91) NAME -> ( PARAM_LIST ) .
+
+    ASSIGNMENT      reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    >               reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    <               reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    COMPARATOR      reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    AND             reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    OR              reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    DO              reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    THEN            reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    +               reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    -               reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    *               reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    /               reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    ;               reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    END             reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    ELSE            reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    ]               reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    ,               reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    )               reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+    TO              reduce using rule 91 (NAME -> ( PARAM_LIST ) .)
+
+
+state 107
+
+    (50) PARAM_LIST -> PARAMETER , . PARAM_LIST
+    (50) PARAM_LIST -> . PARAMETER , PARAM_LIST
+    (51) PARAM_LIST -> . PARAMETER
+    (52) PARAM_LIST -> .
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    )               reduce using rule 52 (PARAM_LIST -> .)
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    PARAMETER                      shift and go to state 64
+    PARAM_LIST                     shift and go to state 137
+
+state 108
+
+    (40) COMMAND -> WHILE COM_EXP DO COMMAND_BLOCK .
+
+    ;               reduce using rule 40 (COMMAND -> WHILE COM_EXP DO COMMAND_BLOCK .)
+    END             reduce using rule 40 (COMMAND -> WHILE COM_EXP DO COMMAND_BLOCK .)
+    ELSE            reduce using rule 40 (COMMAND -> WHILE COM_EXP DO COMMAND_BLOCK .)
+
+
+state 109
+
+    (37) COMMAND_BLOCK -> BLOCK .
+
+    ;               reduce using rule 37 (COMMAND_BLOCK -> BLOCK .)
+    END             reduce using rule 37 (COMMAND_BLOCK -> BLOCK .)
+    ELSE            reduce using rule 37 (COMMAND_BLOCK -> BLOCK .)
+
+
+state 110
+
+    (38) COMMAND_BLOCK -> COMMAND .
+
+    ;               reduce using rule 38 (COMMAND_BLOCK -> COMMAND .)
+    END             reduce using rule 38 (COMMAND_BLOCK -> COMMAND .)
+    ELSE            reduce using rule 38 (COMMAND_BLOCK -> COMMAND .)
+
+
+state 111
+
+    (72) COM_EXP -> PARAMETER LOGIC_PARAM COM_EXP_L .
+
+    DO              reduce using rule 72 (COM_EXP -> PARAMETER LOGIC_PARAM COM_EXP_L .)
+    THEN            reduce using rule 72 (COM_EXP -> PARAMETER LOGIC_PARAM COM_EXP_L .)
+    )               reduce using rule 72 (COM_EXP -> PARAMETER LOGIC_PARAM COM_EXP_L .)
+
+
+state 112
+
+    (74) COM_EXP_L -> LOGIC_OP . COM_EXP
+    (72) COM_EXP -> . PARAMETER LOGIC_PARAM COM_EXP_L
+    (73) COM_EXP -> . ( PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP )
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 34
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    COM_EXP                        shift and go to state 138
+    PARAMETER                      shift and go to state 33
+
+state 113
+
+    (80) LOGIC_OP -> AND .
+
+    (               reduce using rule 80 (LOGIC_OP -> AND .)
+    ID              reduce using rule 80 (LOGIC_OP -> AND .)
+    NUMBER          reduce using rule 80 (LOGIC_OP -> AND .)
+    FALSE           reduce using rule 80 (LOGIC_OP -> AND .)
+    TRUE            reduce using rule 80 (LOGIC_OP -> AND .)
+
+
+state 114
+
+    (81) LOGIC_OP -> OR .
+
+    (               reduce using rule 81 (LOGIC_OP -> OR .)
+    ID              reduce using rule 81 (LOGIC_OP -> OR .)
+    NUMBER          reduce using rule 81 (LOGIC_OP -> OR .)
+    FALSE           reduce using rule 81 (LOGIC_OP -> OR .)
+    TRUE            reduce using rule 81 (LOGIC_OP -> OR .)
+
+
+state 115
+
+    (64) LOGIC_PARAM -> COMP_OP PARAMETER .
+
+    AND             reduce using rule 64 (LOGIC_PARAM -> COMP_OP PARAMETER .)
+    OR              reduce using rule 64 (LOGIC_PARAM -> COMP_OP PARAMETER .)
+    DO              reduce using rule 64 (LOGIC_PARAM -> COMP_OP PARAMETER .)
+    THEN            reduce using rule 64 (LOGIC_PARAM -> COMP_OP PARAMETER .)
+    )               reduce using rule 64 (LOGIC_PARAM -> COMP_OP PARAMETER .)
+
+
+state 116
+
+    (73) COM_EXP -> ( PARAMETER LOGIC_PARAM . LOGIC_OP COM_EXP )
+    (80) LOGIC_OP -> . AND
+    (81) LOGIC_OP -> . OR
+
+    AND             shift and go to state 113
+    OR              shift and go to state 114
+
+    LOGIC_OP                       shift and go to state 139
+
+state 117
+
+    (41) COMMAND -> IF COM_EXP THEN COMMAND_BLOCK . ELSE_ALTERNATIVE
+    (47) ELSE_ALTERNATIVE -> . ELSE COMMAND_BLOCK
+    (48) ELSE_ALTERNATIVE -> .
+
+  ! shift/reduce conflict for ELSE resolved as shift
+    ELSE            shift and go to state 141
+    ;               reduce using rule 48 (ELSE_ALTERNATIVE -> .)
+    END             reduce using rule 48 (ELSE_ALTERNATIVE -> .)
+
+  ! ELSE            [ reduce using rule 48 (ELSE_ALTERNATIVE -> .) ]
+
+    ELSE_ALTERNATIVE               shift and go to state 140
+
+state 118
+
+    (42) COMMAND -> FOR FOR_COMMAND DO COMMAND_BLOCK .
+
+    ;               reduce using rule 42 (COMMAND -> FOR FOR_COMMAND DO COMMAND_BLOCK .)
+    END             reduce using rule 42 (COMMAND -> FOR FOR_COMMAND DO COMMAND_BLOCK .)
+    ELSE            reduce using rule 42 (COMMAND -> FOR FOR_COMMAND DO COMMAND_BLOCK .)
+
+
+state 119
+
+    (46) FOR_COMMAND -> ID ASSIGNMENT_STMT TO . PARAMETER
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    PARAMETER                      shift and go to state 142
+
+state 120
+
+    (49) ASSIGNMENT_STMT -> ASSIGNMENT EXP .
+    (54) EXP -> EXP . + EXP
+    (55) EXP -> EXP . - EXP
+    (57) EXP -> EXP . * EXP
+    (58) EXP -> EXP . / EXP
+
+    TO              reduce using rule 49 (ASSIGNMENT_STMT -> ASSIGNMENT EXP .)
+    +               shift and go to state 132
+    -               shift and go to state 133
+    *               shift and go to state 134
+    /               shift and go to state 135
+
+
+state 121
+
+    (70) CONST_EXP_L -> MATH_OP CONST_EXP .
+
+    ;               reduce using rule 70 (CONST_EXP_L -> MATH_OP CONST_EXP .)
+    END             reduce using rule 70 (CONST_EXP_L -> MATH_OP CONST_EXP .)
+    ELSE            reduce using rule 70 (CONST_EXP_L -> MATH_OP CONST_EXP .)
+    )               reduce using rule 70 (CONST_EXP_L -> MATH_OP CONST_EXP .)
+
+
+state 122
+
+    (69) CONST_EXP -> ( PARAMETER MATH_OP . CONST_EXP )
+    (68) CONST_EXP -> . PARAMETER CONST_EXP_L
+    (69) CONST_EXP -> . ( PARAMETER MATH_OP CONST_EXP )
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 46
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    PARAMETER                      shift and go to state 45
+    CONST_EXP                      shift and go to state 143
+
+state 123
+
+    (30) ROUTINE -> FUNCTION ID ROUTINE_PARAM . : DATA_TYPE ROUTINE_BLOCK
+
+    :               shift and go to state 144
+
+
+state 124
+
+    (32) ROUTINE_PARAM -> ( . FIELDS )
+    (19) FIELDS -> . FIELD FIELD_LIST
+    (20) FIELD -> . ID ID_LIST : DATA_TYPE
+
+    ID              shift and go to state 54
+
+    FIELDS                         shift and go to state 145
+    FIELD                          shift and go to state 131
+
+state 125
+
+    (31) ROUTINE -> PROCEDURE ID ROUTINE_PARAM . ROUTINE_BLOCK
+    (34) ROUTINE_BLOCK -> . VAR_DEF BLOCK
+    (8) VAR_DEF -> . VARIABLE VAR_DEF
+    (9) VAR_DEF -> .
+    (16) VARIABLE -> . VAR FIELD ;
+
+    BEGIN           reduce using rule 9 (VAR_DEF -> .)
+    VAR             shift and go to state 22
+
+    ROUTINE_BLOCK                  shift and go to state 146
+    VAR_DEF                        shift and go to state 147
+    VARIABLE                       shift and go to state 21
+
+state 126
+
+    (20) FIELD -> ID ID_LIST : . DATA_TYPE
+    (23) DATA_TYPE -> . INTEGER
+    (24) DATA_TYPE -> . REAL
+    (25) DATA_TYPE -> . CHAR
+    (26) DATA_TYPE -> . BOOLEAN
+    (27) DATA_TYPE -> . ARRAY [ NUMBER ] OF DATA_TYPE
+    (28) DATA_TYPE -> . RECORD FIELDS END
+    (29) DATA_TYPE -> . ID
+
+    INTEGER         shift and go to state 93
+    REAL            shift and go to state 94
+    CHAR            shift and go to state 95
+    BOOLEAN         shift and go to state 96
+    ARRAY           shift and go to state 97
+    RECORD          shift and go to state 98
+    ID              shift and go to state 91
+
+    DATA_TYPE                      shift and go to state 148
+
+state 127
+
+    (17) ID_LIST -> , ID . ID_LIST
+    (17) ID_LIST -> . , ID ID_LIST
+    (18) ID_LIST -> .
+
+    ,               shift and go to state 90
+    :               reduce using rule 18 (ID_LIST -> .)
+
+    ID_LIST                        shift and go to state 149
+
+state 128
+
+    (15) TYPE_DECLARATION -> TYPE ID = DATA_TYPE ; .
+
+    TYPE            reduce using rule 15 (TYPE_DECLARATION -> TYPE ID = DATA_TYPE ; .)
+    VAR             reduce using rule 15 (TYPE_DECLARATION -> TYPE ID = DATA_TYPE ; .)
+    FUNCTION        reduce using rule 15 (TYPE_DECLARATION -> TYPE ID = DATA_TYPE ; .)
+    PROCEDURE       reduce using rule 15 (TYPE_DECLARATION -> TYPE ID = DATA_TYPE ; .)
+    BEGIN           reduce using rule 15 (TYPE_DECLARATION -> TYPE ID = DATA_TYPE ; .)
+
+
+state 129
+
+    (27) DATA_TYPE -> ARRAY [ . NUMBER ] OF DATA_TYPE
+
+    NUMBER          shift and go to state 150
+
+
+state 130
+
+    (28) DATA_TYPE -> RECORD FIELDS . END
+
+    END             shift and go to state 151
+
+
+state 131
+
+    (19) FIELDS -> FIELD . FIELD_LIST
+    (21) FIELD_LIST -> . ; FIELD FIELD_LIST
+    (22) FIELD_LIST -> .
+
+    ;               shift and go to state 153
+    END             reduce using rule 22 (FIELD_LIST -> .)
+    )               reduce using rule 22 (FIELD_LIST -> .)
+
+    FIELD_LIST                     shift and go to state 152
+
+state 132
+
+    (54) EXP -> EXP + . EXP
+    (53) EXP -> . PARAMETER
+    (54) EXP -> . EXP + EXP
+    (55) EXP -> . EXP - EXP
+    (56) EXP -> . ( EXP )
+    (57) EXP -> . EXP * EXP
+    (58) EXP -> . EXP / EXP
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 103
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    EXP                            shift and go to state 154
+    PARAMETER                      shift and go to state 102
+
+state 133
+
+    (55) EXP -> EXP - . EXP
+    (53) EXP -> . PARAMETER
+    (54) EXP -> . EXP + EXP
+    (55) EXP -> . EXP - EXP
+    (56) EXP -> . ( EXP )
+    (57) EXP -> . EXP * EXP
+    (58) EXP -> . EXP / EXP
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 103
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    EXP                            shift and go to state 155
+    PARAMETER                      shift and go to state 102
+
+state 134
+
+    (57) EXP -> EXP * . EXP
+    (53) EXP -> . PARAMETER
+    (54) EXP -> . EXP + EXP
+    (55) EXP -> . EXP - EXP
+    (56) EXP -> . ( EXP )
+    (57) EXP -> . EXP * EXP
+    (58) EXP -> . EXP / EXP
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 103
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    EXP                            shift and go to state 156
+    PARAMETER                      shift and go to state 102
+
+state 135
+
+    (58) EXP -> EXP / . EXP
+    (53) EXP -> . PARAMETER
+    (54) EXP -> . EXP + EXP
+    (55) EXP -> . EXP - EXP
+    (56) EXP -> . ( EXP )
+    (57) EXP -> . EXP * EXP
+    (58) EXP -> . EXP / EXP
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 103
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    EXP                            shift and go to state 157
+    PARAMETER                      shift and go to state 102
+
+state 136
+
+    (56) EXP -> ( EXP . )
+    (54) EXP -> EXP . + EXP
+    (55) EXP -> EXP . - EXP
+    (57) EXP -> EXP . * EXP
+    (58) EXP -> EXP . / EXP
+
+    )               shift and go to state 158
+    +               shift and go to state 132
+    -               shift and go to state 133
+    *               shift and go to state 134
+    /               shift and go to state 135
+
+
+state 137
+
+    (50) PARAM_LIST -> PARAMETER , PARAM_LIST .
+
+    )               reduce using rule 50 (PARAM_LIST -> PARAMETER , PARAM_LIST .)
+
+
+state 138
+
+    (74) COM_EXP_L -> LOGIC_OP COM_EXP .
+
+    DO              reduce using rule 74 (COM_EXP_L -> LOGIC_OP COM_EXP .)
+    THEN            reduce using rule 74 (COM_EXP_L -> LOGIC_OP COM_EXP .)
+    )               reduce using rule 74 (COM_EXP_L -> LOGIC_OP COM_EXP .)
+
+
+state 139
+
+    (73) COM_EXP -> ( PARAMETER LOGIC_PARAM LOGIC_OP . COM_EXP )
+    (72) COM_EXP -> . PARAMETER LOGIC_PARAM COM_EXP_L
+    (73) COM_EXP -> . ( PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP )
+    (76) PARAMETER -> . ID NAME
+    (77) PARAMETER -> . NUMBER
+    (78) PARAMETER -> . FALSE
+    (79) PARAMETER -> . TRUE
+
+    (               shift and go to state 34
+    ID              shift and go to state 35
+    NUMBER          shift and go to state 36
+    FALSE           shift and go to state 37
+    TRUE            shift and go to state 38
+
+    PARAMETER                      shift and go to state 33
+    COM_EXP                        shift and go to state 159
+
+state 140
+
+    (41) COMMAND -> IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE .
+
+    ;               reduce using rule 41 (COMMAND -> IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE .)
+    END             reduce using rule 41 (COMMAND -> IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE .)
+    ELSE            reduce using rule 41 (COMMAND -> IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE .)
+
+
+state 141
+
+    (47) ELSE_ALTERNATIVE -> ELSE . COMMAND_BLOCK
+    (37) COMMAND_BLOCK -> . BLOCK
+    (38) COMMAND_BLOCK -> . COMMAND
+    (2) BLOCK -> . BEGIN COMMAND COMMAND_LIST END
+    (39) COMMAND -> . ID NAME ASSIGN_EXPRESSION
+    (40) COMMAND -> . WHILE COM_EXP DO COMMAND_BLOCK
+    (41) COMMAND -> . IF COM_EXP THEN COMMAND_BLOCK ELSE_ALTERNATIVE
+    (42) COMMAND -> . FOR FOR_COMMAND DO COMMAND_BLOCK
+    (43) COMMAND -> . WRITE CONST_VALUE
+    (44) COMMAND -> . READ ID NAME
+
+    BEGIN           shift and go to state 7
+    ID              shift and go to state 14
+    WHILE           shift and go to state 15
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WRITE           shift and go to state 18
+    READ            shift and go to state 19
+
+    COMMAND_BLOCK                  shift and go to state 160
+    BLOCK                          shift and go to state 109
+    COMMAND                        shift and go to state 110
+
+state 142
+
+    (46) FOR_COMMAND -> ID ASSIGNMENT_STMT TO PARAMETER .
+
+    DO              reduce using rule 46 (FOR_COMMAND -> ID ASSIGNMENT_STMT TO PARAMETER .)
+
+
+state 143
+
+    (69) CONST_EXP -> ( PARAMETER MATH_OP CONST_EXP . )
+
+    )               shift and go to state 161
+
+
+state 144
+
+    (30) ROUTINE -> FUNCTION ID ROUTINE_PARAM : . DATA_TYPE ROUTINE_BLOCK
+    (23) DATA_TYPE -> . INTEGER
+    (24) DATA_TYPE -> . REAL
+    (25) DATA_TYPE -> . CHAR
+    (26) DATA_TYPE -> . BOOLEAN
+    (27) DATA_TYPE -> . ARRAY [ NUMBER ] OF DATA_TYPE
+    (28) DATA_TYPE -> . RECORD FIELDS END
+    (29) DATA_TYPE -> . ID
+
+    INTEGER         shift and go to state 93
+    REAL            shift and go to state 94
+    CHAR            shift and go to state 95
+    BOOLEAN         shift and go to state 96
+    ARRAY           shift and go to state 97
+    RECORD          shift and go to state 98
+    ID              shift and go to state 91
+
+    DATA_TYPE                      shift and go to state 162
+
+state 145
+
+    (32) ROUTINE_PARAM -> ( FIELDS . )
+
+    )               shift and go to state 163
+
+
+state 146
+
+    (31) ROUTINE -> PROCEDURE ID ROUTINE_PARAM ROUTINE_BLOCK .
+
+    FUNCTION        reduce using rule 31 (ROUTINE -> PROCEDURE ID ROUTINE_PARAM ROUTINE_BLOCK .)
+    PROCEDURE       reduce using rule 31 (ROUTINE -> PROCEDURE ID ROUTINE_PARAM ROUTINE_BLOCK .)
+    BEGIN           reduce using rule 31 (ROUTINE -> PROCEDURE ID ROUTINE_PARAM ROUTINE_BLOCK .)
+
+
+state 147
+
+    (34) ROUTINE_BLOCK -> VAR_DEF . BLOCK
+    (2) BLOCK -> . BEGIN COMMAND COMMAND_LIST END
+
+    BEGIN           shift and go to state 7
+
+    BLOCK                          shift and go to state 164
+
+state 148
+
+    (20) FIELD -> ID ID_LIST : DATA_TYPE .
+
+    ;               reduce using rule 20 (FIELD -> ID ID_LIST : DATA_TYPE .)
+    END             reduce using rule 20 (FIELD -> ID ID_LIST : DATA_TYPE .)
+    )               reduce using rule 20 (FIELD -> ID ID_LIST : DATA_TYPE .)
+
+
+state 149
+
+    (17) ID_LIST -> , ID ID_LIST .
+
+    :               reduce using rule 17 (ID_LIST -> , ID ID_LIST .)
+
+
+state 150
+
+    (27) DATA_TYPE -> ARRAY [ NUMBER . ] OF DATA_TYPE
+
+    ]               shift and go to state 165
+
+
+state 151
+
+    (28) DATA_TYPE -> RECORD FIELDS END .
+
+    ;               reduce using rule 28 (DATA_TYPE -> RECORD FIELDS END .)
+    END             reduce using rule 28 (DATA_TYPE -> RECORD FIELDS END .)
+    )               reduce using rule 28 (DATA_TYPE -> RECORD FIELDS END .)
+    VAR             reduce using rule 28 (DATA_TYPE -> RECORD FIELDS END .)
+    BEGIN           reduce using rule 28 (DATA_TYPE -> RECORD FIELDS END .)
+
+
+state 152
+
+    (19) FIELDS -> FIELD FIELD_LIST .
+
+    END             reduce using rule 19 (FIELDS -> FIELD FIELD_LIST .)
+    )               reduce using rule 19 (FIELDS -> FIELD FIELD_LIST .)
+
+
+state 153
+
+    (21) FIELD_LIST -> ; . FIELD FIELD_LIST
+    (20) FIELD -> . ID ID_LIST : DATA_TYPE
+
+    ID              shift and go to state 54
+
+    FIELD                          shift and go to state 166
+
+state 154
+
+    (54) EXP -> EXP + EXP .
+    (54) EXP -> EXP . + EXP
+    (55) EXP -> EXP . - EXP
+    (57) EXP -> EXP . * EXP
+    (58) EXP -> EXP . / EXP
+
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+    ;               reduce using rule 54 (EXP -> EXP + EXP .)
+    END             reduce using rule 54 (EXP -> EXP + EXP .)
+    ELSE            reduce using rule 54 (EXP -> EXP + EXP .)
+    TO              reduce using rule 54 (EXP -> EXP + EXP .)
+    )               reduce using rule 54 (EXP -> EXP + EXP .)
+    +               shift and go to state 132
+    -               shift and go to state 133
+    *               shift and go to state 134
+    /               shift and go to state 135
+
+  ! +               [ reduce using rule 54 (EXP -> EXP + EXP .) ]
+  ! -               [ reduce using rule 54 (EXP -> EXP + EXP .) ]
+  ! *               [ reduce using rule 54 (EXP -> EXP + EXP .) ]
+  ! /               [ reduce using rule 54 (EXP -> EXP + EXP .) ]
+
+
+state 155
+
+    (55) EXP -> EXP - EXP .
+    (54) EXP -> EXP . + EXP
+    (55) EXP -> EXP . - EXP
+    (57) EXP -> EXP . * EXP
+    (58) EXP -> EXP . / EXP
+
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+    ;               reduce using rule 55 (EXP -> EXP - EXP .)
+    END             reduce using rule 55 (EXP -> EXP - EXP .)
+    ELSE            reduce using rule 55 (EXP -> EXP - EXP .)
+    TO              reduce using rule 55 (EXP -> EXP - EXP .)
+    )               reduce using rule 55 (EXP -> EXP - EXP .)
+    +               shift and go to state 132
+    -               shift and go to state 133
+    *               shift and go to state 134
+    /               shift and go to state 135
+
+  ! +               [ reduce using rule 55 (EXP -> EXP - EXP .) ]
+  ! -               [ reduce using rule 55 (EXP -> EXP - EXP .) ]
+  ! *               [ reduce using rule 55 (EXP -> EXP - EXP .) ]
+  ! /               [ reduce using rule 55 (EXP -> EXP - EXP .) ]
+
+
+state 156
+
+    (57) EXP -> EXP * EXP .
+    (54) EXP -> EXP . + EXP
+    (55) EXP -> EXP . - EXP
+    (57) EXP -> EXP . * EXP
+    (58) EXP -> EXP . / EXP
+
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+    ;               reduce using rule 57 (EXP -> EXP * EXP .)
+    END             reduce using rule 57 (EXP -> EXP * EXP .)
+    ELSE            reduce using rule 57 (EXP -> EXP * EXP .)
+    TO              reduce using rule 57 (EXP -> EXP * EXP .)
+    )               reduce using rule 57 (EXP -> EXP * EXP .)
+    +               shift and go to state 132
+    -               shift and go to state 133
+    *               shift and go to state 134
+    /               shift and go to state 135
+
+  ! +               [ reduce using rule 57 (EXP -> EXP * EXP .) ]
+  ! -               [ reduce using rule 57 (EXP -> EXP * EXP .) ]
+  ! *               [ reduce using rule 57 (EXP -> EXP * EXP .) ]
+  ! /               [ reduce using rule 57 (EXP -> EXP * EXP .) ]
+
+
+state 157
+
+    (58) EXP -> EXP / EXP .
+    (54) EXP -> EXP . + EXP
+    (55) EXP -> EXP . - EXP
+    (57) EXP -> EXP . * EXP
+    (58) EXP -> EXP . / EXP
+
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+    ;               reduce using rule 58 (EXP -> EXP / EXP .)
+    END             reduce using rule 58 (EXP -> EXP / EXP .)
+    ELSE            reduce using rule 58 (EXP -> EXP / EXP .)
+    TO              reduce using rule 58 (EXP -> EXP / EXP .)
+    )               reduce using rule 58 (EXP -> EXP / EXP .)
+    +               shift and go to state 132
+    -               shift and go to state 133
+    *               shift and go to state 134
+    /               shift and go to state 135
+
+  ! +               [ reduce using rule 58 (EXP -> EXP / EXP .) ]
+  ! -               [ reduce using rule 58 (EXP -> EXP / EXP .) ]
+  ! *               [ reduce using rule 58 (EXP -> EXP / EXP .) ]
+  ! /               [ reduce using rule 58 (EXP -> EXP / EXP .) ]
+
+
+state 158
+
+    (56) EXP -> ( EXP ) .
+
+    +               reduce using rule 56 (EXP -> ( EXP ) .)
+    -               reduce using rule 56 (EXP -> ( EXP ) .)
+    *               reduce using rule 56 (EXP -> ( EXP ) .)
+    /               reduce using rule 56 (EXP -> ( EXP ) .)
+    ;               reduce using rule 56 (EXP -> ( EXP ) .)
+    END             reduce using rule 56 (EXP -> ( EXP ) .)
+    ELSE            reduce using rule 56 (EXP -> ( EXP ) .)
+    TO              reduce using rule 56 (EXP -> ( EXP ) .)
+    )               reduce using rule 56 (EXP -> ( EXP ) .)
+
+
+state 159
+
+    (73) COM_EXP -> ( PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP . )
+
+    )               shift and go to state 167
+
+
+state 160
+
+    (47) ELSE_ALTERNATIVE -> ELSE COMMAND_BLOCK .
+
+    ;               reduce using rule 47 (ELSE_ALTERNATIVE -> ELSE COMMAND_BLOCK .)
+    END             reduce using rule 47 (ELSE_ALTERNATIVE -> ELSE COMMAND_BLOCK .)
+    ELSE            reduce using rule 47 (ELSE_ALTERNATIVE -> ELSE COMMAND_BLOCK .)
+
+
+state 161
+
+    (69) CONST_EXP -> ( PARAMETER MATH_OP CONST_EXP ) .
+
+    ;               reduce using rule 69 (CONST_EXP -> ( PARAMETER MATH_OP CONST_EXP ) .)
+    END             reduce using rule 69 (CONST_EXP -> ( PARAMETER MATH_OP CONST_EXP ) .)
+    ELSE            reduce using rule 69 (CONST_EXP -> ( PARAMETER MATH_OP CONST_EXP ) .)
+    )               reduce using rule 69 (CONST_EXP -> ( PARAMETER MATH_OP CONST_EXP ) .)
+
+
+state 162
+
+    (30) ROUTINE -> FUNCTION ID ROUTINE_PARAM : DATA_TYPE . ROUTINE_BLOCK
+    (34) ROUTINE_BLOCK -> . VAR_DEF BLOCK
+    (8) VAR_DEF -> . VARIABLE VAR_DEF
+    (9) VAR_DEF -> .
+    (16) VARIABLE -> . VAR FIELD ;
+
+    BEGIN           reduce using rule 9 (VAR_DEF -> .)
+    VAR             shift and go to state 22
+
+    ROUTINE_BLOCK                  shift and go to state 168
+    VAR_DEF                        shift and go to state 147
+    VARIABLE                       shift and go to state 21
+
+state 163
+
+    (32) ROUTINE_PARAM -> ( FIELDS ) .
+
+    :               reduce using rule 32 (ROUTINE_PARAM -> ( FIELDS ) .)
+    VAR             reduce using rule 32 (ROUTINE_PARAM -> ( FIELDS ) .)
+    BEGIN           reduce using rule 32 (ROUTINE_PARAM -> ( FIELDS ) .)
+
+
+state 164
+
+    (34) ROUTINE_BLOCK -> VAR_DEF BLOCK .
+
+    FUNCTION        reduce using rule 34 (ROUTINE_BLOCK -> VAR_DEF BLOCK .)
+    PROCEDURE       reduce using rule 34 (ROUTINE_BLOCK -> VAR_DEF BLOCK .)
+    BEGIN           reduce using rule 34 (ROUTINE_BLOCK -> VAR_DEF BLOCK .)
+
+
+state 165
+
+    (27) DATA_TYPE -> ARRAY [ NUMBER ] . OF DATA_TYPE
+
+    OF              shift and go to state 169
+
+
+state 166
+
+    (21) FIELD_LIST -> ; FIELD . FIELD_LIST
+    (21) FIELD_LIST -> . ; FIELD FIELD_LIST
+    (22) FIELD_LIST -> .
+
+    ;               shift and go to state 153
+    END             reduce using rule 22 (FIELD_LIST -> .)
+    )               reduce using rule 22 (FIELD_LIST -> .)
+
+    FIELD_LIST                     shift and go to state 170
+
+state 167
+
+    (73) COM_EXP -> ( PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP ) .
+
+    DO              reduce using rule 73 (COM_EXP -> ( PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP ) .)
+    THEN            reduce using rule 73 (COM_EXP -> ( PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP ) .)
+    )               reduce using rule 73 (COM_EXP -> ( PARAMETER LOGIC_PARAM LOGIC_OP COM_EXP ) .)
+
+
+state 168
+
+    (30) ROUTINE -> FUNCTION ID ROUTINE_PARAM : DATA_TYPE ROUTINE_BLOCK .
+
+    FUNCTION        reduce using rule 30 (ROUTINE -> FUNCTION ID ROUTINE_PARAM : DATA_TYPE ROUTINE_BLOCK .)
+    PROCEDURE       reduce using rule 30 (ROUTINE -> FUNCTION ID ROUTINE_PARAM : DATA_TYPE ROUTINE_BLOCK .)
+    BEGIN           reduce using rule 30 (ROUTINE -> FUNCTION ID ROUTINE_PARAM : DATA_TYPE ROUTINE_BLOCK .)
+
+
+state 169
+
+    (27) DATA_TYPE -> ARRAY [ NUMBER ] OF . DATA_TYPE
+    (23) DATA_TYPE -> . INTEGER
+    (24) DATA_TYPE -> . REAL
+    (25) DATA_TYPE -> . CHAR
+    (26) DATA_TYPE -> . BOOLEAN
+    (27) DATA_TYPE -> . ARRAY [ NUMBER ] OF DATA_TYPE
+    (28) DATA_TYPE -> . RECORD FIELDS END
+    (29) DATA_TYPE -> . ID
+
+    INTEGER         shift and go to state 93
+    REAL            shift and go to state 94
+    CHAR            shift and go to state 95
+    BOOLEAN         shift and go to state 96
+    ARRAY           shift and go to state 97
+    RECORD          shift and go to state 98
+    ID              shift and go to state 91
+
+    DATA_TYPE                      shift and go to state 171
+
+state 170
+
+    (21) FIELD_LIST -> ; FIELD FIELD_LIST .
+
+    END             reduce using rule 21 (FIELD_LIST -> ; FIELD FIELD_LIST .)
+    )               reduce using rule 21 (FIELD_LIST -> ; FIELD FIELD_LIST .)
+
+
+state 171
+
+    (27) DATA_TYPE -> ARRAY [ NUMBER ] OF DATA_TYPE .
+
+    ;               reduce using rule 27 (DATA_TYPE -> ARRAY [ NUMBER ] OF DATA_TYPE .)
+    END             reduce using rule 27 (DATA_TYPE -> ARRAY [ NUMBER ] OF DATA_TYPE .)
+    )               reduce using rule 27 (DATA_TYPE -> ARRAY [ NUMBER ] OF DATA_TYPE .)
+    VAR             reduce using rule 27 (DATA_TYPE -> ARRAY [ NUMBER ] OF DATA_TYPE .)
+    BEGIN           reduce using rule 27 (DATA_TYPE -> ARRAY [ NUMBER ] OF DATA_TYPE .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for ELSE in state 117 resolved as shift
+WARNING: shift/reduce conflict for + in state 154 resolved as shift
+WARNING: shift/reduce conflict for - in state 154 resolved as shift
+WARNING: shift/reduce conflict for * in state 154 resolved as shift
+WARNING: shift/reduce conflict for / in state 154 resolved as shift
+WARNING: shift/reduce conflict for + in state 155 resolved as shift
+WARNING: shift/reduce conflict for - in state 155 resolved as shift
+WARNING: shift/reduce conflict for * in state 155 resolved as shift
+WARNING: shift/reduce conflict for / in state 155 resolved as shift
+WARNING: shift/reduce conflict for + in state 156 resolved as shift
+WARNING: shift/reduce conflict for - in state 156 resolved as shift
+WARNING: shift/reduce conflict for * in state 156 resolved as shift
+WARNING: shift/reduce conflict for / in state 156 resolved as shift
+WARNING: shift/reduce conflict for + in state 157 resolved as shift
+WARNING: shift/reduce conflict for - in state 157 resolved as shift
+WARNING: shift/reduce conflict for * in state 157 resolved as shift
+WARNING: shift/reduce conflict for / in state 157 resolved as shift

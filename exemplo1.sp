@@ -15,7 +15,7 @@ begin
 	C := exp(A,B);
 	D := media(E);
 	F := lerDados();
-	if (C <= 10 or (A > B and F.nota1 > 6)) then
+	if (C < 10 or (A > B and F.nota1 > 6)) then
 	begin
 		G := false;
 		while G != true do

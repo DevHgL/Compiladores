@@ -196,12 +196,19 @@ def p_param_list(p):
         p[0] = []
 
 def p_exp(p):
-    """EXP : PARAMETER EXP_L1
-           | '(' PARAMETER EXP_L2"""
-    if len(p) == 3:
-        p[0] = ('exp', p[1], p[2])
-    elif len(p) == 4:
-        p[0] = ('exp_group', p[2], p[3])
+    """EXP : PARAMETER
+           | EXP '+' EXP
+           | EXP '-' EXP
+           | '(' EXP ')'
+           | EXP '*' EXP
+           | EXP '/' EXP"""
+    if len(p) == 2:
+        p[0] = p[1]
+    elif len(p) == 4:  # Operação binária
+        p[0] = ('math_op', p[2], p[1], p[3])  # Adiciona ambos os lados da expressão
+    elif len(p) == 3 and p[2] == ')':  # Parênteses
+        p[0] = ('exp', p[1], None)
+
 
 def p_exp_l1(p):
     """EXP_L1 : MATH_OP EXP

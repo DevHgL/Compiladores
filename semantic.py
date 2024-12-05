@@ -1,3 +1,11 @@
+###########################################################################################
+#                                                                                         #      
+#   Author: Hugo Leonardo Melo                                                            #                 
+#                                                                                         #              
+#   Trabalho do Analisador Semântico                                                      #              
+#                                                                                         #              
+###########################################################################################
+
 import sys
 from lexic import lexer
 from syntactic import parser, save_syntax_tree_to_file
@@ -45,12 +53,10 @@ class SemanticAnalyzer:
         current_line = line if line is not None else lexer.lineno
         print(f"\nAnalisando nó: {node} na linha {current_line}")
         
-        # Verificando o tipo do nó e agindo de acordo
         if isinstance(node, tuple):
             node_type = node[0]
             print(f"Tipo do nó: {node_type}")
 
-            # Chama a função de acordo com o tipo do nó
             if node_type == 'program':
                 self.handle_program(node, current_line)
             elif node_type == 'declarations':
@@ -95,121 +101,175 @@ class SemanticAnalyzer:
     def handle_variable(self, node, line):
         print(f"\nAnalisando variáveis na linha {line}: {node}")
         
-        # Caso o nó contenha múltiplas definições de variáveis
         if isinstance(node, tuple) and node[0] == 'var_def':
             _, variable_node, next_var_def = node
-            
-            # Processa a definição de variável atual, se houver
+
             if variable_node:
                 self.handle_variable(variable_node, line)
-            
-            # Processa as próximas definições, se houver e forem válidas
+
             if next_var_def is not None and not (isinstance(next_var_def, tuple) and next_var_def[1] is None):
                 self.handle_variable(next_var_def, line)
             else:
                 print("Nenhuma próxima definição válida de variável encontrada. Ignorando.")
-        
-        # Processa o nó 'variable' com campo e tipo
+
         elif isinstance(node, tuple) and node[0] == 'variable':
             _, field = node
             if isinstance(field, tuple) and field[0] == 'field':
-                field_names = field[1]  # Lista de nomes
-                field_type = field[2]  # Tipo da variável
-                
-                # Adiciona todas as variáveis à tabela de símbolos
+                field_names = field[1]
+                field_type = field[2]
+
                 for name in field_names:
                     print(f"Adicionando variável: {name} do tipo '{field_type[1]}' na linha {line}.")
                     self.symbol_table.add_symbol(name, field_type[1], "variable", line)
         else:
             print(f"Nó inesperado em handle_variable: {node}")
 
-
-
-
     def handle_constant(self, node, line):
-        print(f"Analisando constante na linha {line}: {node}")
-        if len(node) < 3:
-            raise Exception(f"Erro na linha {line}: Estrutura inesperada na declaração de constante: {node}")
-        _, name, value = node
-        self.symbol_table.add_symbol(name, type(value).__name__, "constant", line)
+        print(f"\nAnalisando constantes na linha {line}: {node}")
+
+        if isinstance(node, tuple) and node[0] == 'const_def':
+            _, const_node, next_const_def = node
+
+            if const_node:
+                self.handle_constant(const_node, line)
+
+            if next_const_def is not None and not (isinstance(next_const_def, tuple) and next_const_def[1] is None):
+                self.handle_constant(next_const_def, line)
+            else:
+                print("Nenhuma próxima definição válida de constante encontrada. Ignorando.")
+
+        elif isinstance(node, tuple) and node[0] == 'constant':
+            _, name, value = node
+            print(f"Adicionando constante: {name} = {value} na linha {line}.")
+            self.symbol_table.add_symbol(name, type(value).__name__, "constant", line)
+        else:
+            print(f"Nó inesperado em handle_constant: {node}")
 
     def handle_assignment(self, node, line):
         print(f"Analisando atribuição na linha {line}: {node}")
+
         if len(node) < 4:
             raise Exception(f"Erro na linha {line}: Estrutura inesperada na atribuição: {node}")
+
         _, var, _, expr = node
-        try:
-            var_info = self.symbol_table.lookup(var, line)
-        except Exception:
-            raise Exception(f"Erro na linha {line}: Identificador '{var}' não foi declarado.")
-        
+        print(f"Buscando o símbolo '{var}' na tabela de símbolos na linha {line}.")
+        var_info = self.symbol_table.lookup(var, line)
+
         if var_info['kind'] != 'variable':
             raise Exception(f"Erro na linha {line}: '{var}' não é uma variável.")
-        
+
+        # Obtenha o tipo da expressão
         expr_type = self.get_expression_type(expr, line)
-        
+
         if var_info['type'] != expr_type:
             raise Exception(f"Erro na linha {line}: Tipos incompatíveis. '{var}' é do tipo '{var_info['type']}' e não pode receber '{expr_type}'.")
 
+
     def handle_procedure(self, node, line):
-        print(f"Analisando procedimento na linha {line}: {node}")
-        if len(node) < 4:
-            raise Exception(f"Erro na linha {line}: Estrutura inesperada no procedimento: {node}")
-        _, name, params, block = node
-        self.symbol_table.add_symbol(name, "procedure", "procedure", line)
-        self.symbol_table.enter_scope(line)
-        if params:
-            self.analyze(params)
-        if block:
-            self.analyze(block)
-        self.symbol_table.exit_scope(line)
+        print(f"\nAnalisando procedimentos na linha {line}: {node}")
+
+        if isinstance(node, tuple) and node[0] == 'routine_def':
+            _, routine_node, next_routine_def = node
+
+            if routine_node:
+                self.handle_procedure(routine_node, line)
+
+            if next_routine_def is not None and not (isinstance(next_routine_def, tuple) and next_routine_def[1] is None):
+                self.handle_procedure(next_routine_def, line)
+            else:
+                print("Nenhuma próxima definição válida de procedimento encontrada. Ignorando.")
+
+        elif isinstance(node, tuple) and node[0] in ('procedure', 'function'):
+            _, name, params, block = node
+            print(f"Adicionando procedimento: {name} na linha {line}.")
+            self.symbol_table.add_symbol(name, "procedure", "procedure", line)
+
+            self.symbol_table.enter_scope(line)
+            if params:
+                self.analyze(params)
+            if block:
+                self.analyze(block)
+            self.symbol_table.exit_scope(line)
+        else:
+            print(f"Nó inesperado em handle_procedure: {node}")
 
     def handle_block(self, node, line):
         print(f"Analisando bloco na linha {line}: {node}")
+        
         if len(node) < 2:
-            raise Exception(f"Erro: Estrutura inesperada do nó do bloco: {node}")
-        block_type, *commands = node
-        self.symbol_table.enter_scope(line)
-        for command in commands:
-            if command:
-                self.analyze(command, line)
-        self.symbol_table.exit_scope(line)
-
+            raise Exception(f"Erro na linha {line}: Estrutura inesperada do nó do bloco: {node}")
+        
+        _, main_command, additional_commands = node  # Divide o nó em comando principal e comandos adicionais
+        
+        self.symbol_table.enter_scope(line)  # Entra no escopo do bloco
+        
+        # Analisa o comando principal, se houver
+        if main_command:
+            print(f"Analisando comando principal do bloco: {main_command}")
+            self.analyze(main_command, line)
+        
+        # Analisa os outros comandos, se houver
+        if isinstance(additional_commands, list):
+            for command in additional_commands:
+                if command:
+                    print(f"Analisando comando adicional no bloco: {command}")
+                    self.analyze(command, line)
+        else:
+            print("Nenhum comando adicional encontrado no bloco.")
+        
+        self.symbol_table.exit_scope(line)  # Sai do escopo do bloco
+        
     def get_expression_type(self, expr, line):
         print(f"Analisando tipo da expressão na linha {line}: {expr}")
+        
         if isinstance(expr, tuple):
-            if expr[0] == 'binary_op':
-                left_type = self.get_expression_type(expr[2], line)
-                right_type = self.get_expression_type(expr[3], line)
-                if left_type != right_type:
-                    raise Exception(f"Erro na linha {line}: Tipos incompatíveis na operação '{expr[1]}'.")
-                return left_type
+            if expr[0] == 'assign':
+                _, inner_expr = expr
+                return self.get_expression_type(inner_expr, line)
+            
+            elif expr[0] == 'exp':
+                left_expr = self.get_expression_type(expr[1], line)
+                if expr[2]:  # Verifica se existe uma operação adicional
+                    right_expr = self.get_expression_type(expr[2], line)
+                    if left_expr != right_expr:
+                        raise Exception(f"Erro na linha {line}: Tipos incompatíveis na expressão.")
+                return left_expr
+    
             elif expr[0] == 'parameter':
-                param_info = self.symbol_table.lookup(expr[1], line)
-                return param_info['type']
-            elif expr[0] == 'value':
-                return self.get_expression_type(expr[1], line)
+                if expr[1] == 'literal':
+                    return "integer" if isinstance(expr[2], int) else "real"
+                elif expr[1] == 'id':
+                    param_info = self.symbol_table.lookup(expr[2], line)
+                    return param_info['type']
+    
+            elif expr[0] == 'math_op':
+                if len(expr) < 4 or expr[2] is None:
+                    raise Exception(f"Erro na linha {line}: Operação matemática incompleta ou lado direito ausente: {expr}")
+                operator = expr[1]
+                left = expr[2]
+                right = expr[3] if len(expr) > 3 else None  # Trata ausência do lado direito
+                left_type = self.get_expression_type(left, line)
+                if right is not None:
+                    right_type = self.get_expression_type(right, line)
+                    if left_type != right_type:
+                        raise Exception(f"Erro na linha {line}: Tipos incompatíveis para operação '{operator}'.")
+                return left_type
+    
         elif isinstance(expr, (int, float)):
             return "integer" if isinstance(expr, int) else "real"
-        elif isinstance(expr, str):
-            return "char" if len(expr) == 1 else "string"
-        else:
-            raise Exception(f"Erro na linha {line}: Estrutura de expressão desconhecida: {expr}")
-
-
+    
+        raise Exception(f"Erro na linha {line}: Estrutura de expressão desconhecida: {expr}")
+    
 def main():
     try:
-        # Abre o arquivo e realiza a análise léxica e sintática
         with open(sys.argv[1], 'r') as file:
             data = file.read()
 
         lexer.lineno = 1
         syntax_tree = parser.parse(data)
 
-        # Salva a árvore sintática
         save_syntax_tree_to_file(syntax_tree)
 
-        # Realiza a análise semântica
         analyzer = SemanticAnalyzer()
         analyzer.analyze(syntax_tree)
         print("Análise semântica concluída com sucesso.")

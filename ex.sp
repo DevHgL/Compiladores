@@ -5,5 +5,6 @@ var A: integer;
 var B: integer;
 begin
     A := 10 + 20;
-    B := 10;
+    if A > B then 
+      A := A + B
 end
