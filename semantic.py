@@ -95,33 +95,36 @@ class SemanticAnalyzer:
     def handle_variable(self, node, line):
         print(f"\nAnalisando variáveis na linha {line}: {node}")
         
-        if len(node) < 2:
-            raise Exception(f"Erro na linha {line}: Estrutura inesperada na declaração de variável: {node}")
-        
-        _, var_info = node  # Pega as informações da variável
-
-        # Caso a variável seja uma lista de campos (ex.: múltiplas variáveis em uma linha)
-        if isinstance(var_info, tuple):
-            print(f"Desempacotando o campo de variável: {var_info}")
-            if len(var_info) > 1:
-                field_info = var_info[1]  # A segunda parte contém os campos de variável
-
-                for field in field_info:
-                    if isinstance(field, tuple) and field[0] == 'field':  # Verifica se é realmente um campo
-                        names, var_type = field[1], field[2]
-                        print(f"Adicionando variáveis: {names} do tipo '{var_type[1]}'")
-
-                        # Adiciona as variáveis à tabela de símbolos
-                        for name in names:
-                            self.symbol_table.add_symbol(name, var_type[1], "variable", line)
-        else:
-            print(f"Definição simples de variável encontrada: {var_info}")
-            names = [var_info[0]]  # Caso haja apenas uma variável
-            var_type = var_info[1]  # Tipo da variável
+        # Caso o nó contenha múltiplas definições de variáveis
+        if isinstance(node, tuple) and node[0] == 'var_def':
+            _, variable_node, next_var_def = node
             
-            # Adiciona a variável simples à tabela de símbolos
-            for name in names:
-                self.symbol_table.add_symbol(name, var_type[1], "variable", line)
+            # Processa a definição de variável atual, se houver
+            if variable_node:
+                self.handle_variable(variable_node, line)
+            
+            # Processa as próximas definições, se houver e forem válidas
+            if next_var_def is not None and not (isinstance(next_var_def, tuple) and next_var_def[1] is None):
+                self.handle_variable(next_var_def, line)
+            else:
+                print("Nenhuma próxima definição válida de variável encontrada. Ignorando.")
+        
+        # Processa o nó 'variable' com campo e tipo
+        elif isinstance(node, tuple) and node[0] == 'variable':
+            _, field = node
+            if isinstance(field, tuple) and field[0] == 'field':
+                field_names = field[1]  # Lista de nomes
+                field_type = field[2]  # Tipo da variável
+                
+                # Adiciona todas as variáveis à tabela de símbolos
+                for name in field_names:
+                    print(f"Adicionando variável: {name} do tipo '{field_type[1]}' na linha {line}.")
+                    self.symbol_table.add_symbol(name, field_type[1], "variable", line)
+        else:
+            print(f"Nó inesperado em handle_variable: {node}")
+
+
+
 
     def handle_constant(self, node, line):
         print(f"Analisando constante na linha {line}: {node}")
