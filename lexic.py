@@ -9,12 +9,16 @@ import ply.lex as lex
 import sys
 
 # Definindo uma classe para armazenar os tokens
-class Token():
-    def __init__(self, token):
-        self.tipo = tok.type
-        self.valor = tok.value
-        self.linha = tok.lineno
-lista_analisados = list()
+class Token:
+    def __init__(self, tipo, valor, linha):
+        self.tipo = tipo
+        self.valor = valor
+        self.linha = linha
+
+    def __str__(self):
+        return f"Token({self.tipo}, {self.valor}, Linha: {self.linha})"
+
+lista_analisados = []
 
 # Palavras reservadas
 reservados = {
@@ -43,12 +47,11 @@ reservados = {
     'else': 'ELSE',
     'false': 'FALSE',
     'true': 'TRUE',
-    'and': 'AND',
-    'or': 'OR',
+
 }
 
 # Tokens literais, possuem como nome o mesmo simbolo que os define
-literals = ['+','-','*','/','=',',',';',':','.','[',']','(',')']
+literals = ['+', '-', '*', '/', '=', ',', ';', ':', '.', '[', ']', '(', ')']
 
 # Definicao dos tokens + uniao das palavras reservadas
 tokens = [
@@ -62,11 +65,11 @@ tokens = [
     'GREATER_EQUAL',
     'EQUAL', 
     'NOT_EQUALS', 
-    'COMP_OP'
+    'COMP_OP',
+    'LOGIC_OP'
 ] + list(reservados.values())
 
 # Expressoes regulares dos tokens simples
-
 t_ASSIGNMENT = r':='
 t_COMP_OP = r'>|>=|<|<='
 t_LESS_THAN = r'<'
@@ -75,7 +78,7 @@ t_LESS_EQUAL = r'<='
 t_GREATER_EQUAL = r'>='
 t_NOT_EQUALS = r'!='
 t_EQUAL = r'=='
-
+t_LOGIC_OP = r'\bAND\b|\bOR\b'
 
 def t_NUMBER(t):
     r'\d+(\.\d+)?'
@@ -84,7 +87,7 @@ def t_NUMBER(t):
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reservados.get(t.value,'ID')
+    t.type = reservados.get(t.value, 'ID')
     t.value = str(t.value)
     return t
 
@@ -99,7 +102,7 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 # Caracteres ignorados pelo analisador lexico, espacos e tabulacoes
-t_ignore  = ' \t'
+t_ignore = ' \t'
 
 # Tratamento de erro quando um caracter nao e identificado pelo analisador
 def t_error(t):
@@ -110,25 +113,34 @@ def t_error(t):
 # Compila as regras definidas para o lexer
 lexer = lex.lex()
 
+# Função para realizar a análise léxica e salvar em arquivo
+def analyze_and_save(file_name, output_file):
+    try:
+        with open(file_name, 'r') as file:
+            data = file.read()
 
-def run_lexical_analysis(data):
-    lexer.input(data)
-    while True:
-        token = lexer.token()
-        if not token:
-            break
-        print(token)
+        lexer.input(data)
 
+        with open(output_file, 'w') as output:
+            while True:
+                tok = lexer.token()
+                if not tok:
+                    break
+                token_obj = Token(tok.type, tok.value, tok.lineno)
+                lista_analisados.append(token_obj)
+                output.write(str(token_obj) + '\n')
+        
+        print(f"Análise léxica concluída. Resultados salvos em {output_file}.")
+    except FileNotFoundError:
+        print(f"Error: File '{file_name}' not found!")
+    except Exception as e:
+        print(f"Erro durante a análise léxica: {e}")
 
-# Abre e entrega o arquivo a ser analisado
-file_name = sys.argv[1]
-data = open(file_name, 'r').read()
-lexer.input(data)
-
-# Analisa os tokens do arquivo
-while True:
-    tok = lexer.token()
-    if not tok: 
-        break
-    lista_analisados.append(tok)
-    # print(tok)
+# Execute a análise
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print("Uso: python lexic.py <arquivo_entrada> <arquivo_saida>")
+    else:
+        input_file = sys.argv[1]
+        output_file = sys.argv[2]
+        analyze_and_save(input_file, output_file)
