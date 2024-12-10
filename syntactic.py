@@ -294,10 +294,13 @@ def p_logic_op(p):
     p[0] = p[1]
 
 def p_comp_op(p):
-    """COMP_OP : '>'
-               | '<'
-               | COMPARATOR"""
-    p[0] = p[1]
+    """COMP_OP : LESS_THAN
+               | GREATER_THAN
+               | LESS_EQUAL
+               | GREATER_EQUAL
+               | EQUAL
+               | NOT_EQUALS"""
+    p[0] = ('comp_op', p[1])  # Retorna o operador
 
 def p_math_op(p):
     """MATH_OP : '+'

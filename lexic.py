@@ -56,13 +56,27 @@ tokens = [
     'NUMBER',
     'STRING',
     'ASSIGNMENT',
+    'COMPARATOR',    
+    'LESS_THAN', 
+    'GREATER_THAN', 
+    'LESS_EQUAL', 
+    'GREATER_EQUAL',
+    'EQUAL', 
+    'NOT_EQUALS', 
     'COMPARATOR'
 ] + list(reservados.values())
 
 # Expressoes regulares dos tokens simples
 
 t_ASSIGNMENT = r':='
-t_COMPARATOR = r' <= | >= | == |!=| < | > '
+t_COMPARATOR = r'>|>=|<|<='
+t_LESS_THAN = r'<'
+t_GREATER_THAN = r'>'
+t_LESS_EQUAL = r'<='
+t_GREATER_EQUAL = r'>='
+t_NOT_EQUALS = r'!='
+t_EQUAL = r'=='
+
 
 def t_NUMBER(t):
     r'\d+(\.\d+)?'
