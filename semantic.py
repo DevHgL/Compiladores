@@ -255,11 +255,24 @@ class SemanticAnalyzer:
                         raise Exception(f"Erro na linha {line}: Tipos incompatíveis para operação '{operator}'.")
                 return left_type
     
+            elif expr[0] == 'comp_op':
+                # Trata operações de comparação como <, >, <=, >=, ==, !=
+                operator = expr[1]
+                left = expr[2]
+                right = expr[3] if len(expr) > 3 else None
+                left_type = self.get_expression_type(left, line)
+                if right is not None:
+                    right_type = self.get_expression_type(right, line)
+                    if left_type != right_type:
+                        raise Exception(f"Erro na linha {line}: Tipos incompatíveis para operação '{operator}'.")
+                # Operadores de comparação sempre retornam booleanos
+                return "boolean"
+    
         elif isinstance(expr, (int, float)):
             return "integer" if isinstance(expr, int) else "real"
     
         raise Exception(f"Erro na linha {line}: Estrutura de expressão desconhecida: {expr}")
-    
+        
 def main():
     try:
         with open(sys.argv[1], 'r') as file:

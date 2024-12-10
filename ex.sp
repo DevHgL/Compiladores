@@ -4,7 +4,5 @@ const CU = 10000;
 var A: integer;
 var B: integer;
 begin
-    A := 10 + 20;
-    if A > B then 
-      A := A + B
+    A := 10 + 20
 end
