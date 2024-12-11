@@ -167,11 +167,17 @@ def p_param_list(p):
 
 def p_com_exp(p):
     """COM_EXP : EXP COMP_OP EXP
-               | COM_EXP LOGIC_OP COM_EXP"""
+               | COM_EXP LOGIC_OP_OR COM_EXP
+               | COM_EXP LOGIC_OP_AND COM_EXP"""
     if len(p) == 4:
-        p[0] = ('logic_op', p[2], p[1], p[3])
+        if p[2] in ('AND', 'OR'):
+            p[0] = ('logic_op', p[2], p[1], p[3])
+        else:
+            p[0] = ('comparison', p[2], p[1], p[3])
     else:
         p[0] = p[1]
+
+
 
 def p_exp(p):
     """EXP : EXP '+' EXP

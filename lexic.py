@@ -47,6 +47,8 @@ reservados = {
     'else': 'ELSE',
     'false': 'FALSE',
     'true': 'TRUE',
+    'or': 'LOGIC_OP_OR',
+    'and': 'LOGIC_OP_AND',
 
 }
 
@@ -65,20 +67,20 @@ tokens = [
     'GREATER_EQUAL',
     'EQUAL', 
     'NOT_EQUALS', 
-    'COMP_OP',
-    'LOGIC_OP'
+    'COMP_OP'
 ] + list(reservados.values())
 
 # Expressoes regulares dos tokens simples
 t_ASSIGNMENT = r':='
-t_COMP_OP = r'>|>=|<|<='
+t_COMP_OP = r'==|!=|>=|<=|>|<'
+
 t_LESS_THAN = r'<'
 t_GREATER_THAN = r'>'
 t_LESS_EQUAL = r'<='
 t_GREATER_EQUAL = r'>='
 t_NOT_EQUALS = r'!='
 t_EQUAL = r'=='
-t_LOGIC_OP = r'\bAND\b|\bOR\b'
+# t_LOGIC_OP = r'\bAND\b|\bOR\b'
 
 def t_NUMBER(t):
     r'\d+(\.\d+)?'
@@ -87,9 +89,9 @@ def t_NUMBER(t):
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reservados.get(t.value, 'ID')
-    t.value = str(t.value)
+    t.type = reservados.get(t.value, 'ID')  # Verifica se é uma palavra reservada
     return t
+
 
 def t_STRING(t):
     r'"[A-Za-z0-9\s]*"'
