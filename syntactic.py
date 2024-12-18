@@ -10,6 +10,17 @@ import ply.yacc as yacc
 import sys
 from lexic import tokens, lexer
 
+precedence = (
+    ('left', 'LOGIC_OP_OR'),
+    ('left', 'LOGIC_OP_AND'),
+    ('nonassoc', 'COMP_OP'),  
+    ('left', '+', '-'),
+    ('left', '*', '/'),
+    ('nonassoc', 'IFX'),  # Para resolver a ambiguidade do "dangling else"
+    ('nonassoc', 'ELSE')
+)
+
+
 # Grammar rules
 def p_program(p):
     "PROGRAM : DECLARATIONS BLOCK"
@@ -132,23 +143,23 @@ def p_command_list(p):
         p[0] = p[1] + [p[3]]
 
 def p_command(p):
-    """COMMAND : ID ASSIGNMENT EXP
-               | ID ASSIGNMENT FUNCTION_CALL
-               | IF '(' COM_EXP ')' THEN COMMAND
+    """COMMAND : IF '(' COM_EXP ')' THEN COMMAND %prec IFX
                | IF '(' COM_EXP ')' THEN COMMAND ELSE COMMAND
                | WHILE '(' COM_EXP ')' DO COMMAND
-               | BEGIN COMMAND_LIST END"""
-    if len(p) >= 4 and p[2] == ':=':
-        p[0] = ('assign', p[1], p[3])
-    elif p[1] == 'if':
-        if len(p) == 7:
-            p[0] = ('if', p[3], p[6])
-        else:
-            p[0] = ('if', p[3], p[6], p[8])
-    elif p[1] == 'while':
-        p[0] = ('while', p[3], p[6])
-    elif p[1] == 'begin':
+               | BEGIN COMMAND_LIST END
+               | ID ASSIGNMENT EXP
+               | ID ASSIGNMENT FUNCTION_CALL"""
+    if len(p) == 6 and p[1].lower() == 'if':  # IF sem ELSE
+        p[0] = ('if', p[3], p[5])
+    elif len(p) == 8 and p[1].lower() == 'if':  # IF com ELSE
+        p[0] = ('if_else', p[3], p[5], p[7])
+    elif len(p) == 6 and p[1].lower() == 'while':  # WHILE
+        p[0] = ('while', p[3], p[5])
+    elif p[1].lower() == 'begin':  # BEGIN-END bloco
         p[0] = ('block', p[2])
+    elif len(p) == 4 and p[2] == ':=':  # Atribuição
+        p[0] = ('assign', p[1], p[3])
+
 
 def p_function_call(p):
     "FUNCTION_CALL : ID '(' PARAM_LIST ')'"
@@ -177,8 +188,6 @@ def p_com_exp(p):
     else:
         p[0] = p[1]
 
-
-
 def p_exp(p):
     """EXP : EXP '+' EXP
            | EXP '-' EXP
@@ -190,17 +199,28 @@ def p_exp(p):
            | TRUE
            | FALSE"""
     if len(p) == 4 and p[1] == '(':
-        p[0] = p[2]  # Expressão entre parênteses
+        p[0] = p[2]
     elif len(p) == 4:
-        p[0] = ('bin_op', p[2], p[1], p[3])  # Operação binária
+        p[0] = ('bin_op', p[2], p[1], p[3])
     else:
         p[0] = p[1]
 
 def p_error(p):
     if p:
-        print(f"Syntax error near '{p.value}' on line {p.lineno}. Unexpected token: {p.type}")
+        print(f"Syntax error near '{p.value}' on line {p.lineno}")
+        print(f"Token type: {p.type}")
+        print(f"Previous token: {parser.symstack[-1] if len(parser.symstack) > 0 else 'None'}")
+        
+        # Mostrar contexto ao redor do erro
+        if hasattr(parser, 'lexer'):
+            pos = parser.lexer.lexpos
+            input_data = parser.lexer.lexdata
+            context = input_data[max(0, pos-10):min(len(input_data), pos+10)]
+            print(f"Context: ...{context}...")
+        print("Sugestão: Verifique a sintaxe próxima ao token e à linha indicados.")
     else:
-        print("Syntax error at end of file.")
+        print("Syntax error at end of file. Verifique se todas as declarações estão completas.")
+
 
 # Build the parser
 parser = yacc.yacc()
@@ -209,9 +229,11 @@ def save_syntax_tree_to_file(tree, filename="Syntactic-Output.txt"):
     try:
         with open(filename, 'w') as file:
             file.write(str(tree))
-        print(f"Árvore sintática salva com sucesso em {filename}.")
+            print(f"Árvore sintática salva com sucesso em {filename}.")
     except Exception as e:
         print(f"Erro ao salvar a árvore sintática: {e}")
+        print(f"Árvore sintática: {tree}")
+
 
 # Main logic
 try:

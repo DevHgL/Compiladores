@@ -54,12 +54,12 @@ Rule 33    FIELD_LIST -> ; FIELD FIELD_LIST
 Rule 34    FIELD_LIST -> <empty>
 Rule 35    COMMAND_LIST -> COMMAND
 Rule 36    COMMAND_LIST -> COMMAND_LIST ; COMMAND
-Rule 37    COMMAND -> ID ASSIGNMENT EXP
-Rule 38    COMMAND -> ID ASSIGNMENT FUNCTION_CALL
-Rule 39    COMMAND -> IF ( COM_EXP ) THEN COMMAND
-Rule 40    COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
-Rule 41    COMMAND -> WHILE ( COM_EXP ) DO COMMAND
-Rule 42    COMMAND -> BEGIN COMMAND_LIST END
+Rule 37    COMMAND -> IF ( COM_EXP ) THEN COMMAND
+Rule 38    COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
+Rule 39    COMMAND -> WHILE ( COM_EXP ) DO COMMAND
+Rule 40    COMMAND -> BEGIN COMMAND_LIST END
+Rule 41    COMMAND -> ID ASSIGNMENT EXP
+Rule 42    COMMAND -> ID ASSIGNMENT FUNCTION_CALL
 Rule 43    FUNCTION_CALL -> ID ( PARAM_LIST )
 Rule 44    PARAM_LIST -> EXP
 Rule 45    PARAM_LIST -> PARAM_LIST , EXP
@@ -79,8 +79,8 @@ Rule 58    EXP -> FALSE
 
 Terminals, with rules where they appear
 
-(                    : 11 39 40 41 43 54
-)                    : 11 39 40 41 43 54
+(                    : 11 37 38 39 43 54
+)                    : 11 37 38 39 43 54
 *                    : 14 52
 +                    : 12 50
 ,                    : 30 45
@@ -90,23 +90,23 @@ Terminals, with rules where they appear
 ;                    : 7 18 28 33 36
 =                    : 7 18
 ARRAY                : 23
-ASSIGNMENT           : 37 38
-BEGIN                : 2 3 42
+ASSIGNMENT           : 41 42
+BEGIN                : 2 3 40
 BOOLEAN              : 22
 CHAR                 : 21
 COMP_OP              : 47
 CONST                : 7
-DO                   : 41
-ELSE                 : 40
-END                  : 2 3 24 42
+DO                   : 39
+ELSE                 : 38
+END                  : 2 3 24 40
 EQUAL                : 
 FALSE                : 58
 FOR                  : 
 FUNCTION             : 
 GREATER_EQUAL        : 
 GREATER_THAN         : 
-ID                   : 7 18 25 29 30 32 37 38 43 55
-IF                   : 39 40
+ID                   : 7 18 25 29 30 32 41 42 43 55
+IF                   : 37 38
 INTEGER              : 19
 LESS_EQUAL           : 
 LESS_THAN            : 
@@ -120,12 +120,12 @@ READ                 :
 REAL                 : 20
 RECORD               : 24
 STRING               : 8
-THEN                 : 39 40
+THEN                 : 37 38
 TO                   : 
 TRUE                 : 57
 TYPE                 : 18
 VAR                  : 28
-WHILE                : 41
+WHILE                : 39
 WRITE                : 
 [                    : 23
 ]                    : 23
@@ -134,20 +134,20 @@ error                :
 Nonterminals, with rules where they appear
 
 BLOCK                : 1
-COMMAND              : 35 36 39 40 40 41
-COMMAND_LIST         : 2 36 42
-COM_EXP              : 39 40 41 48 48 49 49
+COMMAND              : 35 36 37 38 38 39
+COMMAND_LIST         : 2 36 40
+COM_EXP              : 37 38 39 48 48 49 49
 CONSTANT             : 5
 CONST_DEF            : 4 5
 CONST_EXP            : 9 11 12 12 13 13 14 14 15 15
 CONST_VALUE          : 7
 DATA_TYPE            : 18 23 28 32
 DECLARATIONS         : 1
-EXP                  : 37 44 45 47 47 50 50 51 51 52 52 53 53 54
+EXP                  : 41 44 45 47 47 50 50 51 51 52 52 53 53 54
 FIELD                : 31 33
 FIELDS               : 24
 FIELD_LIST           : 31 33
-FUNCTION_CALL        : 38
+FUNCTION_CALL        : 42
 ID_LIST              : 28 30
 PARAM_LIST           : 43 45
 PROGRAM              : 0
@@ -242,18 +242,18 @@ state 7
     (3) BLOCK -> BEGIN . END
     (35) COMMAND_LIST -> . COMMAND
     (36) COMMAND_LIST -> . COMMAND_LIST ; COMMAND
-    (37) COMMAND -> . ID ASSIGNMENT EXP
-    (38) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
-    (39) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
-    (40) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
-    (41) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
-    (42) COMMAND -> . BEGIN COMMAND_LIST END
+    (37) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
+    (38) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
+    (39) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
+    (40) COMMAND -> . BEGIN COMMAND_LIST END
+    (41) COMMAND -> . ID ASSIGNMENT EXP
+    (42) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
 
     END             shift and go to state 15
-    ID              shift and go to state 17
-    IF              shift and go to state 18
-    WHILE           shift and go to state 19
+    IF              shift and go to state 17
+    WHILE           shift and go to state 18
     BEGIN           shift and go to state 13
+    ID              shift and go to state 19
 
     COMMAND_LIST                   shift and go to state 14
     COMMAND                        shift and go to state 16
@@ -310,20 +310,20 @@ state 12
 
 state 13
 
-    (42) COMMAND -> BEGIN . COMMAND_LIST END
+    (40) COMMAND -> BEGIN . COMMAND_LIST END
     (35) COMMAND_LIST -> . COMMAND
     (36) COMMAND_LIST -> . COMMAND_LIST ; COMMAND
-    (37) COMMAND -> . ID ASSIGNMENT EXP
-    (38) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
-    (39) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
-    (40) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
-    (41) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
-    (42) COMMAND -> . BEGIN COMMAND_LIST END
+    (37) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
+    (38) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
+    (39) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
+    (40) COMMAND -> . BEGIN COMMAND_LIST END
+    (41) COMMAND -> . ID ASSIGNMENT EXP
+    (42) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
 
-    ID              shift and go to state 17
-    IF              shift and go to state 18
-    WHILE           shift and go to state 19
+    IF              shift and go to state 17
+    WHILE           shift and go to state 18
     BEGIN           shift and go to state 13
+    ID              shift and go to state 19
 
     COMMAND_LIST                   shift and go to state 26
     COMMAND                        shift and go to state 16
@@ -354,25 +354,25 @@ state 16
 
 state 17
 
-    (37) COMMAND -> ID . ASSIGNMENT EXP
-    (38) COMMAND -> ID . ASSIGNMENT FUNCTION_CALL
+    (37) COMMAND -> IF . ( COM_EXP ) THEN COMMAND
+    (38) COMMAND -> IF . ( COM_EXP ) THEN COMMAND ELSE COMMAND
 
-    ASSIGNMENT      shift and go to state 29
+    (               shift and go to state 29
 
 
 state 18
 
-    (39) COMMAND -> IF . ( COM_EXP ) THEN COMMAND
-    (40) COMMAND -> IF . ( COM_EXP ) THEN COMMAND ELSE COMMAND
+    (39) COMMAND -> WHILE . ( COM_EXP ) DO COMMAND
 
     (               shift and go to state 30
 
 
 state 19
 
-    (41) COMMAND -> WHILE . ( COM_EXP ) DO COMMAND
+    (41) COMMAND -> ID . ASSIGNMENT EXP
+    (42) COMMAND -> ID . ASSIGNMENT FUNCTION_CALL
 
-    (               shift and go to state 31
+    ASSIGNMENT      shift and go to state 31
 
 
 state 20
@@ -441,7 +441,7 @@ state 25
 
 state 26
 
-    (42) COMMAND -> BEGIN COMMAND_LIST . END
+    (40) COMMAND -> BEGIN COMMAND_LIST . END
     (36) COMMAND_LIST -> COMMAND_LIST . ; COMMAND
 
     END             shift and go to state 41
@@ -458,24 +458,75 @@ state 27
 state 28
 
     (36) COMMAND_LIST -> COMMAND_LIST ; . COMMAND
-    (37) COMMAND -> . ID ASSIGNMENT EXP
-    (38) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
-    (39) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
-    (40) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
-    (41) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
-    (42) COMMAND -> . BEGIN COMMAND_LIST END
+    (37) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
+    (38) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
+    (39) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
+    (40) COMMAND -> . BEGIN COMMAND_LIST END
+    (41) COMMAND -> . ID ASSIGNMENT EXP
+    (42) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
 
-    ID              shift and go to state 17
-    IF              shift and go to state 18
-    WHILE           shift and go to state 19
+    IF              shift and go to state 17
+    WHILE           shift and go to state 18
     BEGIN           shift and go to state 13
+    ID              shift and go to state 19
 
     COMMAND                        shift and go to state 42
 
 state 29
 
-    (37) COMMAND -> ID ASSIGNMENT . EXP
-    (38) COMMAND -> ID ASSIGNMENT . FUNCTION_CALL
+    (37) COMMAND -> IF ( . COM_EXP ) THEN COMMAND
+    (38) COMMAND -> IF ( . COM_EXP ) THEN COMMAND ELSE COMMAND
+    (47) COM_EXP -> . EXP COMP_OP EXP
+    (48) COM_EXP -> . COM_EXP LOGIC_OP_OR COM_EXP
+    (49) COM_EXP -> . COM_EXP LOGIC_OP_AND COM_EXP
+    (50) EXP -> . EXP + EXP
+    (51) EXP -> . EXP - EXP
+    (52) EXP -> . EXP * EXP
+    (53) EXP -> . EXP / EXP
+    (54) EXP -> . ( EXP )
+    (55) EXP -> . ID
+    (56) EXP -> . NUMBER
+    (57) EXP -> . TRUE
+    (58) EXP -> . FALSE
+
+    (               shift and go to state 43
+    ID              shift and go to state 46
+    NUMBER          shift and go to state 47
+    TRUE            shift and go to state 48
+    FALSE           shift and go to state 49
+
+    COM_EXP                        shift and go to state 44
+    EXP                            shift and go to state 45
+
+state 30
+
+    (39) COMMAND -> WHILE ( . COM_EXP ) DO COMMAND
+    (47) COM_EXP -> . EXP COMP_OP EXP
+    (48) COM_EXP -> . COM_EXP LOGIC_OP_OR COM_EXP
+    (49) COM_EXP -> . COM_EXP LOGIC_OP_AND COM_EXP
+    (50) EXP -> . EXP + EXP
+    (51) EXP -> . EXP - EXP
+    (52) EXP -> . EXP * EXP
+    (53) EXP -> . EXP / EXP
+    (54) EXP -> . ( EXP )
+    (55) EXP -> . ID
+    (56) EXP -> . NUMBER
+    (57) EXP -> . TRUE
+    (58) EXP -> . FALSE
+
+    (               shift and go to state 43
+    ID              shift and go to state 46
+    NUMBER          shift and go to state 47
+    TRUE            shift and go to state 48
+    FALSE           shift and go to state 49
+
+    COM_EXP                        shift and go to state 50
+    EXP                            shift and go to state 45
+
+state 31
+
+    (41) COMMAND -> ID ASSIGNMENT . EXP
+    (42) COMMAND -> ID ASSIGNMENT . FUNCTION_CALL
     (50) EXP -> . EXP + EXP
     (51) EXP -> . EXP - EXP
     (52) EXP -> . EXP * EXP
@@ -487,65 +538,14 @@ state 29
     (58) EXP -> . FALSE
     (43) FUNCTION_CALL -> . ID ( PARAM_LIST )
 
-    (               shift and go to state 46
-    ID              shift and go to state 43
+    (               shift and go to state 43
+    ID              shift and go to state 51
     NUMBER          shift and go to state 47
     TRUE            shift and go to state 48
     FALSE           shift and go to state 49
 
-    EXP                            shift and go to state 44
-    FUNCTION_CALL                  shift and go to state 45
-
-state 30
-
-    (39) COMMAND -> IF ( . COM_EXP ) THEN COMMAND
-    (40) COMMAND -> IF ( . COM_EXP ) THEN COMMAND ELSE COMMAND
-    (47) COM_EXP -> . EXP COMP_OP EXP
-    (48) COM_EXP -> . COM_EXP LOGIC_OP_OR COM_EXP
-    (49) COM_EXP -> . COM_EXP LOGIC_OP_AND COM_EXP
-    (50) EXP -> . EXP + EXP
-    (51) EXP -> . EXP - EXP
-    (52) EXP -> . EXP * EXP
-    (53) EXP -> . EXP / EXP
-    (54) EXP -> . ( EXP )
-    (55) EXP -> . ID
-    (56) EXP -> . NUMBER
-    (57) EXP -> . TRUE
-    (58) EXP -> . FALSE
-
-    (               shift and go to state 46
-    ID              shift and go to state 52
-    NUMBER          shift and go to state 47
-    TRUE            shift and go to state 48
-    FALSE           shift and go to state 49
-
-    COM_EXP                        shift and go to state 50
-    EXP                            shift and go to state 51
-
-state 31
-
-    (41) COMMAND -> WHILE ( . COM_EXP ) DO COMMAND
-    (47) COM_EXP -> . EXP COMP_OP EXP
-    (48) COM_EXP -> . COM_EXP LOGIC_OP_OR COM_EXP
-    (49) COM_EXP -> . COM_EXP LOGIC_OP_AND COM_EXP
-    (50) EXP -> . EXP + EXP
-    (51) EXP -> . EXP - EXP
-    (52) EXP -> . EXP * EXP
-    (53) EXP -> . EXP / EXP
-    (54) EXP -> . ( EXP )
-    (55) EXP -> . ID
-    (56) EXP -> . NUMBER
-    (57) EXP -> . TRUE
-    (58) EXP -> . FALSE
-
-    (               shift and go to state 46
-    ID              shift and go to state 52
-    NUMBER          shift and go to state 47
-    TRUE            shift and go to state 48
-    FALSE           shift and go to state 49
-
-    COM_EXP                        shift and go to state 53
-    EXP                            shift and go to state 51
+    EXP                            shift and go to state 52
+    FUNCTION_CALL                  shift and go to state 53
 
 state 32
 
@@ -650,11 +650,11 @@ state 40
 
 state 41
 
-    (42) COMMAND -> BEGIN COMMAND_LIST END .
+    (40) COMMAND -> BEGIN COMMAND_LIST END .
 
-    END             reduce using rule 42 (COMMAND -> BEGIN COMMAND_LIST END .)
-    ;               reduce using rule 42 (COMMAND -> BEGIN COMMAND_LIST END .)
-    ELSE            reduce using rule 42 (COMMAND -> BEGIN COMMAND_LIST END .)
+    END             reduce using rule 40 (COMMAND -> BEGIN COMMAND_LIST END .)
+    ;               reduce using rule 40 (COMMAND -> BEGIN COMMAND_LIST END .)
+    ELSE            reduce using rule 40 (COMMAND -> BEGIN COMMAND_LIST END .)
 
 
 state 42
@@ -667,47 +667,6 @@ state 42
 
 state 43
 
-    (55) EXP -> ID .
-    (43) FUNCTION_CALL -> ID . ( PARAM_LIST )
-
-    +               reduce using rule 55 (EXP -> ID .)
-    -               reduce using rule 55 (EXP -> ID .)
-    *               reduce using rule 55 (EXP -> ID .)
-    /               reduce using rule 55 (EXP -> ID .)
-    END             reduce using rule 55 (EXP -> ID .)
-    ;               reduce using rule 55 (EXP -> ID .)
-    ELSE            reduce using rule 55 (EXP -> ID .)
-    (               shift and go to state 70
-
-
-state 44
-
-    (37) COMMAND -> ID ASSIGNMENT EXP .
-    (50) EXP -> EXP . + EXP
-    (51) EXP -> EXP . - EXP
-    (52) EXP -> EXP . * EXP
-    (53) EXP -> EXP . / EXP
-
-    END             reduce using rule 37 (COMMAND -> ID ASSIGNMENT EXP .)
-    ;               reduce using rule 37 (COMMAND -> ID ASSIGNMENT EXP .)
-    ELSE            reduce using rule 37 (COMMAND -> ID ASSIGNMENT EXP .)
-    +               shift and go to state 71
-    -               shift and go to state 72
-    *               shift and go to state 73
-    /               shift and go to state 74
-
-
-state 45
-
-    (38) COMMAND -> ID ASSIGNMENT FUNCTION_CALL .
-
-    END             reduce using rule 38 (COMMAND -> ID ASSIGNMENT FUNCTION_CALL .)
-    ;               reduce using rule 38 (COMMAND -> ID ASSIGNMENT FUNCTION_CALL .)
-    ELSE            reduce using rule 38 (COMMAND -> ID ASSIGNMENT FUNCTION_CALL .)
-
-
-state 46
-
     (54) EXP -> ( . EXP )
     (50) EXP -> . EXP + EXP
     (51) EXP -> . EXP - EXP
@@ -719,81 +678,27 @@ state 46
     (57) EXP -> . TRUE
     (58) EXP -> . FALSE
 
-    (               shift and go to state 46
-    ID              shift and go to state 52
+    (               shift and go to state 43
+    ID              shift and go to state 46
     NUMBER          shift and go to state 47
     TRUE            shift and go to state 48
     FALSE           shift and go to state 49
 
-    EXP                            shift and go to state 75
+    EXP                            shift and go to state 70
 
-state 47
+state 44
 
-    (56) EXP -> NUMBER .
-
-    +               reduce using rule 56 (EXP -> NUMBER .)
-    -               reduce using rule 56 (EXP -> NUMBER .)
-    *               reduce using rule 56 (EXP -> NUMBER .)
-    /               reduce using rule 56 (EXP -> NUMBER .)
-    END             reduce using rule 56 (EXP -> NUMBER .)
-    ;               reduce using rule 56 (EXP -> NUMBER .)
-    ELSE            reduce using rule 56 (EXP -> NUMBER .)
-    COMP_OP         reduce using rule 56 (EXP -> NUMBER .)
-    )               reduce using rule 56 (EXP -> NUMBER .)
-    ,               reduce using rule 56 (EXP -> NUMBER .)
-    LOGIC_OP_OR     reduce using rule 56 (EXP -> NUMBER .)
-    LOGIC_OP_AND    reduce using rule 56 (EXP -> NUMBER .)
-
-
-state 48
-
-    (57) EXP -> TRUE .
-
-    +               reduce using rule 57 (EXP -> TRUE .)
-    -               reduce using rule 57 (EXP -> TRUE .)
-    *               reduce using rule 57 (EXP -> TRUE .)
-    /               reduce using rule 57 (EXP -> TRUE .)
-    END             reduce using rule 57 (EXP -> TRUE .)
-    ;               reduce using rule 57 (EXP -> TRUE .)
-    ELSE            reduce using rule 57 (EXP -> TRUE .)
-    COMP_OP         reduce using rule 57 (EXP -> TRUE .)
-    )               reduce using rule 57 (EXP -> TRUE .)
-    ,               reduce using rule 57 (EXP -> TRUE .)
-    LOGIC_OP_OR     reduce using rule 57 (EXP -> TRUE .)
-    LOGIC_OP_AND    reduce using rule 57 (EXP -> TRUE .)
-
-
-state 49
-
-    (58) EXP -> FALSE .
-
-    +               reduce using rule 58 (EXP -> FALSE .)
-    -               reduce using rule 58 (EXP -> FALSE .)
-    *               reduce using rule 58 (EXP -> FALSE .)
-    /               reduce using rule 58 (EXP -> FALSE .)
-    END             reduce using rule 58 (EXP -> FALSE .)
-    ;               reduce using rule 58 (EXP -> FALSE .)
-    ELSE            reduce using rule 58 (EXP -> FALSE .)
-    COMP_OP         reduce using rule 58 (EXP -> FALSE .)
-    )               reduce using rule 58 (EXP -> FALSE .)
-    ,               reduce using rule 58 (EXP -> FALSE .)
-    LOGIC_OP_OR     reduce using rule 58 (EXP -> FALSE .)
-    LOGIC_OP_AND    reduce using rule 58 (EXP -> FALSE .)
-
-
-state 50
-
-    (39) COMMAND -> IF ( COM_EXP . ) THEN COMMAND
-    (40) COMMAND -> IF ( COM_EXP . ) THEN COMMAND ELSE COMMAND
+    (37) COMMAND -> IF ( COM_EXP . ) THEN COMMAND
+    (38) COMMAND -> IF ( COM_EXP . ) THEN COMMAND ELSE COMMAND
     (48) COM_EXP -> COM_EXP . LOGIC_OP_OR COM_EXP
     (49) COM_EXP -> COM_EXP . LOGIC_OP_AND COM_EXP
 
-    )               shift and go to state 76
-    LOGIC_OP_OR     shift and go to state 77
-    LOGIC_OP_AND    shift and go to state 78
+    )               shift and go to state 71
+    LOGIC_OP_OR     shift and go to state 72
+    LOGIC_OP_AND    shift and go to state 73
 
 
-state 51
+state 45
 
     (47) COM_EXP -> EXP . COMP_OP EXP
     (50) EXP -> EXP . + EXP
@@ -801,14 +706,14 @@ state 51
     (52) EXP -> EXP . * EXP
     (53) EXP -> EXP . / EXP
 
-    COMP_OP         shift and go to state 79
-    +               shift and go to state 71
-    -               shift and go to state 72
-    *               shift and go to state 73
-    /               shift and go to state 74
+    COMP_OP         shift and go to state 74
+    +               shift and go to state 75
+    -               shift and go to state 76
+    *               shift and go to state 77
+    /               shift and go to state 78
 
 
-state 52
+state 46
 
     (55) EXP -> ID .
 
@@ -818,23 +723,118 @@ state 52
     *               reduce using rule 55 (EXP -> ID .)
     /               reduce using rule 55 (EXP -> ID .)
     )               reduce using rule 55 (EXP -> ID .)
-    ,               reduce using rule 55 (EXP -> ID .)
+    LOGIC_OP_OR     reduce using rule 55 (EXP -> ID .)
+    LOGIC_OP_AND    reduce using rule 55 (EXP -> ID .)
     END             reduce using rule 55 (EXP -> ID .)
     ;               reduce using rule 55 (EXP -> ID .)
     ELSE            reduce using rule 55 (EXP -> ID .)
-    LOGIC_OP_OR     reduce using rule 55 (EXP -> ID .)
-    LOGIC_OP_AND    reduce using rule 55 (EXP -> ID .)
+    ,               reduce using rule 55 (EXP -> ID .)
+
+
+state 47
+
+    (56) EXP -> NUMBER .
+
+    COMP_OP         reduce using rule 56 (EXP -> NUMBER .)
+    +               reduce using rule 56 (EXP -> NUMBER .)
+    -               reduce using rule 56 (EXP -> NUMBER .)
+    *               reduce using rule 56 (EXP -> NUMBER .)
+    /               reduce using rule 56 (EXP -> NUMBER .)
+    END             reduce using rule 56 (EXP -> NUMBER .)
+    ;               reduce using rule 56 (EXP -> NUMBER .)
+    ELSE            reduce using rule 56 (EXP -> NUMBER .)
+    )               reduce using rule 56 (EXP -> NUMBER .)
+    LOGIC_OP_OR     reduce using rule 56 (EXP -> NUMBER .)
+    LOGIC_OP_AND    reduce using rule 56 (EXP -> NUMBER .)
+    ,               reduce using rule 56 (EXP -> NUMBER .)
+
+
+state 48
+
+    (57) EXP -> TRUE .
+
+    COMP_OP         reduce using rule 57 (EXP -> TRUE .)
+    +               reduce using rule 57 (EXP -> TRUE .)
+    -               reduce using rule 57 (EXP -> TRUE .)
+    *               reduce using rule 57 (EXP -> TRUE .)
+    /               reduce using rule 57 (EXP -> TRUE .)
+    END             reduce using rule 57 (EXP -> TRUE .)
+    ;               reduce using rule 57 (EXP -> TRUE .)
+    ELSE            reduce using rule 57 (EXP -> TRUE .)
+    )               reduce using rule 57 (EXP -> TRUE .)
+    LOGIC_OP_OR     reduce using rule 57 (EXP -> TRUE .)
+    LOGIC_OP_AND    reduce using rule 57 (EXP -> TRUE .)
+    ,               reduce using rule 57 (EXP -> TRUE .)
+
+
+state 49
+
+    (58) EXP -> FALSE .
+
+    COMP_OP         reduce using rule 58 (EXP -> FALSE .)
+    +               reduce using rule 58 (EXP -> FALSE .)
+    -               reduce using rule 58 (EXP -> FALSE .)
+    *               reduce using rule 58 (EXP -> FALSE .)
+    /               reduce using rule 58 (EXP -> FALSE .)
+    END             reduce using rule 58 (EXP -> FALSE .)
+    ;               reduce using rule 58 (EXP -> FALSE .)
+    ELSE            reduce using rule 58 (EXP -> FALSE .)
+    )               reduce using rule 58 (EXP -> FALSE .)
+    LOGIC_OP_OR     reduce using rule 58 (EXP -> FALSE .)
+    LOGIC_OP_AND    reduce using rule 58 (EXP -> FALSE .)
+    ,               reduce using rule 58 (EXP -> FALSE .)
+
+
+state 50
+
+    (39) COMMAND -> WHILE ( COM_EXP . ) DO COMMAND
+    (48) COM_EXP -> COM_EXP . LOGIC_OP_OR COM_EXP
+    (49) COM_EXP -> COM_EXP . LOGIC_OP_AND COM_EXP
+
+    )               shift and go to state 79
+    LOGIC_OP_OR     shift and go to state 72
+    LOGIC_OP_AND    shift and go to state 73
+
+
+state 51
+
+    (55) EXP -> ID .
+    (43) FUNCTION_CALL -> ID . ( PARAM_LIST )
+
+    +               reduce using rule 55 (EXP -> ID .)
+    -               reduce using rule 55 (EXP -> ID .)
+    *               reduce using rule 55 (EXP -> ID .)
+    /               reduce using rule 55 (EXP -> ID .)
+    END             reduce using rule 55 (EXP -> ID .)
+    ;               reduce using rule 55 (EXP -> ID .)
+    ELSE            reduce using rule 55 (EXP -> ID .)
+    (               shift and go to state 80
+
+
+state 52
+
+    (41) COMMAND -> ID ASSIGNMENT EXP .
+    (50) EXP -> EXP . + EXP
+    (51) EXP -> EXP . - EXP
+    (52) EXP -> EXP . * EXP
+    (53) EXP -> EXP . / EXP
+
+    END             reduce using rule 41 (COMMAND -> ID ASSIGNMENT EXP .)
+    ;               reduce using rule 41 (COMMAND -> ID ASSIGNMENT EXP .)
+    ELSE            reduce using rule 41 (COMMAND -> ID ASSIGNMENT EXP .)
+    +               shift and go to state 75
+    -               shift and go to state 76
+    *               shift and go to state 77
+    /               shift and go to state 78
 
 
 state 53
 
-    (41) COMMAND -> WHILE ( COM_EXP . ) DO COMMAND
-    (48) COM_EXP -> COM_EXP . LOGIC_OP_OR COM_EXP
-    (49) COM_EXP -> COM_EXP . LOGIC_OP_AND COM_EXP
+    (42) COMMAND -> ID ASSIGNMENT FUNCTION_CALL .
 
-    )               shift and go to state 80
-    LOGIC_OP_OR     shift and go to state 77
-    LOGIC_OP_AND    shift and go to state 78
+    END             reduce using rule 42 (COMMAND -> ID ASSIGNMENT FUNCTION_CALL .)
+    ;               reduce using rule 42 (COMMAND -> ID ASSIGNMENT FUNCTION_CALL .)
+    ELSE            reduce using rule 42 (COMMAND -> ID ASSIGNMENT FUNCTION_CALL .)
 
 
 state 54
@@ -1017,6 +1017,191 @@ state 69
 
 state 70
 
+    (54) EXP -> ( EXP . )
+    (50) EXP -> EXP . + EXP
+    (51) EXP -> EXP . - EXP
+    (52) EXP -> EXP . * EXP
+    (53) EXP -> EXP . / EXP
+
+    )               shift and go to state 93
+    +               shift and go to state 75
+    -               shift and go to state 76
+    *               shift and go to state 77
+    /               shift and go to state 78
+
+
+state 71
+
+    (37) COMMAND -> IF ( COM_EXP ) . THEN COMMAND
+    (38) COMMAND -> IF ( COM_EXP ) . THEN COMMAND ELSE COMMAND
+
+    THEN            shift and go to state 94
+
+
+state 72
+
+    (48) COM_EXP -> COM_EXP LOGIC_OP_OR . COM_EXP
+    (47) COM_EXP -> . EXP COMP_OP EXP
+    (48) COM_EXP -> . COM_EXP LOGIC_OP_OR COM_EXP
+    (49) COM_EXP -> . COM_EXP LOGIC_OP_AND COM_EXP
+    (50) EXP -> . EXP + EXP
+    (51) EXP -> . EXP - EXP
+    (52) EXP -> . EXP * EXP
+    (53) EXP -> . EXP / EXP
+    (54) EXP -> . ( EXP )
+    (55) EXP -> . ID
+    (56) EXP -> . NUMBER
+    (57) EXP -> . TRUE
+    (58) EXP -> . FALSE
+
+    (               shift and go to state 43
+    ID              shift and go to state 46
+    NUMBER          shift and go to state 47
+    TRUE            shift and go to state 48
+    FALSE           shift and go to state 49
+
+    COM_EXP                        shift and go to state 95
+    EXP                            shift and go to state 45
+
+state 73
+
+    (49) COM_EXP -> COM_EXP LOGIC_OP_AND . COM_EXP
+    (47) COM_EXP -> . EXP COMP_OP EXP
+    (48) COM_EXP -> . COM_EXP LOGIC_OP_OR COM_EXP
+    (49) COM_EXP -> . COM_EXP LOGIC_OP_AND COM_EXP
+    (50) EXP -> . EXP + EXP
+    (51) EXP -> . EXP - EXP
+    (52) EXP -> . EXP * EXP
+    (53) EXP -> . EXP / EXP
+    (54) EXP -> . ( EXP )
+    (55) EXP -> . ID
+    (56) EXP -> . NUMBER
+    (57) EXP -> . TRUE
+    (58) EXP -> . FALSE
+
+    (               shift and go to state 43
+    ID              shift and go to state 46
+    NUMBER          shift and go to state 47
+    TRUE            shift and go to state 48
+    FALSE           shift and go to state 49
+
+    COM_EXP                        shift and go to state 96
+    EXP                            shift and go to state 45
+
+state 74
+
+    (47) COM_EXP -> EXP COMP_OP . EXP
+    (50) EXP -> . EXP + EXP
+    (51) EXP -> . EXP - EXP
+    (52) EXP -> . EXP * EXP
+    (53) EXP -> . EXP / EXP
+    (54) EXP -> . ( EXP )
+    (55) EXP -> . ID
+    (56) EXP -> . NUMBER
+    (57) EXP -> . TRUE
+    (58) EXP -> . FALSE
+
+    (               shift and go to state 43
+    ID              shift and go to state 46
+    NUMBER          shift and go to state 47
+    TRUE            shift and go to state 48
+    FALSE           shift and go to state 49
+
+    EXP                            shift and go to state 97
+
+state 75
+
+    (50) EXP -> EXP + . EXP
+    (50) EXP -> . EXP + EXP
+    (51) EXP -> . EXP - EXP
+    (52) EXP -> . EXP * EXP
+    (53) EXP -> . EXP / EXP
+    (54) EXP -> . ( EXP )
+    (55) EXP -> . ID
+    (56) EXP -> . NUMBER
+    (57) EXP -> . TRUE
+    (58) EXP -> . FALSE
+
+    (               shift and go to state 43
+    ID              shift and go to state 46
+    NUMBER          shift and go to state 47
+    TRUE            shift and go to state 48
+    FALSE           shift and go to state 49
+
+    EXP                            shift and go to state 98
+
+state 76
+
+    (51) EXP -> EXP - . EXP
+    (50) EXP -> . EXP + EXP
+    (51) EXP -> . EXP - EXP
+    (52) EXP -> . EXP * EXP
+    (53) EXP -> . EXP / EXP
+    (54) EXP -> . ( EXP )
+    (55) EXP -> . ID
+    (56) EXP -> . NUMBER
+    (57) EXP -> . TRUE
+    (58) EXP -> . FALSE
+
+    (               shift and go to state 43
+    ID              shift and go to state 46
+    NUMBER          shift and go to state 47
+    TRUE            shift and go to state 48
+    FALSE           shift and go to state 49
+
+    EXP                            shift and go to state 99
+
+state 77
+
+    (52) EXP -> EXP * . EXP
+    (50) EXP -> . EXP + EXP
+    (51) EXP -> . EXP - EXP
+    (52) EXP -> . EXP * EXP
+    (53) EXP -> . EXP / EXP
+    (54) EXP -> . ( EXP )
+    (55) EXP -> . ID
+    (56) EXP -> . NUMBER
+    (57) EXP -> . TRUE
+    (58) EXP -> . FALSE
+
+    (               shift and go to state 43
+    ID              shift and go to state 46
+    NUMBER          shift and go to state 47
+    TRUE            shift and go to state 48
+    FALSE           shift and go to state 49
+
+    EXP                            shift and go to state 100
+
+state 78
+
+    (53) EXP -> EXP / . EXP
+    (50) EXP -> . EXP + EXP
+    (51) EXP -> . EXP - EXP
+    (52) EXP -> . EXP * EXP
+    (53) EXP -> . EXP / EXP
+    (54) EXP -> . ( EXP )
+    (55) EXP -> . ID
+    (56) EXP -> . NUMBER
+    (57) EXP -> . TRUE
+    (58) EXP -> . FALSE
+
+    (               shift and go to state 43
+    ID              shift and go to state 46
+    NUMBER          shift and go to state 47
+    TRUE            shift and go to state 48
+    FALSE           shift and go to state 49
+
+    EXP                            shift and go to state 101
+
+state 79
+
+    (39) COMMAND -> WHILE ( COM_EXP ) . DO COMMAND
+
+    DO              shift and go to state 102
+
+
+state 80
+
     (43) FUNCTION_CALL -> ID ( . PARAM_LIST )
     (44) PARAM_LIST -> . EXP
     (45) PARAM_LIST -> . PARAM_LIST , EXP
@@ -1033,199 +1218,14 @@ state 70
 
     )               reduce using rule 46 (PARAM_LIST -> .)
     ,               reduce using rule 46 (PARAM_LIST -> .)
-    (               shift and go to state 46
-    ID              shift and go to state 52
+    (               shift and go to state 43
+    ID              shift and go to state 46
     NUMBER          shift and go to state 47
     TRUE            shift and go to state 48
     FALSE           shift and go to state 49
 
-    PARAM_LIST                     shift and go to state 93
-    EXP                            shift and go to state 94
-
-state 71
-
-    (50) EXP -> EXP + . EXP
-    (50) EXP -> . EXP + EXP
-    (51) EXP -> . EXP - EXP
-    (52) EXP -> . EXP * EXP
-    (53) EXP -> . EXP / EXP
-    (54) EXP -> . ( EXP )
-    (55) EXP -> . ID
-    (56) EXP -> . NUMBER
-    (57) EXP -> . TRUE
-    (58) EXP -> . FALSE
-
-    (               shift and go to state 46
-    ID              shift and go to state 52
-    NUMBER          shift and go to state 47
-    TRUE            shift and go to state 48
-    FALSE           shift and go to state 49
-
-    EXP                            shift and go to state 95
-
-state 72
-
-    (51) EXP -> EXP - . EXP
-    (50) EXP -> . EXP + EXP
-    (51) EXP -> . EXP - EXP
-    (52) EXP -> . EXP * EXP
-    (53) EXP -> . EXP / EXP
-    (54) EXP -> . ( EXP )
-    (55) EXP -> . ID
-    (56) EXP -> . NUMBER
-    (57) EXP -> . TRUE
-    (58) EXP -> . FALSE
-
-    (               shift and go to state 46
-    ID              shift and go to state 52
-    NUMBER          shift and go to state 47
-    TRUE            shift and go to state 48
-    FALSE           shift and go to state 49
-
-    EXP                            shift and go to state 96
-
-state 73
-
-    (52) EXP -> EXP * . EXP
-    (50) EXP -> . EXP + EXP
-    (51) EXP -> . EXP - EXP
-    (52) EXP -> . EXP * EXP
-    (53) EXP -> . EXP / EXP
-    (54) EXP -> . ( EXP )
-    (55) EXP -> . ID
-    (56) EXP -> . NUMBER
-    (57) EXP -> . TRUE
-    (58) EXP -> . FALSE
-
-    (               shift and go to state 46
-    ID              shift and go to state 52
-    NUMBER          shift and go to state 47
-    TRUE            shift and go to state 48
-    FALSE           shift and go to state 49
-
-    EXP                            shift and go to state 97
-
-state 74
-
-    (53) EXP -> EXP / . EXP
-    (50) EXP -> . EXP + EXP
-    (51) EXP -> . EXP - EXP
-    (52) EXP -> . EXP * EXP
-    (53) EXP -> . EXP / EXP
-    (54) EXP -> . ( EXP )
-    (55) EXP -> . ID
-    (56) EXP -> . NUMBER
-    (57) EXP -> . TRUE
-    (58) EXP -> . FALSE
-
-    (               shift and go to state 46
-    ID              shift and go to state 52
-    NUMBER          shift and go to state 47
-    TRUE            shift and go to state 48
-    FALSE           shift and go to state 49
-
-    EXP                            shift and go to state 98
-
-state 75
-
-    (54) EXP -> ( EXP . )
-    (50) EXP -> EXP . + EXP
-    (51) EXP -> EXP . - EXP
-    (52) EXP -> EXP . * EXP
-    (53) EXP -> EXP . / EXP
-
-    )               shift and go to state 99
-    +               shift and go to state 71
-    -               shift and go to state 72
-    *               shift and go to state 73
-    /               shift and go to state 74
-
-
-state 76
-
-    (39) COMMAND -> IF ( COM_EXP ) . THEN COMMAND
-    (40) COMMAND -> IF ( COM_EXP ) . THEN COMMAND ELSE COMMAND
-
-    THEN            shift and go to state 100
-
-
-state 77
-
-    (48) COM_EXP -> COM_EXP LOGIC_OP_OR . COM_EXP
-    (47) COM_EXP -> . EXP COMP_OP EXP
-    (48) COM_EXP -> . COM_EXP LOGIC_OP_OR COM_EXP
-    (49) COM_EXP -> . COM_EXP LOGIC_OP_AND COM_EXP
-    (50) EXP -> . EXP + EXP
-    (51) EXP -> . EXP - EXP
-    (52) EXP -> . EXP * EXP
-    (53) EXP -> . EXP / EXP
-    (54) EXP -> . ( EXP )
-    (55) EXP -> . ID
-    (56) EXP -> . NUMBER
-    (57) EXP -> . TRUE
-    (58) EXP -> . FALSE
-
-    (               shift and go to state 46
-    ID              shift and go to state 52
-    NUMBER          shift and go to state 47
-    TRUE            shift and go to state 48
-    FALSE           shift and go to state 49
-
-    COM_EXP                        shift and go to state 101
-    EXP                            shift and go to state 51
-
-state 78
-
-    (49) COM_EXP -> COM_EXP LOGIC_OP_AND . COM_EXP
-    (47) COM_EXP -> . EXP COMP_OP EXP
-    (48) COM_EXP -> . COM_EXP LOGIC_OP_OR COM_EXP
-    (49) COM_EXP -> . COM_EXP LOGIC_OP_AND COM_EXP
-    (50) EXP -> . EXP + EXP
-    (51) EXP -> . EXP - EXP
-    (52) EXP -> . EXP * EXP
-    (53) EXP -> . EXP / EXP
-    (54) EXP -> . ( EXP )
-    (55) EXP -> . ID
-    (56) EXP -> . NUMBER
-    (57) EXP -> . TRUE
-    (58) EXP -> . FALSE
-
-    (               shift and go to state 46
-    ID              shift and go to state 52
-    NUMBER          shift and go to state 47
-    TRUE            shift and go to state 48
-    FALSE           shift and go to state 49
-
-    COM_EXP                        shift and go to state 102
-    EXP                            shift and go to state 51
-
-state 79
-
-    (47) COM_EXP -> EXP COMP_OP . EXP
-    (50) EXP -> . EXP + EXP
-    (51) EXP -> . EXP - EXP
-    (52) EXP -> . EXP * EXP
-    (53) EXP -> . EXP / EXP
-    (54) EXP -> . ( EXP )
-    (55) EXP -> . ID
-    (56) EXP -> . NUMBER
-    (57) EXP -> . TRUE
-    (58) EXP -> . FALSE
-
-    (               shift and go to state 46
-    ID              shift and go to state 52
-    NUMBER          shift and go to state 47
-    TRUE            shift and go to state 48
-    FALSE           shift and go to state 49
-
-    EXP                            shift and go to state 103
-
-state 80
-
-    (41) COMMAND -> WHILE ( COM_EXP ) . DO COMMAND
-
-    DO              shift and go to state 104
-
+    PARAM_LIST                     shift and go to state 103
+    EXP                            shift and go to state 104
 
 state 81
 
@@ -1291,21 +1291,17 @@ state 88
     (14) CONST_EXP -> CONST_EXP . * CONST_EXP
     (15) CONST_EXP -> CONST_EXP . / CONST_EXP
 
-  ! shift/reduce conflict for + resolved as shift
-  ! shift/reduce conflict for - resolved as shift
-  ! shift/reduce conflict for * resolved as shift
-  ! shift/reduce conflict for / resolved as shift
+    +               reduce using rule 12 (CONST_EXP -> CONST_EXP + CONST_EXP .)
+    -               reduce using rule 12 (CONST_EXP -> CONST_EXP + CONST_EXP .)
     ;               reduce using rule 12 (CONST_EXP -> CONST_EXP + CONST_EXP .)
     )               reduce using rule 12 (CONST_EXP -> CONST_EXP + CONST_EXP .)
-    +               shift and go to state 65
-    -               shift and go to state 66
     *               shift and go to state 67
     /               shift and go to state 68
 
-  ! +               [ reduce using rule 12 (CONST_EXP -> CONST_EXP + CONST_EXP .) ]
-  ! -               [ reduce using rule 12 (CONST_EXP -> CONST_EXP + CONST_EXP .) ]
   ! *               [ reduce using rule 12 (CONST_EXP -> CONST_EXP + CONST_EXP .) ]
   ! /               [ reduce using rule 12 (CONST_EXP -> CONST_EXP + CONST_EXP .) ]
+  ! +               [ shift and go to state 65 ]
+  ! -               [ shift and go to state 66 ]
 
 
 state 89
@@ -1316,21 +1312,17 @@ state 89
     (14) CONST_EXP -> CONST_EXP . * CONST_EXP
     (15) CONST_EXP -> CONST_EXP . / CONST_EXP
 
-  ! shift/reduce conflict for + resolved as shift
-  ! shift/reduce conflict for - resolved as shift
-  ! shift/reduce conflict for * resolved as shift
-  ! shift/reduce conflict for / resolved as shift
+    +               reduce using rule 13 (CONST_EXP -> CONST_EXP - CONST_EXP .)
+    -               reduce using rule 13 (CONST_EXP -> CONST_EXP - CONST_EXP .)
     ;               reduce using rule 13 (CONST_EXP -> CONST_EXP - CONST_EXP .)
     )               reduce using rule 13 (CONST_EXP -> CONST_EXP - CONST_EXP .)
-    +               shift and go to state 65
-    -               shift and go to state 66
     *               shift and go to state 67
     /               shift and go to state 68
 
-  ! +               [ reduce using rule 13 (CONST_EXP -> CONST_EXP - CONST_EXP .) ]
-  ! -               [ reduce using rule 13 (CONST_EXP -> CONST_EXP - CONST_EXP .) ]
   ! *               [ reduce using rule 13 (CONST_EXP -> CONST_EXP - CONST_EXP .) ]
   ! /               [ reduce using rule 13 (CONST_EXP -> CONST_EXP - CONST_EXP .) ]
+  ! +               [ shift and go to state 65 ]
+  ! -               [ shift and go to state 66 ]
 
 
 state 90
@@ -1341,21 +1333,17 @@ state 90
     (14) CONST_EXP -> CONST_EXP . * CONST_EXP
     (15) CONST_EXP -> CONST_EXP . / CONST_EXP
 
-  ! shift/reduce conflict for + resolved as shift
-  ! shift/reduce conflict for - resolved as shift
-  ! shift/reduce conflict for * resolved as shift
-  ! shift/reduce conflict for / resolved as shift
+    +               reduce using rule 14 (CONST_EXP -> CONST_EXP * CONST_EXP .)
+    -               reduce using rule 14 (CONST_EXP -> CONST_EXP * CONST_EXP .)
+    *               reduce using rule 14 (CONST_EXP -> CONST_EXP * CONST_EXP .)
+    /               reduce using rule 14 (CONST_EXP -> CONST_EXP * CONST_EXP .)
     ;               reduce using rule 14 (CONST_EXP -> CONST_EXP * CONST_EXP .)
     )               reduce using rule 14 (CONST_EXP -> CONST_EXP * CONST_EXP .)
-    +               shift and go to state 65
-    -               shift and go to state 66
-    *               shift and go to state 67
-    /               shift and go to state 68
 
-  ! +               [ reduce using rule 14 (CONST_EXP -> CONST_EXP * CONST_EXP .) ]
-  ! -               [ reduce using rule 14 (CONST_EXP -> CONST_EXP * CONST_EXP .) ]
-  ! *               [ reduce using rule 14 (CONST_EXP -> CONST_EXP * CONST_EXP .) ]
-  ! /               [ reduce using rule 14 (CONST_EXP -> CONST_EXP * CONST_EXP .) ]
+  ! +               [ shift and go to state 65 ]
+  ! -               [ shift and go to state 66 ]
+  ! *               [ shift and go to state 67 ]
+  ! /               [ shift and go to state 68 ]
 
 
 state 91
@@ -1366,21 +1354,17 @@ state 91
     (14) CONST_EXP -> CONST_EXP . * CONST_EXP
     (15) CONST_EXP -> CONST_EXP . / CONST_EXP
 
-  ! shift/reduce conflict for + resolved as shift
-  ! shift/reduce conflict for - resolved as shift
-  ! shift/reduce conflict for * resolved as shift
-  ! shift/reduce conflict for / resolved as shift
+    +               reduce using rule 15 (CONST_EXP -> CONST_EXP / CONST_EXP .)
+    -               reduce using rule 15 (CONST_EXP -> CONST_EXP / CONST_EXP .)
+    *               reduce using rule 15 (CONST_EXP -> CONST_EXP / CONST_EXP .)
+    /               reduce using rule 15 (CONST_EXP -> CONST_EXP / CONST_EXP .)
     ;               reduce using rule 15 (CONST_EXP -> CONST_EXP / CONST_EXP .)
     )               reduce using rule 15 (CONST_EXP -> CONST_EXP / CONST_EXP .)
-    +               shift and go to state 65
-    -               shift and go to state 66
-    *               shift and go to state 67
-    /               shift and go to state 68
 
-  ! +               [ reduce using rule 15 (CONST_EXP -> CONST_EXP / CONST_EXP .) ]
-  ! -               [ reduce using rule 15 (CONST_EXP -> CONST_EXP / CONST_EXP .) ]
-  ! *               [ reduce using rule 15 (CONST_EXP -> CONST_EXP / CONST_EXP .) ]
-  ! /               [ reduce using rule 15 (CONST_EXP -> CONST_EXP / CONST_EXP .) ]
+  ! +               [ shift and go to state 65 ]
+  ! -               [ shift and go to state 66 ]
+  ! *               [ shift and go to state 67 ]
+  ! /               [ shift and go to state 68 ]
 
 
 state 92
@@ -1397,157 +1381,9 @@ state 92
 
 state 93
 
-    (43) FUNCTION_CALL -> ID ( PARAM_LIST . )
-    (45) PARAM_LIST -> PARAM_LIST . , EXP
-
-    )               shift and go to state 111
-    ,               shift and go to state 112
-
-
-state 94
-
-    (44) PARAM_LIST -> EXP .
-    (50) EXP -> EXP . + EXP
-    (51) EXP -> EXP . - EXP
-    (52) EXP -> EXP . * EXP
-    (53) EXP -> EXP . / EXP
-
-    )               reduce using rule 44 (PARAM_LIST -> EXP .)
-    ,               reduce using rule 44 (PARAM_LIST -> EXP .)
-    +               shift and go to state 71
-    -               shift and go to state 72
-    *               shift and go to state 73
-    /               shift and go to state 74
-
-
-state 95
-
-    (50) EXP -> EXP + EXP .
-    (50) EXP -> EXP . + EXP
-    (51) EXP -> EXP . - EXP
-    (52) EXP -> EXP . * EXP
-    (53) EXP -> EXP . / EXP
-
-  ! shift/reduce conflict for + resolved as shift
-  ! shift/reduce conflict for - resolved as shift
-  ! shift/reduce conflict for * resolved as shift
-  ! shift/reduce conflict for / resolved as shift
-    END             reduce using rule 50 (EXP -> EXP + EXP .)
-    ;               reduce using rule 50 (EXP -> EXP + EXP .)
-    ELSE            reduce using rule 50 (EXP -> EXP + EXP .)
-    COMP_OP         reduce using rule 50 (EXP -> EXP + EXP .)
-    )               reduce using rule 50 (EXP -> EXP + EXP .)
-    ,               reduce using rule 50 (EXP -> EXP + EXP .)
-    LOGIC_OP_OR     reduce using rule 50 (EXP -> EXP + EXP .)
-    LOGIC_OP_AND    reduce using rule 50 (EXP -> EXP + EXP .)
-    +               shift and go to state 71
-    -               shift and go to state 72
-    *               shift and go to state 73
-    /               shift and go to state 74
-
-  ! +               [ reduce using rule 50 (EXP -> EXP + EXP .) ]
-  ! -               [ reduce using rule 50 (EXP -> EXP + EXP .) ]
-  ! *               [ reduce using rule 50 (EXP -> EXP + EXP .) ]
-  ! /               [ reduce using rule 50 (EXP -> EXP + EXP .) ]
-
-
-state 96
-
-    (51) EXP -> EXP - EXP .
-    (50) EXP -> EXP . + EXP
-    (51) EXP -> EXP . - EXP
-    (52) EXP -> EXP . * EXP
-    (53) EXP -> EXP . / EXP
-
-  ! shift/reduce conflict for + resolved as shift
-  ! shift/reduce conflict for - resolved as shift
-  ! shift/reduce conflict for * resolved as shift
-  ! shift/reduce conflict for / resolved as shift
-    END             reduce using rule 51 (EXP -> EXP - EXP .)
-    ;               reduce using rule 51 (EXP -> EXP - EXP .)
-    ELSE            reduce using rule 51 (EXP -> EXP - EXP .)
-    COMP_OP         reduce using rule 51 (EXP -> EXP - EXP .)
-    )               reduce using rule 51 (EXP -> EXP - EXP .)
-    ,               reduce using rule 51 (EXP -> EXP - EXP .)
-    LOGIC_OP_OR     reduce using rule 51 (EXP -> EXP - EXP .)
-    LOGIC_OP_AND    reduce using rule 51 (EXP -> EXP - EXP .)
-    +               shift and go to state 71
-    -               shift and go to state 72
-    *               shift and go to state 73
-    /               shift and go to state 74
-
-  ! +               [ reduce using rule 51 (EXP -> EXP - EXP .) ]
-  ! -               [ reduce using rule 51 (EXP -> EXP - EXP .) ]
-  ! *               [ reduce using rule 51 (EXP -> EXP - EXP .) ]
-  ! /               [ reduce using rule 51 (EXP -> EXP - EXP .) ]
-
-
-state 97
-
-    (52) EXP -> EXP * EXP .
-    (50) EXP -> EXP . + EXP
-    (51) EXP -> EXP . - EXP
-    (52) EXP -> EXP . * EXP
-    (53) EXP -> EXP . / EXP
-
-  ! shift/reduce conflict for + resolved as shift
-  ! shift/reduce conflict for - resolved as shift
-  ! shift/reduce conflict for * resolved as shift
-  ! shift/reduce conflict for / resolved as shift
-    END             reduce using rule 52 (EXP -> EXP * EXP .)
-    ;               reduce using rule 52 (EXP -> EXP * EXP .)
-    ELSE            reduce using rule 52 (EXP -> EXP * EXP .)
-    COMP_OP         reduce using rule 52 (EXP -> EXP * EXP .)
-    )               reduce using rule 52 (EXP -> EXP * EXP .)
-    ,               reduce using rule 52 (EXP -> EXP * EXP .)
-    LOGIC_OP_OR     reduce using rule 52 (EXP -> EXP * EXP .)
-    LOGIC_OP_AND    reduce using rule 52 (EXP -> EXP * EXP .)
-    +               shift and go to state 71
-    -               shift and go to state 72
-    *               shift and go to state 73
-    /               shift and go to state 74
-
-  ! +               [ reduce using rule 52 (EXP -> EXP * EXP .) ]
-  ! -               [ reduce using rule 52 (EXP -> EXP * EXP .) ]
-  ! *               [ reduce using rule 52 (EXP -> EXP * EXP .) ]
-  ! /               [ reduce using rule 52 (EXP -> EXP * EXP .) ]
-
-
-state 98
-
-    (53) EXP -> EXP / EXP .
-    (50) EXP -> EXP . + EXP
-    (51) EXP -> EXP . - EXP
-    (52) EXP -> EXP . * EXP
-    (53) EXP -> EXP . / EXP
-
-  ! shift/reduce conflict for + resolved as shift
-  ! shift/reduce conflict for - resolved as shift
-  ! shift/reduce conflict for * resolved as shift
-  ! shift/reduce conflict for / resolved as shift
-    END             reduce using rule 53 (EXP -> EXP / EXP .)
-    ;               reduce using rule 53 (EXP -> EXP / EXP .)
-    ELSE            reduce using rule 53 (EXP -> EXP / EXP .)
-    COMP_OP         reduce using rule 53 (EXP -> EXP / EXP .)
-    )               reduce using rule 53 (EXP -> EXP / EXP .)
-    ,               reduce using rule 53 (EXP -> EXP / EXP .)
-    LOGIC_OP_OR     reduce using rule 53 (EXP -> EXP / EXP .)
-    LOGIC_OP_AND    reduce using rule 53 (EXP -> EXP / EXP .)
-    +               shift and go to state 71
-    -               shift and go to state 72
-    *               shift and go to state 73
-    /               shift and go to state 74
-
-  ! +               [ reduce using rule 53 (EXP -> EXP / EXP .) ]
-  ! -               [ reduce using rule 53 (EXP -> EXP / EXP .) ]
-  ! *               [ reduce using rule 53 (EXP -> EXP / EXP .) ]
-  ! /               [ reduce using rule 53 (EXP -> EXP / EXP .) ]
-
-
-state 99
-
     (54) EXP -> ( EXP ) .
 
+    COMP_OP         reduce using rule 54 (EXP -> ( EXP ) .)
     +               reduce using rule 54 (EXP -> ( EXP ) .)
     -               reduce using rule 54 (EXP -> ( EXP ) .)
     *               reduce using rule 54 (EXP -> ( EXP ) .)
@@ -1555,64 +1391,59 @@ state 99
     END             reduce using rule 54 (EXP -> ( EXP ) .)
     ;               reduce using rule 54 (EXP -> ( EXP ) .)
     ELSE            reduce using rule 54 (EXP -> ( EXP ) .)
-    COMP_OP         reduce using rule 54 (EXP -> ( EXP ) .)
     )               reduce using rule 54 (EXP -> ( EXP ) .)
-    ,               reduce using rule 54 (EXP -> ( EXP ) .)
     LOGIC_OP_OR     reduce using rule 54 (EXP -> ( EXP ) .)
     LOGIC_OP_AND    reduce using rule 54 (EXP -> ( EXP ) .)
+    ,               reduce using rule 54 (EXP -> ( EXP ) .)
 
 
-state 100
+state 94
 
-    (39) COMMAND -> IF ( COM_EXP ) THEN . COMMAND
-    (40) COMMAND -> IF ( COM_EXP ) THEN . COMMAND ELSE COMMAND
-    (37) COMMAND -> . ID ASSIGNMENT EXP
-    (38) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
-    (39) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
-    (40) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
-    (41) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
-    (42) COMMAND -> . BEGIN COMMAND_LIST END
+    (37) COMMAND -> IF ( COM_EXP ) THEN . COMMAND
+    (38) COMMAND -> IF ( COM_EXP ) THEN . COMMAND ELSE COMMAND
+    (37) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
+    (38) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
+    (39) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
+    (40) COMMAND -> . BEGIN COMMAND_LIST END
+    (41) COMMAND -> . ID ASSIGNMENT EXP
+    (42) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
 
-    ID              shift and go to state 17
-    IF              shift and go to state 18
-    WHILE           shift and go to state 19
+    IF              shift and go to state 17
+    WHILE           shift and go to state 18
     BEGIN           shift and go to state 13
+    ID              shift and go to state 19
 
-    COMMAND                        shift and go to state 113
+    COMMAND                        shift and go to state 111
 
-state 101
+state 95
 
     (48) COM_EXP -> COM_EXP LOGIC_OP_OR COM_EXP .
     (48) COM_EXP -> COM_EXP . LOGIC_OP_OR COM_EXP
     (49) COM_EXP -> COM_EXP . LOGIC_OP_AND COM_EXP
 
-  ! shift/reduce conflict for LOGIC_OP_OR resolved as shift
-  ! shift/reduce conflict for LOGIC_OP_AND resolved as shift
     )               reduce using rule 48 (COM_EXP -> COM_EXP LOGIC_OP_OR COM_EXP .)
-    LOGIC_OP_OR     shift and go to state 77
-    LOGIC_OP_AND    shift and go to state 78
+    LOGIC_OP_OR     reduce using rule 48 (COM_EXP -> COM_EXP LOGIC_OP_OR COM_EXP .)
+    LOGIC_OP_AND    shift and go to state 73
 
-  ! LOGIC_OP_OR     [ reduce using rule 48 (COM_EXP -> COM_EXP LOGIC_OP_OR COM_EXP .) ]
   ! LOGIC_OP_AND    [ reduce using rule 48 (COM_EXP -> COM_EXP LOGIC_OP_OR COM_EXP .) ]
+  ! LOGIC_OP_OR     [ shift and go to state 72 ]
 
 
-state 102
+state 96
 
     (49) COM_EXP -> COM_EXP LOGIC_OP_AND COM_EXP .
     (48) COM_EXP -> COM_EXP . LOGIC_OP_OR COM_EXP
     (49) COM_EXP -> COM_EXP . LOGIC_OP_AND COM_EXP
 
-  ! shift/reduce conflict for LOGIC_OP_OR resolved as shift
-  ! shift/reduce conflict for LOGIC_OP_AND resolved as shift
     )               reduce using rule 49 (COM_EXP -> COM_EXP LOGIC_OP_AND COM_EXP .)
-    LOGIC_OP_OR     shift and go to state 77
-    LOGIC_OP_AND    shift and go to state 78
+    LOGIC_OP_OR     reduce using rule 49 (COM_EXP -> COM_EXP LOGIC_OP_AND COM_EXP .)
+    LOGIC_OP_AND    reduce using rule 49 (COM_EXP -> COM_EXP LOGIC_OP_AND COM_EXP .)
 
-  ! LOGIC_OP_OR     [ reduce using rule 49 (COM_EXP -> COM_EXP LOGIC_OP_AND COM_EXP .) ]
-  ! LOGIC_OP_AND    [ reduce using rule 49 (COM_EXP -> COM_EXP LOGIC_OP_AND COM_EXP .) ]
+  ! LOGIC_OP_OR     [ shift and go to state 72 ]
+  ! LOGIC_OP_AND    [ shift and go to state 73 ]
 
 
-state 103
+state 97
 
     (47) COM_EXP -> EXP COMP_OP EXP .
     (50) EXP -> EXP . + EXP
@@ -1623,28 +1454,161 @@ state 103
     )               reduce using rule 47 (COM_EXP -> EXP COMP_OP EXP .)
     LOGIC_OP_OR     reduce using rule 47 (COM_EXP -> EXP COMP_OP EXP .)
     LOGIC_OP_AND    reduce using rule 47 (COM_EXP -> EXP COMP_OP EXP .)
-    +               shift and go to state 71
-    -               shift and go to state 72
-    *               shift and go to state 73
-    /               shift and go to state 74
+    +               shift and go to state 75
+    -               shift and go to state 76
+    *               shift and go to state 77
+    /               shift and go to state 78
+
+
+state 98
+
+    (50) EXP -> EXP + EXP .
+    (50) EXP -> EXP . + EXP
+    (51) EXP -> EXP . - EXP
+    (52) EXP -> EXP . * EXP
+    (53) EXP -> EXP . / EXP
+
+    COMP_OP         reduce using rule 50 (EXP -> EXP + EXP .)
+    +               reduce using rule 50 (EXP -> EXP + EXP .)
+    -               reduce using rule 50 (EXP -> EXP + EXP .)
+    END             reduce using rule 50 (EXP -> EXP + EXP .)
+    ;               reduce using rule 50 (EXP -> EXP + EXP .)
+    ELSE            reduce using rule 50 (EXP -> EXP + EXP .)
+    )               reduce using rule 50 (EXP -> EXP + EXP .)
+    LOGIC_OP_OR     reduce using rule 50 (EXP -> EXP + EXP .)
+    LOGIC_OP_AND    reduce using rule 50 (EXP -> EXP + EXP .)
+    ,               reduce using rule 50 (EXP -> EXP + EXP .)
+    *               shift and go to state 77
+    /               shift and go to state 78
+
+  ! *               [ reduce using rule 50 (EXP -> EXP + EXP .) ]
+  ! /               [ reduce using rule 50 (EXP -> EXP + EXP .) ]
+  ! +               [ shift and go to state 75 ]
+  ! -               [ shift and go to state 76 ]
+
+
+state 99
+
+    (51) EXP -> EXP - EXP .
+    (50) EXP -> EXP . + EXP
+    (51) EXP -> EXP . - EXP
+    (52) EXP -> EXP . * EXP
+    (53) EXP -> EXP . / EXP
+
+    COMP_OP         reduce using rule 51 (EXP -> EXP - EXP .)
+    +               reduce using rule 51 (EXP -> EXP - EXP .)
+    -               reduce using rule 51 (EXP -> EXP - EXP .)
+    END             reduce using rule 51 (EXP -> EXP - EXP .)
+    ;               reduce using rule 51 (EXP -> EXP - EXP .)
+    ELSE            reduce using rule 51 (EXP -> EXP - EXP .)
+    )               reduce using rule 51 (EXP -> EXP - EXP .)
+    LOGIC_OP_OR     reduce using rule 51 (EXP -> EXP - EXP .)
+    LOGIC_OP_AND    reduce using rule 51 (EXP -> EXP - EXP .)
+    ,               reduce using rule 51 (EXP -> EXP - EXP .)
+    *               shift and go to state 77
+    /               shift and go to state 78
+
+  ! *               [ reduce using rule 51 (EXP -> EXP - EXP .) ]
+  ! /               [ reduce using rule 51 (EXP -> EXP - EXP .) ]
+  ! +               [ shift and go to state 75 ]
+  ! -               [ shift and go to state 76 ]
+
+
+state 100
+
+    (52) EXP -> EXP * EXP .
+    (50) EXP -> EXP . + EXP
+    (51) EXP -> EXP . - EXP
+    (52) EXP -> EXP . * EXP
+    (53) EXP -> EXP . / EXP
+
+    COMP_OP         reduce using rule 52 (EXP -> EXP * EXP .)
+    +               reduce using rule 52 (EXP -> EXP * EXP .)
+    -               reduce using rule 52 (EXP -> EXP * EXP .)
+    *               reduce using rule 52 (EXP -> EXP * EXP .)
+    /               reduce using rule 52 (EXP -> EXP * EXP .)
+    END             reduce using rule 52 (EXP -> EXP * EXP .)
+    ;               reduce using rule 52 (EXP -> EXP * EXP .)
+    ELSE            reduce using rule 52 (EXP -> EXP * EXP .)
+    )               reduce using rule 52 (EXP -> EXP * EXP .)
+    LOGIC_OP_OR     reduce using rule 52 (EXP -> EXP * EXP .)
+    LOGIC_OP_AND    reduce using rule 52 (EXP -> EXP * EXP .)
+    ,               reduce using rule 52 (EXP -> EXP * EXP .)
+
+  ! +               [ shift and go to state 75 ]
+  ! -               [ shift and go to state 76 ]
+  ! *               [ shift and go to state 77 ]
+  ! /               [ shift and go to state 78 ]
+
+
+state 101
+
+    (53) EXP -> EXP / EXP .
+    (50) EXP -> EXP . + EXP
+    (51) EXP -> EXP . - EXP
+    (52) EXP -> EXP . * EXP
+    (53) EXP -> EXP . / EXP
+
+    COMP_OP         reduce using rule 53 (EXP -> EXP / EXP .)
+    +               reduce using rule 53 (EXP -> EXP / EXP .)
+    -               reduce using rule 53 (EXP -> EXP / EXP .)
+    *               reduce using rule 53 (EXP -> EXP / EXP .)
+    /               reduce using rule 53 (EXP -> EXP / EXP .)
+    END             reduce using rule 53 (EXP -> EXP / EXP .)
+    ;               reduce using rule 53 (EXP -> EXP / EXP .)
+    ELSE            reduce using rule 53 (EXP -> EXP / EXP .)
+    )               reduce using rule 53 (EXP -> EXP / EXP .)
+    LOGIC_OP_OR     reduce using rule 53 (EXP -> EXP / EXP .)
+    LOGIC_OP_AND    reduce using rule 53 (EXP -> EXP / EXP .)
+    ,               reduce using rule 53 (EXP -> EXP / EXP .)
+
+  ! +               [ shift and go to state 75 ]
+  ! -               [ shift and go to state 76 ]
+  ! *               [ shift and go to state 77 ]
+  ! /               [ shift and go to state 78 ]
+
+
+state 102
+
+    (39) COMMAND -> WHILE ( COM_EXP ) DO . COMMAND
+    (37) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
+    (38) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
+    (39) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
+    (40) COMMAND -> . BEGIN COMMAND_LIST END
+    (41) COMMAND -> . ID ASSIGNMENT EXP
+    (42) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
+
+    IF              shift and go to state 17
+    WHILE           shift and go to state 18
+    BEGIN           shift and go to state 13
+    ID              shift and go to state 19
+
+    COMMAND                        shift and go to state 112
+
+state 103
+
+    (43) FUNCTION_CALL -> ID ( PARAM_LIST . )
+    (45) PARAM_LIST -> PARAM_LIST . , EXP
+
+    )               shift and go to state 113
+    ,               shift and go to state 114
 
 
 state 104
 
-    (41) COMMAND -> WHILE ( COM_EXP ) DO . COMMAND
-    (37) COMMAND -> . ID ASSIGNMENT EXP
-    (38) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
-    (39) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
-    (40) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
-    (41) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
-    (42) COMMAND -> . BEGIN COMMAND_LIST END
+    (44) PARAM_LIST -> EXP .
+    (50) EXP -> EXP . + EXP
+    (51) EXP -> EXP . - EXP
+    (52) EXP -> EXP . * EXP
+    (53) EXP -> EXP . / EXP
 
-    ID              shift and go to state 17
-    IF              shift and go to state 18
-    WHILE           shift and go to state 19
-    BEGIN           shift and go to state 13
+    )               reduce using rule 44 (PARAM_LIST -> EXP .)
+    ,               reduce using rule 44 (PARAM_LIST -> EXP .)
+    +               shift and go to state 75
+    -               shift and go to state 76
+    *               shift and go to state 77
+    /               shift and go to state 78
 
-    COMMAND                        shift and go to state 114
 
 state 105
 
@@ -1708,6 +1672,27 @@ state 110
 
 state 111
 
+    (37) COMMAND -> IF ( COM_EXP ) THEN COMMAND .
+    (38) COMMAND -> IF ( COM_EXP ) THEN COMMAND . ELSE COMMAND
+
+    END             reduce using rule 37 (COMMAND -> IF ( COM_EXP ) THEN COMMAND .)
+    ;               reduce using rule 37 (COMMAND -> IF ( COM_EXP ) THEN COMMAND .)
+    ELSE            shift and go to state 118
+
+  ! ELSE            [ reduce using rule 37 (COMMAND -> IF ( COM_EXP ) THEN COMMAND .) ]
+
+
+state 112
+
+    (39) COMMAND -> WHILE ( COM_EXP ) DO COMMAND .
+
+    END             reduce using rule 39 (COMMAND -> WHILE ( COM_EXP ) DO COMMAND .)
+    ;               reduce using rule 39 (COMMAND -> WHILE ( COM_EXP ) DO COMMAND .)
+    ELSE            reduce using rule 39 (COMMAND -> WHILE ( COM_EXP ) DO COMMAND .)
+
+
+state 113
+
     (43) FUNCTION_CALL -> ID ( PARAM_LIST ) .
 
     END             reduce using rule 43 (FUNCTION_CALL -> ID ( PARAM_LIST ) .)
@@ -1715,7 +1700,7 @@ state 111
     ELSE            reduce using rule 43 (FUNCTION_CALL -> ID ( PARAM_LIST ) .)
 
 
-state 112
+state 114
 
     (45) PARAM_LIST -> PARAM_LIST , . EXP
     (50) EXP -> . EXP + EXP
@@ -1728,35 +1713,13 @@ state 112
     (57) EXP -> . TRUE
     (58) EXP -> . FALSE
 
-    (               shift and go to state 46
-    ID              shift and go to state 52
+    (               shift and go to state 43
+    ID              shift and go to state 46
     NUMBER          shift and go to state 47
     TRUE            shift and go to state 48
     FALSE           shift and go to state 49
 
-    EXP                            shift and go to state 118
-
-state 113
-
-    (39) COMMAND -> IF ( COM_EXP ) THEN COMMAND .
-    (40) COMMAND -> IF ( COM_EXP ) THEN COMMAND . ELSE COMMAND
-
-  ! shift/reduce conflict for ELSE resolved as shift
-    END             reduce using rule 39 (COMMAND -> IF ( COM_EXP ) THEN COMMAND .)
-    ;               reduce using rule 39 (COMMAND -> IF ( COM_EXP ) THEN COMMAND .)
-    ELSE            shift and go to state 119
-
-  ! ELSE            [ reduce using rule 39 (COMMAND -> IF ( COM_EXP ) THEN COMMAND .) ]
-
-
-state 114
-
-    (41) COMMAND -> WHILE ( COM_EXP ) DO COMMAND .
-
-    END             reduce using rule 41 (COMMAND -> WHILE ( COM_EXP ) DO COMMAND .)
-    ;               reduce using rule 41 (COMMAND -> WHILE ( COM_EXP ) DO COMMAND .)
-    ELSE            reduce using rule 41 (COMMAND -> WHILE ( COM_EXP ) DO COMMAND .)
-
+    EXP                            shift and go to state 119
 
 state 115
 
@@ -1786,6 +1749,23 @@ state 117
 
 state 118
 
+    (38) COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE . COMMAND
+    (37) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
+    (38) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
+    (39) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
+    (40) COMMAND -> . BEGIN COMMAND_LIST END
+    (41) COMMAND -> . ID ASSIGNMENT EXP
+    (42) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
+
+    IF              shift and go to state 17
+    WHILE           shift and go to state 18
+    BEGIN           shift and go to state 13
+    ID              shift and go to state 19
+
+    COMMAND                        shift and go to state 122
+
+state 119
+
     (45) PARAM_LIST -> PARAM_LIST , EXP .
     (50) EXP -> EXP . + EXP
     (51) EXP -> EXP . - EXP
@@ -1794,28 +1774,11 @@ state 118
 
     )               reduce using rule 45 (PARAM_LIST -> PARAM_LIST , EXP .)
     ,               reduce using rule 45 (PARAM_LIST -> PARAM_LIST , EXP .)
-    +               shift and go to state 71
-    -               shift and go to state 72
-    *               shift and go to state 73
-    /               shift and go to state 74
+    +               shift and go to state 75
+    -               shift and go to state 76
+    *               shift and go to state 77
+    /               shift and go to state 78
 
-
-state 119
-
-    (40) COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE . COMMAND
-    (37) COMMAND -> . ID ASSIGNMENT EXP
-    (38) COMMAND -> . ID ASSIGNMENT FUNCTION_CALL
-    (39) COMMAND -> . IF ( COM_EXP ) THEN COMMAND
-    (40) COMMAND -> . IF ( COM_EXP ) THEN COMMAND ELSE COMMAND
-    (41) COMMAND -> . WHILE ( COM_EXP ) DO COMMAND
-    (42) COMMAND -> . BEGIN COMMAND_LIST END
-
-    ID              shift and go to state 17
-    IF              shift and go to state 18
-    WHILE           shift and go to state 19
-    BEGIN           shift and go to state 13
-
-    COMMAND                        shift and go to state 122
 
 state 120
 
@@ -1847,11 +1810,11 @@ state 121
 
 state 122
 
-    (40) COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE COMMAND .
+    (38) COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE COMMAND .
 
-    END             reduce using rule 40 (COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE COMMAND .)
-    ;               reduce using rule 40 (COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE COMMAND .)
-    ELSE            reduce using rule 40 (COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE COMMAND .)
+    END             reduce using rule 38 (COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE COMMAND .)
+    ;               reduce using rule 38 (COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE COMMAND .)
+    ELSE            reduce using rule 38 (COMMAND -> IF ( COM_EXP ) THEN COMMAND ELSE COMMAND .)
 
 
 state 123
@@ -1861,43 +1824,3 @@ state 123
     ;               reduce using rule 23 (DATA_TYPE -> ARRAY [ NUMBER ] OF DATA_TYPE .)
     END             reduce using rule 23 (DATA_TYPE -> ARRAY [ NUMBER ] OF DATA_TYPE .)
 
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for + in state 88 resolved as shift
-WARNING: shift/reduce conflict for - in state 88 resolved as shift
-WARNING: shift/reduce conflict for * in state 88 resolved as shift
-WARNING: shift/reduce conflict for / in state 88 resolved as shift
-WARNING: shift/reduce conflict for + in state 89 resolved as shift
-WARNING: shift/reduce conflict for - in state 89 resolved as shift
-WARNING: shift/reduce conflict for * in state 89 resolved as shift
-WARNING: shift/reduce conflict for / in state 89 resolved as shift
-WARNING: shift/reduce conflict for + in state 90 resolved as shift
-WARNING: shift/reduce conflict for - in state 90 resolved as shift
-WARNING: shift/reduce conflict for * in state 90 resolved as shift
-WARNING: shift/reduce conflict for / in state 90 resolved as shift
-WARNING: shift/reduce conflict for + in state 91 resolved as shift
-WARNING: shift/reduce conflict for - in state 91 resolved as shift
-WARNING: shift/reduce conflict for * in state 91 resolved as shift
-WARNING: shift/reduce conflict for / in state 91 resolved as shift
-WARNING: shift/reduce conflict for + in state 95 resolved as shift
-WARNING: shift/reduce conflict for - in state 95 resolved as shift
-WARNING: shift/reduce conflict for * in state 95 resolved as shift
-WARNING: shift/reduce conflict for / in state 95 resolved as shift
-WARNING: shift/reduce conflict for + in state 96 resolved as shift
-WARNING: shift/reduce conflict for - in state 96 resolved as shift
-WARNING: shift/reduce conflict for * in state 96 resolved as shift
-WARNING: shift/reduce conflict for / in state 96 resolved as shift
-WARNING: shift/reduce conflict for + in state 97 resolved as shift
-WARNING: shift/reduce conflict for - in state 97 resolved as shift
-WARNING: shift/reduce conflict for * in state 97 resolved as shift
-WARNING: shift/reduce conflict for / in state 97 resolved as shift
-WARNING: shift/reduce conflict for + in state 98 resolved as shift
-WARNING: shift/reduce conflict for - in state 98 resolved as shift
-WARNING: shift/reduce conflict for * in state 98 resolved as shift
-WARNING: shift/reduce conflict for / in state 98 resolved as shift
-WARNING: shift/reduce conflict for LOGIC_OP_OR in state 101 resolved as shift
-WARNING: shift/reduce conflict for LOGIC_OP_AND in state 101 resolved as shift
-WARNING: shift/reduce conflict for LOGIC_OP_OR in state 102 resolved as shift
-WARNING: shift/reduce conflict for LOGIC_OP_AND in state 102 resolved as shift
-WARNING: shift/reduce conflict for ELSE in state 113 resolved as shift

@@ -1,6 +1,5 @@
 const TAM = 10;
-const TAM = 2;
-const CU = 10000;
+const T = 10000;
 var A: integer;
 var B: integer;
 begin

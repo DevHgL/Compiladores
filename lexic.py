@@ -68,19 +68,23 @@ tokens = [
     'EQUAL', 
     'NOT_EQUALS', 
     'COMP_OP'
+
 ] + list(reservados.values())
 
 # Expressoes regulares dos tokens simples
-t_ASSIGNMENT = r':='
-t_COMP_OP = r'==|!=|>=|<=|>|<'
 
+t_ASSIGNMENT = r':='
 t_LESS_THAN = r'<'
 t_GREATER_THAN = r'>'
 t_LESS_EQUAL = r'<='
 t_GREATER_EQUAL = r'>='
 t_NOT_EQUALS = r'!='
 t_EQUAL = r'=='
-# t_LOGIC_OP = r'\bAND\b|\bOR\b'
+
+# Token definitions for comparison operators
+def t_COMP_OP(t):
+    r'<=|>=|==|!=|>|<'
+    return t
 
 def t_NUMBER(t):
     r'\d+(\.\d+)?'
