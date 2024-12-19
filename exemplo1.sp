@@ -21,7 +21,7 @@ begin
 		while G != true do
 		begin
 			D := D + 1;
-			G := D > 6
+
 		end
 	end
 end
