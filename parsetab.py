@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = "nonassocELSEnonassocIFleftLOGIC_OP_ORleftLOGIC_OP_ANDleft+-left*/rightUMINUSARRAY ASSIGNMENT BEGIN COMP_OP CONSTANT DO ELSE END FALSE ID IF LOGIC_OP_AND LOGIC_OP_OR NUMBER OF PRINT RECORD THEN TRUE TYPE VARIABLE WHILEPROGRAM : DECLARATIONS BLOCKBLOCK : BEGIN COMMAND_LIST END\n                   | BEGIN ENDDECLARATIONS : CONST_DEF TYPE_DEF VAR_DEFCONST_DEF : CONSTANT ID '=' EXP ';' CONST_DEF\n                       | TYPE_DEF : TYPE ID '=' TYPE_DECL ';' TYPE_DEF\n                      | TYPE_DECL : ARRAY '[' NUMBER ']' OF TYPE_DECL\n                     | RECORD FIELD_LIST END\n                     | IDFIELD_LIST : FIELD_LIST FIELD\n                      | FIELDFIELD : ID ':' TYPE_DECL ';'VAR_DEF : VARIABLE ID_LIST ':' TYPE_DECL ';' VAR_DEF\n                     | ID_LIST : ID\n                   | ID_LIST ',' IDCOMMAND_LIST : COMMAND\n                          | COMMAND_LIST COMMANDCOMMAND : assignment\n                     | if_statement\n                     | while_statement\n                     | print_statement\n                     | FUNCTION_CALL\n                     | BLOCKassignment : ID ASSIGNMENT EXPif_statement : IF COM_EXP THEN BLOCK ELSE BLOCK\n                        | IF COM_EXP THEN BLOCKwhile_statement : WHILE COM_EXP DO BLOCKprint_statement : PRINT EXPEXP : EXP '+' EXP\n                 | EXP '-' EXP\n                 | EXP '*' EXP\n                 | EXP '/' EXP\n                 | '(' EXP ')'\n                 | ID\n                 | NUMBER\n                 | TRUE\n                 | FALSE\n                 | FUNCTION_CALLEXP : '-' EXP %prec UMINUSCOM_EXP : EXP COMP_OP EXP\n                     | COM_EXP LOGIC_OP_OR COM_EXP\n                     | COM_EXP LOGIC_OP_AND COM_EXPPARAM_LIST : EXP\n                        | PARAM_LIST ',' EXPFUNCTION_CALL : ID '(' PARAM_LIST ')'"
+_lr_signature = "rightUMINUSleft+-left*/ASSIGNMENT BEGIN COMP_OP CONST_DEF DO ELSE END FALSE ID IF LOGIC_OP_AND LOGIC_OP_OR NUMBER RECORD THEN TRUE TYPE_DEF VAR_DEF WHILEPROGRAM : DECLARATIONS BLOCKDECLARATIONS : CONST_DECLARATIONS VAR_DECLARATIONS\n                        | VAR_DECLARATIONS\n                        | CONST_DECLARATIONS\n                        | emptyCONST_DECLARATIONS : CONST_DEF ID '=' NUMBER ';' CONST_DECLARATIONS\n                              | CONST_DEF ID '=' NUMBER ';'VAR_DECLARATIONS : VAR_DEF ID ':' ID ';' VAR_DECLARATIONS\n                            | VAR_DEF ID ':' ID ';'BLOCK : BEGIN COMMAND_LIST ENDCOMMAND_LIST : COMMAND ';' COMMAND_LIST\n                        | COMMAND\n                        | emptyCOMMAND : assignmentassignment : ID ASSIGNMENT EXPEXP : EXP '+' EXP\n                | EXP '-' EXP\n                | EXP '*' EXP\n                | EXP '/' EXP\n                | '-' EXP %prec UMINUS\n                | '(' EXP ')'\n                | ID\n                | NUMBERempty :"
     
-_lr_action_items = {'CONSTANT':([0,66,],[4,4,]),'TYPE':([0,3,66,81,86,],[-6,8,-6,8,-5,]),'VARIABLE':([0,3,7,66,81,86,89,90,],[-6,-8,24,-6,-8,-5,24,-7,]),'BEGIN':([0,2,3,6,7,10,11,12,13,14,15,16,17,18,23,27,28,35,36,37,38,39,41,46,49,57,59,66,67,69,73,74,75,76,77,78,81,86,88,89,90,95,96,],[-6,6,-8,6,-16,6,-3,-19,-21,-22,-23,-24,-25,-26,-4,-2,-20,-37,-38,-39,-40,-41,-31,-27,6,-42,6,-6,-48,-29,-32,-33,-34,-35,-36,-30,-8,-5,6,-16,-7,-28,-15,]),'$end':([1,5,11,27,],[0,-1,-3,-2,]),'ID':([4,6,8,10,11,12,13,14,15,16,17,18,20,21,22,24,26,27,28,29,30,33,34,35,36,37,38,39,41,44,46,50,51,52,53,54,55,56,57,60,61,65,67,68,69,73,74,75,76,77,78,83,84,93,94,95,99,100,],[9,19,25,19,-3,-19,-21,-22,-23,-24,-25,-26,35,35,35,43,35,-2,-20,35,35,35,35,-37,-38,-39,-40,-41,-31,62,-27,35,35,35,35,35,35,35,-42,62,80,85,-48,35,-29,-32,-33,-34,-35,-36,-30,85,-13,-12,62,-28,62,-14,]),'END':([6,10,11,12,13,14,15,16,17,18,27,28,35,36,37,38,39,41,46,57,67,69,73,74,75,76,77,78,83,84,93,95,100,],[11,27,-3,-19,-21,-22,-23,-24,-25,-26,-2,-20,-37,-38,-39,-40,-41,-31,-27,-42,-48,-29,-32,-33,-34,-35,-36,-30,92,-13,-12,-28,-14,]),'IF':([6,10,11,12,13,14,15,16,17,18,27,28,35,36,37,38,39,41,46,57,67,69,73,74,75,76,77,78,95,],[20,20,-3,-19,-21,-22,-23,-24,-25,-26,-2,-20,-37,-38,-39,-40,-41,-31,-27,-42,-48,-29,-32,-33,-34,-35,-36,-30,-28,]),'WHILE':([6,10,11,12,13,14,15,16,17,18,27,28,35,36,37,38,39,41,46,57,67,69,73,74,75,76,77,78,95,],[21,21,-3,-19,-21,-22,-23,-24,-25,-26,-2,-20,-37,-38,-39,-40,-41,-31,-27,-42,-48,-29,-32,-33,-34,-35,-36,-30,-28,]),'PRINT':([6,10,11,12,13,14,15,16,17,18,27,28,35,36,37,38,39,41,46,57,67,69,73,74,75,76,77,78,95,],[22,22,-3,-19,-21,-22,-23,-24,-25,-26,-2,-20,-37,-38,-39,-40,-41,-31,-27,-42,-48,-29,-32,-33,-34,-35,-36,-30,-28,]),'=':([9,25,],[26,44,]),'ELSE':([11,27,69,],[-3,-2,88,]),'ASSIGNMENT':([19,],[29,]),'(':([19,20,21,22,26,29,30,33,34,35,50,51,52,53,54,55,56,68,],[30,34,34,34,34,34,34,34,34,30,34,34,34,34,34,34,34,34,]),'NUMBER':([20,21,22,26,29,30,33,34,50,51,52,53,54,55,56,68,82,],[36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,91,]),'TRUE':([20,21,22,26,29,30,33,34,50,51,52,53,54,55,56,68,],[37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,]),'FALSE':([20,21,22,26,29,30,33,34,50,51,52,53,54,55,56,68,],[38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,]),'-':([20,21,22,26,29,30,32,33,34,35,36,37,38,39,41,45,46,48,50,51,52,53,54,55,56,57,58,67,68,72,73,74,75,76,77,87,],[33,33,33,33,33,33,54,33,33,-37,-38,-39,-40,-41,54,54,54,54,33,33,33,33,33,33,33,-42,54,-48,33,54,-32,-33,-34,-35,-36,54,]),'THEN':([31,35,36,37,38,39,57,67,70,71,72,73,74,75,76,77,],[49,-37,-38,-39,-40,-41,-42,-48,-44,-45,-43,-32,-33,-34,-35,-36,]),'LOGIC_OP_OR':([31,35,36,37,38,39,40,57,67,70,71,72,73,74,75,76,77,],[50,-37,-38,-39,-40,-41,50,-42,-48,-44,-45,-43,-32,-33,-34,-35,-36,]),'LOGIC_OP_AND':([31,35,36,37,38,39,40,57,67,70,71,72,73,74,75,76,77,],[51,-37,-38,-39,-40,-41,51,-42,-48,51,-45,-43,-32,-33,-34,-35,-36,]),'COMP_OP':([32,35,36,37,38,39,57,67,73,74,75,76,77,],[52,-37,-38,-39,-40,-41,-42,-48,-32,-33,-34,-35,-36,]),'+':([32,35,36,37,38,39,41,45,46,48,57,58,67,72,73,74,75,76,77,87,],[53,-37,-38,-39,-40,-41,53,53,53,53,-42,53,-48,53,-32,-33,-34,-35,-36,53,]),'*':([32,35,36,37,38,39,41,45,46,48,57,58,67,72,73,74,75,76,77,87,],[55,-37,-38,-39,-40,-41,55,55,55,55,-42,55,-48,55,55,55,-34,-35,-36,55,]),'/':([32,35,36,37,38,39,41,45,46,48,57,58,67,72,73,74,75,76,77,87,],[56,-37,-38,-39,-40,-41,56,56,56,56,-42,56,-48,56,56,56,-34,-35,-36,56,]),';':([35,36,37,38,39,45,57,62,63,67,73,74,75,76,77,79,92,98,101,],[-37,-38,-39,-40,-41,66,-42,-11,81,-48,-32,-33,-34,-35,-36,89,-10,100,-9,]),')':([35,36,37,38,39,47,48,57,58,67,73,74,75,76,77,87,],[-37,-38,-39,-40,-41,67,-46,-42,77,-48,-32,-33,-34,-35,-36,-47,]),',':([35,36,37,38,39,42,43,47,48,57,67,73,74,75,76,77,80,87,],[-37,-38,-39,-40,-41,61,-17,68,-46,-42,-48,-32,-33,-34,-35,-36,-18,-47,]),'DO':([35,36,37,38,39,40,57,67,70,71,72,73,74,75,76,77,],[-37,-38,-39,-40,-41,59,-42,-48,-44,-45,-43,-32,-33,-34,-35,-36,]),':':([42,43,80,85,],[60,-17,-18,94,]),'ARRAY':([44,60,94,99,],[64,64,64,64,]),'RECORD':([44,60,94,99,],[65,65,65,65,]),'[':([64,],[82,]),']':([91,],[97,]),'OF':([97,],[99,]),}
+_lr_action_items = {'CONST_DEF':([0,31,],[6,6,]),'VAR_DEF':([0,3,31,32,39,],[7,7,-7,7,-6,]),'BEGIN':([0,2,3,4,5,10,31,32,39,40,],[-24,9,-4,-3,-5,-2,-7,-9,-6,-8,]),'$end':([1,8,20,],[0,-1,-10,]),'ID':([6,7,9,19,21,22,28,29,33,34,35,36,],[11,12,17,24,17,26,26,26,26,26,26,26,]),'END':([9,13,14,15,16,21,25,26,27,30,37,41,42,43,44,45,],[-24,20,-12,-13,-14,-24,-11,-22,-15,-23,-20,-16,-17,-18,-19,-21,]),'=':([11,],[18,]),':':([12,],[19,]),';':([14,16,23,24,26,27,30,37,41,42,43,44,45,],[21,-14,31,32,-22,-15,-23,-20,-16,-17,-18,-19,-21,]),'ASSIGNMENT':([17,],[22,]),'NUMBER':([18,22,28,29,33,34,35,36,],[23,30,30,30,30,30,30,30,]),'-':([22,26,27,28,29,30,33,34,35,36,37,38,41,42,43,44,45,],[28,-22,34,28,28,-23,28,28,28,28,34,34,-16,-17,-18,-19,-21,]),'(':([22,28,29,33,34,35,36,],[29,29,29,29,29,29,29,]),'+':([26,27,30,37,38,41,42,43,44,45,],[-22,33,-23,33,33,-16,-17,-18,-19,-21,]),'*':([26,27,30,37,38,41,42,43,44,45,],[-22,35,-23,35,35,35,35,-18,-19,-21,]),'/':([26,27,30,37,38,41,42,43,44,45,],[-22,36,-23,36,36,36,36,-18,-19,-21,]),')':([26,30,37,38,41,42,43,44,45,],[-22,-23,-20,45,-16,-17,-18,-19,-21,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'PROGRAM':([0,],[1,]),'DECLARATIONS':([0,],[2,]),'CONST_DEF':([0,66,],[3,86,]),'BLOCK':([2,6,10,49,59,88,],[5,18,18,69,78,95,]),'TYPE_DEF':([3,81,],[7,90,]),'COMMAND_LIST':([6,],[10,]),'COMMAND':([6,10,],[12,28,]),'assignment':([6,10,],[13,13,]),'if_statement':([6,10,],[14,14,]),'while_statement':([6,10,],[15,15,]),'print_statement':([6,10,],[16,16,]),'FUNCTION_CALL':([6,10,20,21,22,26,29,30,33,34,50,51,52,53,54,55,56,68,],[17,17,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,]),'VAR_DEF':([7,89,],[23,96,]),'COM_EXP':([20,21,50,51,],[31,40,70,71,]),'EXP':([20,21,22,26,29,30,33,34,50,51,52,53,54,55,56,68,],[32,32,41,45,46,48,57,58,32,32,72,73,74,75,76,87,]),'ID_LIST':([24,],[42,]),'PARAM_LIST':([30,],[47,]),'TYPE_DECL':([44,60,94,99,],[63,79,98,101,]),'FIELD_LIST':([65,],[83,]),'FIELD':([65,83,],[84,93,]),}
+_lr_goto_items = {'PROGRAM':([0,],[1,]),'DECLARATIONS':([0,],[2,]),'CONST_DECLARATIONS':([0,31,],[3,39,]),'VAR_DECLARATIONS':([0,3,32,],[4,10,40,]),'empty':([0,9,21,],[5,15,15,]),'BLOCK':([2,],[8,]),'COMMAND_LIST':([9,21,],[13,25,]),'COMMAND':([9,21,],[14,14,]),'assignment':([9,21,],[16,16,]),'EXP':([22,28,29,33,34,35,36,],[27,37,38,41,42,43,44,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,52 +27,28 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> PROGRAM","S'",1,None,None,None),
-  ('PROGRAM -> DECLARATIONS BLOCK','PROGRAM',2,'p_program','syntactic.py',28),
-  ('BLOCK -> BEGIN COMMAND_LIST END','BLOCK',3,'p_block','syntactic.py',32),
-  ('BLOCK -> BEGIN END','BLOCK',2,'p_block','syntactic.py',33),
-  ('DECLARATIONS -> CONST_DEF TYPE_DEF VAR_DEF','DECLARATIONS',3,'p_declarations','syntactic.py',40),
-  ('CONST_DEF -> CONSTANT ID = EXP ; CONST_DEF','CONST_DEF',6,'p_const_def','syntactic.py',44),
-  ('CONST_DEF -> <empty>','CONST_DEF',0,'p_const_def','syntactic.py',45),
-  ('TYPE_DEF -> TYPE ID = TYPE_DECL ; TYPE_DEF','TYPE_DEF',6,'p_type_def','syntactic.py',52),
-  ('TYPE_DEF -> <empty>','TYPE_DEF',0,'p_type_def','syntactic.py',53),
-  ('TYPE_DECL -> ARRAY [ NUMBER ] OF TYPE_DECL','TYPE_DECL',6,'p_type_decl','syntactic.py',60),
-  ('TYPE_DECL -> RECORD FIELD_LIST END','TYPE_DECL',3,'p_type_decl','syntactic.py',61),
-  ('TYPE_DECL -> ID','TYPE_DECL',1,'p_type_decl','syntactic.py',62),
-  ('FIELD_LIST -> FIELD_LIST FIELD','FIELD_LIST',2,'p_field_list','syntactic.py',71),
-  ('FIELD_LIST -> FIELD','FIELD_LIST',1,'p_field_list','syntactic.py',72),
-  ('FIELD -> ID : TYPE_DECL ;','FIELD',4,'p_field','syntactic.py',79),
-  ('VAR_DEF -> VARIABLE ID_LIST : TYPE_DECL ; VAR_DEF','VAR_DEF',6,'p_var_def','syntactic.py',83),
-  ('VAR_DEF -> <empty>','VAR_DEF',0,'p_var_def','syntactic.py',84),
-  ('ID_LIST -> ID','ID_LIST',1,'p_id_list','syntactic.py',91),
-  ('ID_LIST -> ID_LIST , ID','ID_LIST',3,'p_id_list','syntactic.py',92),
-  ('COMMAND_LIST -> COMMAND','COMMAND_LIST',1,'p_command_list','syntactic.py',99),
-  ('COMMAND_LIST -> COMMAND_LIST COMMAND','COMMAND_LIST',2,'p_command_list','syntactic.py',100),
-  ('COMMAND -> assignment','COMMAND',1,'p_command','syntactic.py',107),
-  ('COMMAND -> if_statement','COMMAND',1,'p_command','syntactic.py',108),
-  ('COMMAND -> while_statement','COMMAND',1,'p_command','syntactic.py',109),
-  ('COMMAND -> print_statement','COMMAND',1,'p_command','syntactic.py',110),
-  ('COMMAND -> FUNCTION_CALL','COMMAND',1,'p_command','syntactic.py',111),
-  ('COMMAND -> BLOCK','COMMAND',1,'p_command','syntactic.py',112),
-  ('assignment -> ID ASSIGNMENT EXP','assignment',3,'p_assignment','syntactic.py',116),
-  ('if_statement -> IF COM_EXP THEN BLOCK ELSE BLOCK','if_statement',6,'p_if_statement','syntactic.py',120),
-  ('if_statement -> IF COM_EXP THEN BLOCK','if_statement',4,'p_if_statement','syntactic.py',121),
-  ('while_statement -> WHILE COM_EXP DO BLOCK','while_statement',4,'p_while_statement','syntactic.py',128),
-  ('print_statement -> PRINT EXP','print_statement',2,'p_print_statement','syntactic.py',132),
-  ('EXP -> EXP + EXP','EXP',3,'p_exp','syntactic.py',136),
-  ('EXP -> EXP - EXP','EXP',3,'p_exp','syntactic.py',137),
-  ('EXP -> EXP * EXP','EXP',3,'p_exp','syntactic.py',138),
-  ('EXP -> EXP / EXP','EXP',3,'p_exp','syntactic.py',139),
-  ('EXP -> ( EXP )','EXP',3,'p_exp','syntactic.py',140),
-  ('EXP -> ID','EXP',1,'p_exp','syntactic.py',141),
-  ('EXP -> NUMBER','EXP',1,'p_exp','syntactic.py',142),
-  ('EXP -> TRUE','EXP',1,'p_exp','syntactic.py',143),
-  ('EXP -> FALSE','EXP',1,'p_exp','syntactic.py',144),
-  ('EXP -> FUNCTION_CALL','EXP',1,'p_exp','syntactic.py',145),
-  ('EXP -> - EXP','EXP',2,'p_exp_uminus','syntactic.py',154),
-  ('COM_EXP -> EXP COMP_OP EXP','COM_EXP',3,'p_com_exp','syntactic.py',158),
-  ('COM_EXP -> COM_EXP LOGIC_OP_OR COM_EXP','COM_EXP',3,'p_com_exp','syntactic.py',159),
-  ('COM_EXP -> COM_EXP LOGIC_OP_AND COM_EXP','COM_EXP',3,'p_com_exp','syntactic.py',160),
-  ('PARAM_LIST -> EXP','PARAM_LIST',1,'p_param_list','syntactic.py',170),
-  ('PARAM_LIST -> PARAM_LIST , EXP','PARAM_LIST',3,'p_param_list','syntactic.py',171),
-  ('FUNCTION_CALL -> ID ( PARAM_LIST )','FUNCTION_CALL',4,'p_function_call','syntactic.py',178),
+  ('PROGRAM -> DECLARATIONS BLOCK','PROGRAM',2,'p_program','syntactic.py',15),
+  ('DECLARATIONS -> CONST_DECLARATIONS VAR_DECLARATIONS','DECLARATIONS',2,'p_declarations','syntactic.py',19),
+  ('DECLARATIONS -> VAR_DECLARATIONS','DECLARATIONS',1,'p_declarations','syntactic.py',20),
+  ('DECLARATIONS -> CONST_DECLARATIONS','DECLARATIONS',1,'p_declarations','syntactic.py',21),
+  ('DECLARATIONS -> empty','DECLARATIONS',1,'p_declarations','syntactic.py',22),
+  ('CONST_DECLARATIONS -> CONST_DEF ID = NUMBER ; CONST_DECLARATIONS','CONST_DECLARATIONS',6,'p_const_declarations','syntactic.py',31),
+  ('CONST_DECLARATIONS -> CONST_DEF ID = NUMBER ;','CONST_DECLARATIONS',5,'p_const_declarations','syntactic.py',32),
+  ('VAR_DECLARATIONS -> VAR_DEF ID : ID ; VAR_DECLARATIONS','VAR_DECLARATIONS',6,'p_var_declarations','syntactic.py',39),
+  ('VAR_DECLARATIONS -> VAR_DEF ID : ID ;','VAR_DECLARATIONS',5,'p_var_declarations','syntactic.py',40),
+  ('BLOCK -> BEGIN COMMAND_LIST END','BLOCK',3,'p_block','syntactic.py',47),
+  ('COMMAND_LIST -> COMMAND ; COMMAND_LIST','COMMAND_LIST',3,'p_command_list','syntactic.py',51),
+  ('COMMAND_LIST -> COMMAND','COMMAND_LIST',1,'p_command_list','syntactic.py',52),
+  ('COMMAND_LIST -> empty','COMMAND_LIST',1,'p_command_list','syntactic.py',53),
+  ('COMMAND -> assignment','COMMAND',1,'p_command','syntactic.py',62),
+  ('assignment -> ID ASSIGNMENT EXP','assignment',3,'p_assignment','syntactic.py',66),
+  ('EXP -> EXP + EXP','EXP',3,'p_exp','syntactic.py',70),
+  ('EXP -> EXP - EXP','EXP',3,'p_exp','syntactic.py',71),
+  ('EXP -> EXP * EXP','EXP',3,'p_exp','syntactic.py',72),
+  ('EXP -> EXP / EXP','EXP',3,'p_exp','syntactic.py',73),
+  ('EXP -> - EXP','EXP',2,'p_exp','syntactic.py',74),
+  ('EXP -> ( EXP )','EXP',3,'p_exp','syntactic.py',75),
+  ('EXP -> ID','EXP',1,'p_exp','syntactic.py',76),
+  ('EXP -> NUMBER','EXP',1,'p_exp','syntactic.py',77),
+  ('empty -> <empty>','empty',0,'p_empty','syntactic.py',86),
 ]
